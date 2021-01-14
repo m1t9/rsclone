@@ -7,6 +7,8 @@ export default class Board {
   constructor() {
     this.board = [];
     this.cellsCount = 0;
+    this.currentCard = 'cardTest_1';
+    this.currentCardSide = 1;
   }
 
   initBoard() {
@@ -45,6 +47,21 @@ export default class Board {
         }
       }
     }
+
+    // const testDrag = addCell.call(this, this.board, 0, 0, 'card1', this.cellsCount);
+    // testDrag.setAngle(0);
+    // testDrag.setScale(1, 0.5);
+    // // const testDrag = this.addItem.sprite(100, 100, 'tile');
+    // testDrag.setInteractive();
+    // this.input.setDraggable(testDrag);
+
+    // this.input.on('drag', (pointer, gameObject, dragX, dragY) => {
+    //   console.log(gameObject.isoPosition);
+    //   console.log(`${dragX} ${dragY} ${gameObject.x} ${gameObject.y}`);
+    //   gameObject.isoPosition.x = dragX - 400;
+    //   gameObject.isoPosition.y = dragY - 200;
+    //   // gameObject.z = 0;
+    // });
   }
 
   cellsCountIncrease() {

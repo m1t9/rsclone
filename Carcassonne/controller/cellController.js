@@ -15,23 +15,35 @@ export default function addCell(board, xx, yy, type) {
   cell.setInteractive();
   cell.number = board.cellsCount;
 
+  cell.addMode = false;
+
   if (cell.texture.key === 'empty') {
-    cell.on('pointerover', function () {
-      this.setTint(0x86bfda);
+    cell.on('pointerover', function(pointer) {
+      // this.setTint(0x86bfda);
+      cell.addMode = !cell.addMode;
+      cell.setTexture(board.currentCard);
+      // cell.setScale(1, 0.5);
+      // over(cell, board, pointer);
       this.isoZ += 7;
     });
 
     cell.on('pointerout', function () {
-      this.clearTint();
+      // this.clearTint();
+      // cell.setScale(1);
+      cell.setTexture('empty');
+      cell.addMode = !cell.addMode;
       this.isoZ -= 7;
     });
 
     cell.on('pointerdown', (pointer) => {
       if (pointer.leftButtonDown()) {
-        cell.setTexture('tile');
+        // cell.setTexture('tile');
+        cell.setTexture(board.currentCard);
         cell.removeAllListeners();
         cell.isoPosition.z = 0;
         addNeib.call(this, board, xx, yy);
+      } else if (pointer.rightButtonDown()) {
+        over(board, cell);
       }
     });
   }
@@ -74,4 +86,13 @@ function addNeib(board, x, y) {
     // console.log('2');
     addEmpty.call(this, board, x, y - CONSTANTS.SIZE);
   }
+}
+
+function over(board, cell) {
+  board.currentCardSide += 1;
+  if (board.currentCardSide === 5) {
+    board.currentCardSide = 1;
+  }
+  board.currentCard = `cardTest_${board.currentCardSide}`;
+  cell.setTexture(board.currentCard);
 }

@@ -20,6 +20,11 @@ class IsoInteractionExample extends Phaser.Scene {
   preload() {
     this.load.image('tile', 'assets/test2.png');
     this.load.image('empty', 'assets/test2empty.png');
+    this.load.image('cardTest_1', 'assets/card2test1.png');
+    this.load.image('cardTest_2', 'assets/card2test2.png');
+    this.load.image('cardTest_3', 'assets/card2test3.png');
+    this.load.image('cardTest_4', 'assets/card2test4.png');
+    this.load.image('t1', 'assets/card1test.png');
     this.load.scenePlugin({
       key: 'IsoPlugin',
       url: IsoPlugin,
