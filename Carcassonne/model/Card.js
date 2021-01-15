@@ -3,19 +3,19 @@ export default class Card {
     number,
     x,
     y,
-    left = 'none',
-    right = 'none',
-    top = 'none',
-    bottom = 'none',
-    type = 'empty',
+    side1 = 'none',
+    side2 = 'none',
+    side3 = 'none',
+    side4 = 'none',
+    name = 'empty',
   ) {
-    this.left = left;
-    this.right = right;
-    this.top = top;
-    this.bottom = bottom;
-    this.type = type;
     this.number = number;
     this.x = x;
     this.y = y;
+    this.side1 = side1;
+    this.side2 = side2;
+    this.side3 = side3;
+    this.side4 = side4;
+    this.name = name;
   }
 }

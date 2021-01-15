@@ -36,6 +36,7 @@ class IsoInteractionExample extends Phaser.Scene {
     this.isoGroup = this.add.group();
     this.iso.projector.origin.setTo(0.5, 0.3);
     this.spawnTiles();
+    this.add.text(10, 10, 'Current card:', { font: '20px', fill: '#ffffff' });
   }
 
   spawnTiles() {

@@ -2,6 +2,7 @@
 import addCell from '../controller/cellController.js';
 import Card from './Card.js';
 import CONSTANTS from '../utils/CONSTANTS.js';
+import moveCamera from '../utils/camera.js';
 
 export default class Board {
   constructor() {
@@ -9,6 +10,8 @@ export default class Board {
     this.cellsCount = 0;
     this.currentCard = 'cardTest_1';
     this.currentCardSide = 1;
+    // this.cardText = '';
+    this.currentCardSprite = null;
   }
 
   initBoard() {
@@ -20,6 +23,27 @@ export default class Board {
   }
 
   initialization() {
+    // this.cardText = this.add.text(10, 10, 'Current card:', { font: '20px', fill: '#ffffff' });
+    this.currentCardImage = this.add.image(80, 80, 't1');
+    this.currentCardImage.destroy();
+    this.currentCardImage = this.add.image(80, 80, 'tile');
+    console.log(this.currentCardImage);
+    this.currentCardImage.setInteractive();
+    this.currentCardImage.on('pointerdown', function(pointer) {
+      console.log('wow');
+    });
+
+    // console.log(this.iso.projector.origin);
+    // const iso = this.iso.projector.origin;
+    // console.log(iso);
+
+    // this.input.keyboard.on('keydown', function (event) {
+    //   // this.iso.projector.origin.x += 1;
+    //   console.log(this.iso);
+    //   console.log('wow');
+    // });
+    moveCamera.call(this);
+
     let xx = -CONSTANTS.SIZE;
     let yy = -CONSTANTS.SIZE;
 
