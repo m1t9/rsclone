@@ -3,24 +3,33 @@ export default class HUD extends Phaser.Scene {
     super({ key: 'UIScene', active: true });
 
     this.score = 0;
+    this.currentCardHUD = null;
   }
 
   preload() {
+    window.HUD = this;
     this.load.image('t1-hud', 'assets/card1test.png');
-    this.load.image('current-card-hud', 'assets/pack1/road_t1.png');
+    this.load.image('road_straight', 'assets/pack1/road_straight.png');
+    this.load.image('road_bend', 'assets/pack1/road_bend.png');
   }
 
   create() {
-    const mainScene = this.scene.get('MainScene');
+    const mainScene = this.scene.get('MainScene').board.currentCard;
     this.add.text(10, 10, 'Current card:', { font: '20px', fill: '#ffffff' });
-    // let currentCard = this.add.image(80, 80, 't1-hud');
-    // currentCard.destroy();
-    const currentCard = this.add.image(80, 80, 'current-card-hud');
-    currentCard.setScale(0.7);
-    mainScene.board.currentCardSprite = currentCard;
-    currentCard.setInteractive();
-    currentCard.on('pointerdown', function (pointer) {
-      console.log('current_card');
-    });
+    // this.currentCardHUD.setInteractive();
+    // this.currentCardHUD.on('pointerdown', function (pointer) {
+    //   console.log('current_card');
+    // });
+  }
+
+  initHudCard(name) {
+    setTimeout(() => {
+      this.currentCardHUD = this.add.image(80, 80, name);
+    }, 100);
+  }
+
+  updateCard(name) {
+    this.currentCardHUD.destroy();
+    this.currentCardHUD = this.add.image(80, 80, name);
   }
 }

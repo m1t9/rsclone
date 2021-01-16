@@ -5,10 +5,11 @@ import Card from '../model/Card.js';
 
 export default function addCell(board, xx, yy, type) {
   const cell = this.add.isoSprite(xx, yy, 0, type, this.isoGroup);
+  let checker = false;
   // cell.scaleX = 0.5;
   // cell.scaleY = 1;
   // cell.angle = 45;
-  // cell.setScale(0.5);
+  // cell.setScale(2);
   // cell.setAngle(45);
   // cell.setScale(0.25, 0.5);
   // cell.setX(2);
@@ -19,17 +20,12 @@ export default function addCell(board, xx, yy, type) {
 
   if (cell.texture.key === 'empty') {
     cell.on('pointerover', function () {
-      // this.setTint(0x86bfda);
       cell.addMode = !cell.addMode;
       cell.setTexture(board.currentCardTexture);
-      // cell.setScale(1, 0.5);
-      // over(cell, board, pointer);
       this.isoZ += 7;
     });
 
     cell.on('pointerout', function () {
-      // this.clearTint();
-      // cell.setScale(1);
       cell.setTexture('empty');
       cell.addMode = !cell.addMode;
       this.isoZ -= 7;
@@ -37,11 +33,14 @@ export default function addCell(board, xx, yy, type) {
 
     cell.on('pointerdown', (pointer) => {
       if (pointer.leftButtonDown()) {
-        if (board.check(xx, yy)) {
+        if (board.checkOne(xx, yy)) {
           cell.removeAllListeners();
           cell.isoPosition.z = 0;
           addNeib.call(this, board, xx, yy);
           board.addCardToBoard(cell.number);
+          while (checker === false) {
+            checker = board.nextCard();
+          }
         } else {
           cell.setTint(0xff0000);
           setTimeout(() => {
@@ -102,6 +101,6 @@ function turnCard(board, cell) {
   }
 
   board.currentCard.turnCard();
-  board.currentCardTexture = `road_t1_${board.currentCardDir}`;
+  board.currentCardTexture = `${board.currentCard.name}_${board.currentCardDir}`;
   cell.setTexture(board.currentCardTexture);
 }

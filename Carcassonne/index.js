@@ -5,6 +5,7 @@ import Board from './model/Board.js';
 import Card from './model/Card.js';
 import addCell from './controller/cellController.js';
 import HUD from './model/Hud.js';
+import loadImages from './data/loadImages.js';
 
 class MainScene extends Phaser.Scene {
   constructor() {
@@ -15,18 +16,10 @@ class MainScene extends Phaser.Scene {
 
     super(sceneConfig);
     this.board = new Board();
-    // console.log(this.board.cellsCount);
-    // this.cells = [];
   }
 
   preload() {
-    this.load.image('tile', 'assets/test2.png');
-    this.load.image('empty', 'assets/test2empty.png');
-    this.load.image('road_t1_1', 'assets/pack1/road_t1_1.png');
-    this.load.image('road_t1_2', 'assets/pack1/road_t1_2.png');
-    this.load.image('road_t1_3', 'assets/pack1/road_t1_3.png');
-    this.load.image('road_t1_4', 'assets/pack1/road_t1_4.png');
-    this.load.image('t1', 'assets/card1test.png');
+    loadImages.call(this);
     this.load.scenePlugin({
       key: 'IsoPlugin',
       url: IsoPlugin,
@@ -38,7 +31,6 @@ class MainScene extends Phaser.Scene {
     this.isoGroup = this.add.group();
     this.iso.projector.origin.setTo(0.5, 0.3);
     this.spawnTiles();
-    // this.add.text(10, 10, 'Current card:', { font: '20px', fill: '#ffffff' });
 
     window.MainScene = this;
   }
