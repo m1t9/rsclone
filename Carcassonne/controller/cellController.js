@@ -18,10 +18,10 @@ export default function addCell(board, xx, yy, type) {
   cell.addMode = false;
 
   if (cell.texture.key === 'empty') {
-    cell.on('pointerover', function(pointer) {
+    cell.on('pointerover', function () {
       // this.setTint(0x86bfda);
       cell.addMode = !cell.addMode;
-      cell.setTexture(board.currentCard);
+      cell.setTexture(board.currentCardTexture);
       // cell.setScale(1, 0.5);
       // over(cell, board, pointer);
       this.isoZ += 7;
@@ -37,13 +37,19 @@ export default function addCell(board, xx, yy, type) {
 
     cell.on('pointerdown', (pointer) => {
       if (pointer.leftButtonDown()) {
-        // cell.setTexture('tile');
-        cell.setTexture(board.currentCard);
-        cell.removeAllListeners();
-        cell.isoPosition.z = 0;
-        addNeib.call(this, board, xx, yy);
+        if (board.check(xx, yy)) {
+          cell.removeAllListeners();
+          cell.isoPosition.z = 0;
+          addNeib.call(this, board, xx, yy);
+          board.addCardToBoard(cell.number);
+        } else {
+          cell.setTint(0xff0000);
+          setTimeout(() => {
+            cell.clearTint();
+          }, 200);
+        }
       } else if (pointer.rightButtonDown()) {
-        over(board, cell);
+        turnCard(board, cell);
       }
     });
   }
@@ -52,7 +58,7 @@ export default function addCell(board, xx, yy, type) {
 }
 
 function addEmpty(board, x, y) {
-  const card = new Card(this.cellsCount, x, y);
+  const card = new Card(this.board.cellsCount, x, y);
   board.addItem(card);
   board.cellsCountIncrease();
   addCell.call(this, board, x, y, 'empty', board.cellsCount);
@@ -88,11 +94,14 @@ function addNeib(board, x, y) {
   }
 }
 
-function over(board, cell) {
-  board.currentCardSide += 1;
-  if (board.currentCardSide === 5) {
-    board.currentCardSide = 1;
+function turnCard(board, cell) {
+  board.currentCardDir += 1;
+
+  if (board.currentCardDir === 5) {
+    board.currentCardDir = 1;
   }
-  board.currentCard = `cardTest_${board.currentCardSide}`;
-  cell.setTexture(board.currentCard);
+
+  board.currentCard.turnCard();
+  board.currentCardTexture = `road_t1_${board.currentCardDir}`;
+  cell.setTexture(board.currentCardTexture);
 }

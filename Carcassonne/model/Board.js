@@ -1,6 +1,7 @@
 /* eslint-disable import/extensions */
 import addCell from '../controller/cellController.js';
 import Card from './Card.js';
+import PlayerCard from './PlayerCard.js';
 import CONSTANTS from '../utils/CONSTANTS.js';
 import moveCamera from '../utils/camera.js';
 
@@ -8,9 +9,9 @@ export default class Board {
   constructor() {
     this.board = [];
     this.cellsCount = 0;
-    this.currentCard = 'cardTest_1';
-    this.currentCardSide = 1;
-    // this.cardText = '';
+    this.currentCardTexture = 'road_t1_1';
+    this.currentCardDir = 1;
+    this.currentCard = null;
     this.currentCardSprite = null;
   }
 
@@ -23,72 +24,91 @@ export default class Board {
   }
 
   initialization() {
-    // this.cardText = this.add.text(10, 10, 'Current card:', { font: '20px', fill: '#ffffff' });
-    this.currentCardImage = this.add.image(80, 80, 't1');
-    this.currentCardImage.destroy();
-    this.currentCardImage = this.add.image(80, 80, 'tile');
-    console.log(this.currentCardImage);
-    this.currentCardImage.setInteractive();
-    this.currentCardImage.on('pointerdown', function(pointer) {
-      console.log('wow');
-    });
-
-    // console.log(this.iso.projector.origin);
-    // const iso = this.iso.projector.origin;
-    // console.log(iso);
-
-    // this.input.keyboard.on('keydown', function (event) {
-    //   // this.iso.projector.origin.x += 1;
-    //   console.log(this.iso);
-    //   console.log('wow');
-    // });
     moveCamera.call(this);
 
-    let xx = -CONSTANTS.SIZE;
-    let yy = -CONSTANTS.SIZE;
+    // let xx = CONSTANTS.SIZE;
+    // let yy = CONSTANTS.SIZE;
 
-    for (let x = 0; x < 3; x += 1) {
-      yy = 0;
-      xx += CONSTANTS.SIZE;
-      for (let y = 0; y < 3; y += 1) {
-        yy += CONSTANTS.SIZE;
-        const card = new Card(this.cellsCount, xx, yy);
+    // for (let x = 0; x < 3; x += 1) {
+    //   yy = 0;
+    //   xx += CONSTANTS.SIZE;
+    //   for (let y = 0; y < 3; y += 1) {
+    //     yy += CONSTANTS.SIZE;
+    //     const card = new Card(this.cellsCount, xx, yy);
 
-        if ((x !== 0 || y !== 0)
-          && (x !== 0 || y !== 2)
-          && (x !== 2 || y !== 0)
-          && (x !== 2 || y !== 2)) {
-          if (x === 1 && y === 1) {
-            addCell.call(this, this.board, xx, yy, 'tile', this.cellsCount);
-            card.type = 'tile';
-            this.board.addItem(card);
-          } else {
-            addCell.call(this, this.board, xx, yy, 'empty', this.cellsCount);
-            card.type = 'empty';
-            this.board.addItem(card);
-          }
-          this.cellsCount += 1;
-        }
-      }
-    }
+    //     if ((x !== 0 || y !== 0)
+    //       && (x !== 0 || y !== 2)
+    //       && (x !== 2 || y !== 0)
+    //       && (x !== 2 || y !== 2)) {
+    //       if (x === 1 && y === 1) {
+    //         addCell.call(this, this.board, xx, yy, 'tile', this.cellsCount);
+    //         card.name = 'tile';
+    //         this.board.addItem(card);
+    //       } else {
+    //         addCell.call(this, this.board, xx, yy, 'empty', this.cellsCount);
+    //         card.name = 'empty';
+    //         this.board.addItem(card);
+    //       }
+    //       this.cellsCount += 1;
+    //     }
+    //   }
+    // }
+    const card = new Card(this.board.cellsCount, CONSTANTS.SIZE, CONSTANTS.SIZE);
+    this.board.cellsCount += 1;
+    addCell.call(this, this.board, CONSTANTS.SIZE, CONSTANTS.SIZE, 'empty', this.cellsCount);
+    card.name = 'empty';
+    this.board.addItem(card);
 
-    // const testDrag = addCell.call(this, this.board, 0, 0, 'card1', this.cellsCount);
-    // testDrag.setAngle(0);
-    // testDrag.setScale(1, 0.5);
-    // // const testDrag = this.addItem.sprite(100, 100, 'tile');
-    // testDrag.setInteractive();
-    // this.input.setDraggable(testDrag);
-
-    // this.input.on('drag', (pointer, gameObject, dragX, dragY) => {
-    //   console.log(gameObject.isoPosition);
-    //   console.log(`${dragX} ${dragY} ${gameObject.x} ${gameObject.y}`);
-    //   gameObject.isoPosition.x = dragX - 400;
-    //   gameObject.isoPosition.y = dragY - 200;
-    //   // gameObject.z = 0;
-    // });
+    this.board.currentCard = new PlayerCard('grass', 'road', 'road', 'grass');
+    console.log(this.board.board);
   }
 
   cellsCountIncrease() {
     this.cellsCount += 1;
+  }
+
+  addCardToBoard(number) {
+    this.board[number - 1].name = this.currentCardTexture;
+    this.board[number - 1].side1 = this.currentCard.side1;
+    this.board[number - 1].side2 = this.currentCard.side2;
+    this.board[number - 1].side3 = this.currentCard.side3;
+    this.board[number - 1].side4 = this.currentCard.side4;
+  }
+
+  check(x, y) {
+    let result = true;
+    let checkedCell = this.board.filter((cell) => (cell.x === x + CONSTANTS.SIZE && cell.y === y));
+    if (checkedCell.length !== 0) {
+      if (checkedCell[0].name !== 'empty') {
+        // console.log('4');
+        if (checkedCell[0].side1 !== this.currentCard.side4) return false;
+      }
+    }
+
+    checkedCell = this.board.filter((cell) => (cell.x === x - CONSTANTS.SIZE && cell.y === y));
+    if (checkedCell.length !== 0) {
+      if (checkedCell[0].name !== 'empty') {
+        // console.log('1');
+        if (checkedCell[0].side4 !== this.currentCard.side1) return false;
+      }
+    }
+
+    checkedCell = this.board.filter((cell) => (cell.x === x && cell.y === y + CONSTANTS.SIZE));
+    if (checkedCell.length !== 0) {
+      if (checkedCell[0].name !== 'empty') {
+        // console.log('3');
+        if (checkedCell[0].side2 !== this.currentCard.side3) return false;
+      }
+    }
+
+    checkedCell = this.board.filter((cell) => (cell.x === x && cell.y === y - CONSTANTS.SIZE));
+    if (checkedCell.length !== 0) {
+      if (checkedCell[0].name !== 'empty') {
+        // console.log('2');
+        if (checkedCell[0].side3 !== this.currentCard.side2) return false;
+      }
+    }
+
+    return result;
   }
 }
