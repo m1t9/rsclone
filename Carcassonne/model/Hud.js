@@ -8,9 +8,9 @@ export default class HUD extends Phaser.Scene {
 
   preload() {
     window.HUD = this;
-    this.load.image('t1-hud', 'assets/card1test.png');
-    this.load.image('road_straight', 'assets/pack1/road_straight.png');
-    this.load.image('road_bend', 'assets/pack1/road_bend.png');
+    // this.load.image('t1-hud', 'assets/card1test.png');
+    // this.load.image('road_straight', 'assets/pack1/road_straight.png');
+    // this.load.image('road_bend', 'assets/pack1/road_bend.png');
   }
 
   create() {
@@ -24,12 +24,14 @@ export default class HUD extends Phaser.Scene {
 
   initHudCard(name) {
     setTimeout(() => {
-      this.currentCardHUD = this.add.image(80, 80, name);
+      this.currentCardHUD = this.add.image(100, 120, name);
+      this.currentCardHUD.setScale(0.3);
     }, 100);
   }
 
   updateCard(name) {
     this.currentCardHUD.destroy();
-    this.currentCardHUD = this.add.image(80, 80, name);
+    this.currentCardHUD = this.add.image(100, 120, name);
+    this.currentCardHUD.setScale(0.3);
   }
 }

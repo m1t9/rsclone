@@ -43,8 +43,8 @@ class MainScene extends Phaser.Scene {
 
 const config = {
   type: Phaser.AUTO,
-  width: 800,
-  height: 600,
+  width: 1300,
+  height: 900,
   pixelArt: true,
   scene: [MainScene, HUD],
 };

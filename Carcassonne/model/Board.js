@@ -6,6 +6,7 @@ import CONSTANTS from '../utils/CONSTANTS.js';
 import moveCamera from '../utils/camera.js';
 // import CARDS from '../data/gameCards.js';
 import nextCard from '../controller/nextCard.js';
+import CARDS from '../data/gameCards.js';
 
 export default class Board {
   constructor() {
@@ -15,6 +16,7 @@ export default class Board {
     this.currentCardDir = 1;
     this.currentCard = null;
     this.currentCardName = null; // ?
+    this.step = 1;
   }
 
   initBoard() {
@@ -33,9 +35,9 @@ export default class Board {
     addCell.call(this, this.board, CONSTANTS.SIZE, CONSTANTS.SIZE, 'empty', this.cellsCount);
     card.name = 'empty';
     this.board.addItem(card);
-    this.board.currentCard = new PlayerCard('grass', 'road', 'road', 'grass', 'road_straight');
+    // this.board.currentCard = new PlayerCard('grass', 'road', 'road', 'grass', 'road_straight');
 
-    nextCard.call(this.board);
+    nextCard.call(this.board, 0);
     window.HUD.initHudCard(this.board.currentCard.name);
   }
 
@@ -100,7 +102,8 @@ export default class Board {
   }
 
   nextCard() {
-    nextCard.call(this);
+    nextCard.call(this, this.step);
+    this.step += 1;
     window.HUD.updateCard(this.currentCard.name);
   }
 }
