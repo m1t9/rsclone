@@ -33,6 +33,53 @@ class MainScene extends Phaser.Scene {
     this.spawnTiles();
 
     window.MainScene = this;
+
+    // camera settings
+    this.cameras.main.setViewport(0.5, 0.3, this.game.config.width, this.game.config.height);
+    // this.cameras.main.setBounds(0.5, 0.3, 10000, 10000);
+    this.cameras.main.setZoom(1);
+    this.cursors = this.input.keyboard.createCursorKeys();
+    this.keys = this.input.keyboard.addKeys('W, A , S , D');
+  }
+
+  update () {
+    const cam = this.cameras.main;
+
+    if (this.keys.A.isDown) {
+      cam.scrollX += 5;
+
+      if (cam.scrollX >= (this.game.config.width / 2)) {
+        cam.setScroll(0, cam.scrollY);
+      }
+    } else if (this.keys.D.isDown) {
+      cam.scrollX -= 5;
+      if (cam.scrollX <= (- this.game.config.width / 2)) {
+        cam.setScroll(this.game.config.width - cam.width, cam.scrollY);
+      }
+    } 
+    
+    if (this.keys.W.isDown) {
+      cam.scrollY += 5;
+
+      if (cam.scrollY >= (this.game.config.height / 2)) {
+        cam.setScroll(cam.scrollX, 0);
+      }
+
+    } else if (this.keys.S.isDown) {
+      cam.scrollY -= 5;
+
+      if (cam.scrollY <= (- this.game.config.height / 2)) {
+        cam.setScroll(cam.scrollX, this.game.config.height - cam.height);
+      }
+    }
+
+    if (this.cursors.left.isDown) {
+      cam.zoom -= 0.05;
+      // this.cameras.main.setZoom(1);
+    } else if (this.cursors.right.isDown) {
+      // this.cameras.main.setZoom(3);
+      cam.zoom += 0.05;
+    }
   }
 
   spawnTiles() {
@@ -41,12 +88,24 @@ class MainScene extends Phaser.Scene {
   }
 }
 
+const fullScreenHeight = document.documentElement.getBoundingClientRect().height;
+const fullScreenWidth = document.documentElement.getBoundingClientRect().width;
+
 const config = {
   type: Phaser.AUTO,
-  width: 1300,
-  height: 900,
+  parent: 'phaser_container',
+  width: fullScreenWidth,
+  height: fullScreenHeight,
   pixelArt: true,
   scene: [MainScene, HUD],
 };
+
+// const config = {
+//   type: Phaser.AUTO,
+//   width: 1300,
+//   height: 900,
+//   pixelArt: true,
+//   scene: [MainScene, HUD],
+// };
 
 new Phaser.Game(config);

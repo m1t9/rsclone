@@ -3,7 +3,7 @@ import addCell from '../controller/cellController.js';
 import Card from './Card.js';
 // import PlayerCard from './PlayerCard.js';
 import CONSTANTS from '../utils/CONSTANTS.js';
-import moveCamera from '../utils/camera.js';
+// import moveCamera from '../utils/camera.js';
 // import CARDS from '../data/gameCards.js';
 import nextCard from '../controller/nextCard.js';
 // import CARDS from '../data/gameCards.js';
@@ -32,7 +32,7 @@ export default class Board {
   initialization() {
     const card = new Card(this.board.cellsCount, CONSTANTS.SIZE, CONSTANTS.SIZE);
 
-    moveCamera.call(this);
+    // moveCamera.call(this);
     this.board.cellsCount += 1;
     addCell.call(this, this.board, CONSTANTS.SIZE, CONSTANTS.SIZE, 'empty', this.cellsCount);
     card.name = 'empty';
