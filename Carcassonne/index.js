@@ -39,7 +39,7 @@ class MainScene extends Phaser.Scene {
     // this.cameras.main.setBounds(0.5, 0.3, 10000, 10000);
     this.cameras.main.setZoom(1);
     this.cursors = this.input.keyboard.createCursorKeys();
-    this.keys = this.input.keyboard.addKeys('W, A , S , D, Q');
+    this.keys = this.input.keyboard.addKeys('W, A , S , D');
   }
 
   update () {
@@ -55,7 +55,6 @@ class MainScene extends Phaser.Scene {
       cam.scrollX -= 5;
       if (cam.scrollX <= (- this.game.config.width / 2)) {
         cam.setScroll(this.game.config.width - cam.width, cam.scrollY);
-        cam.setScroll(0, cam.scrollY);
       }
     } 
     
