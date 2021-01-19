@@ -17,6 +17,8 @@ export default class Board {
     this.currentCard = null;
     this.currentCardName = null; // ?
     this.step = 1;
+    this.isWin = false;
+    this.emptyCells = [];
   }
 
   initBoard() {
@@ -102,8 +104,16 @@ export default class Board {
   }
 
   nextCard() {
+    window.HUD.updateCardNumber(this.step);
     nextCard.call(this, this.step);
     this.step += 1;
+    if (this.step === CONSTANTS.CARDS_COUNT) {
+      this.isWin = true;
+      this.emptyCells.forEach((cell) => {
+        cell.removeAllListeners();
+      });
+    }
+    console.log(this.emptyCells);
     window.HUD.updateCard(this.currentCard.name);
   }
 }

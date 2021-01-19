@@ -17,5 +17,5 @@ export default function nextCard(step) {
   );
 
   this.currentCardTexture = `${this.currentCard.name}_${this.currentCardDir}`;
-  console.log(step);
+  // console.log(step);
 }

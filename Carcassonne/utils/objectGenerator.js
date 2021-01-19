@@ -175,6 +175,11 @@ const sides = [
   ['road', 'road', 'road', 'road'],
 ];
 
+// const points = [
+//   [1, 2, 1, 2],
+//   [1, 2, 1, 2],
+// ];
+
 function objectGenerator() {
   const objArr = [];
   let count = 0;
@@ -188,7 +193,8 @@ function objectGenerator() {
     item.side2 = sides[count][1];
     item.side3 = sides[count][2];
     item.side4 = sides[count][3];
-    item.points = 1;
+    item.isChip = false;
+    item.point1 = 1;
     // item.amount = amount[count];
 
     for (let i = 0; i < amount[count]; i += 1) {

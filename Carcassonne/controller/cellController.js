@@ -33,7 +33,7 @@ export default function addCell(board, xx, yy, type) {
 
     cell.on('pointerdown', (pointer) => {
       if (pointer.leftButtonDown()) {
-        if (board.checkOne(xx, yy)) {
+        if (board.checkOne(xx, yy) && board.isWin === false) {
           cell.removeAllListeners();
           cell.isoPosition.z = 0;
           addNeib.call(this, board, xx, yy);
@@ -51,6 +51,8 @@ export default function addCell(board, xx, yy, type) {
         turnCard(board, cell);
       }
     });
+
+    if (type === 'empty') board.emptyCells.push(cell);
   }
 
   return cell;
