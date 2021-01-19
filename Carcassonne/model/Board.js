@@ -1,12 +1,12 @@
 /* eslint-disable import/extensions */
 import addCell from '../controller/cellController.js';
 import Card from './Card.js';
-import PlayerCard from './PlayerCard.js';
+// import PlayerCard from './PlayerCard.js';
 import CONSTANTS from '../utils/CONSTANTS.js';
 import moveCamera from '../utils/camera.js';
 // import CARDS from '../data/gameCards.js';
 import nextCard from '../controller/nextCard.js';
-import CARDS from '../data/gameCards.js';
+// import CARDS from '../data/gameCards.js';
 
 export default class Board {
   constructor() {
@@ -16,7 +16,7 @@ export default class Board {
     this.currentCardDir = 1;
     this.currentCard = null;
     this.currentCardName = null; // ?
-    this.step = 1;
+    this.step = 2;
     this.isWin = false;
     this.emptyCells = [];
   }
@@ -105,15 +105,17 @@ export default class Board {
 
   nextCard() {
     window.HUD.updateCardNumber(this.step);
-    nextCard.call(this, this.step);
-    this.step += 1;
-    if (this.step === CONSTANTS.CARDS_COUNT) {
+
+    if (this.step === CONSTANTS.CARDS_COUNT + 1) {
       this.isWin = true;
       this.emptyCells.forEach((cell) => {
         cell.removeAllListeners();
       });
+      return;
     }
-    console.log(this.emptyCells);
+
+    nextCard.call(this, this.step - 1);
+    this.step += 1;
     window.HUD.updateCard(this.currentCard.name);
   }
 }

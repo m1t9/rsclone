@@ -37,8 +37,13 @@ export default class HUD extends Phaser.Scene {
   }
 
   updateCardNumber(number) {
-    this.underCardText.setText(`Current card (${number + 1} / ${CONSTANTS.CARDS_COUNT}):`);
-    console.log(number);
+    if (number !== CONSTANTS.CARDS_COUNT + 1) {
+      this.underCardText.setText(`Current card (${number} / ${CONSTANTS.CARDS_COUNT}):`);
+    } else {
+      this.underCardText.setText('Finish');
+      this.currentCardHUD.destroy();
+    }
+    // console.log(number);
   }
 
   updateCard(name) {
