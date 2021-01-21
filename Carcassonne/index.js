@@ -6,6 +6,7 @@ import Card from './model/Card.js';
 import addCell from './controller/cellController.js';
 import HUD from './model/Hud.js';
 import loadImages from './data/loadImages.js';
+import CONSTANTS from './utils/CONSTANTS.js';
 
 class MainScene extends Phaser.Scene {
   constructor() {
@@ -16,6 +17,7 @@ class MainScene extends Phaser.Scene {
 
     super(sceneConfig);
     this.board = new Board();
+    // this.zz = 1;
   }
 
   preload() {
@@ -40,44 +42,73 @@ class MainScene extends Phaser.Scene {
     this.cameras.main.setZoom(1);
     this.cursors = this.input.keyboard.createCursorKeys();
     this.keys = this.input.keyboard.addKeys('W, A , S , D');
+
+    this.input.on('wheel', function(pointer) {
+      if (pointer.deltaY > 0 && this.cameras.main.zoom > 0.4) {
+        this.cameras.main.zoom -= 0.25;
+      } else if (pointer.deltaY < 0) {
+        this.cameras.main.zoom += 0.25;
+      }
+      // console.log(this.cameras.main.zoom);
+    });
   }
 
-  update () {
+  update() {
+    const cards = this.board.board;
     const cam = this.cameras.main;
+    const xPositiveCards = [];
+    // const xNegativeCards = [];
+    const yPositiveCards = [];
+    // const yNegativeCards = [];
+    
+    cards.map((item) => {
+      if (item.x > 0) {
+        xPositiveCards.push(item.x);
+      } 
+      // else if (item.x < 0) {
+      //   xNegativeCards.push(item.x);
+      // }
+       if (item.y > 0) {
+        yPositiveCards.push(item.y);
+      } 
+      // else if (item.y < 0) {
+      //   yNegativeCards.push(item.y);
+      // }
+    });
 
     if (this.keys.A.isDown) {
-      cam.scrollX += 5;
+      cam.scrollX -= CONSTANTS.SCROLL_SIZE;
 
-      if (cam.scrollX >= (this.game.config.width / 2)) {
+      if (cam.scrollX < (- Math.max(...xPositiveCards) - 100)) {
         cam.setScroll(0, cam.scrollY);
       }
-    } else if (this.keys.D.isDown) {
-      cam.scrollX -= 5;
-      if (cam.scrollX <= (- this.game.config.width / 2)) {
-        cam.setScroll(this.game.config.width - cam.width, cam.scrollY);
-      }
-    } 
-    
-    if (this.keys.W.isDown) {
-      cam.scrollY += 5;
 
-      if (cam.scrollY >= (this.game.config.height / 2)) {
+    } else if (this.keys.D.isDown) {
+      cam.scrollX += CONSTANTS.SCROLL_SIZE;
+
+      if (cam.scrollX >= (Math.max(...xPositiveCards) + 100)) {
+        cam.setScroll(0, cam.scrollY);
+      }
+    }
+
+    if (this.keys.W.isDown) {
+      cam.scrollY -= CONSTANTS.SCROLL_SIZE;
+
+      if (cam.scrollY < (- Math.max(...yPositiveCards) - 100)) {
         cam.setScroll(cam.scrollX, 0);
       }
 
     } else if (this.keys.S.isDown) {
-      cam.scrollY -= 5;
+      cam.scrollY += CONSTANTS.SCROLL_SIZE;
 
-      if (cam.scrollY <= (- this.game.config.height / 2)) {
-        cam.setScroll(cam.scrollX, this.game.config.height - cam.height);
+      if (cam.scrollY >= (Math.max(...yPositiveCards) + 100)) {
+        cam.setScroll(cam.scrollX, 0);
       }
     }
 
-    if (this.cursors.left.isDown) {
+    if (this.keys.MINUS.isDown && cam.zoom > 0.4) {
       cam.zoom -= 0.05;
-      // this.cameras.main.setZoom(1);
-    } else if (this.cursors.right.isDown) {
-      // this.cameras.main.setZoom(3);
+    } else if (this.keys.PLUS.isDown) {
       cam.zoom += 0.05;
     }
   }
