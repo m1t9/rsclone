@@ -9,6 +9,7 @@ export default class HUD extends Phaser.Scene {
     this.underCardText = '';
     this.currentCardHUD = null;
     // this.currentCardNumber = 0;
+    this.music = undefined;
   }
 
   preload() {
@@ -24,7 +25,7 @@ export default class HUD extends Phaser.Scene {
     );
     this.load.image('settings', './assets/btns/settings.png');
     this.load.image('btn_background', './assets/btns/grey_button06.png');
-
+    this.load.audio('kingdom_sound', './assets/audio/king_music.mp3');
   }
 
   create() {
@@ -37,13 +38,28 @@ export default class HUD extends Phaser.Scene {
     //   console.log('current_card');
     // });
 
+    this.music = this.sound.add('kingdom_sound', {
+      // mute: false,
+      volume: 0.7,
+      rate: 1,
+      // detune: 0,
+      // seek: 0,
+      loop: true,
+      delay: 1000
+    });
+
     let menu = undefined;
     const settingsBtn = this.add.image(this.game.config.width - 50, 30, 'settings').setInteractive();
     
     const items = [
       { name: 'New Game' },
       { name: 'Save Game'},
-      { name: 'Sound'},
+      { name: 'Sound',
+        children: [ 
+        { name: 'ON'},
+        { name: 'OFF'},
+      ]
+      },
       { name: 'About' }
     ];
 
@@ -84,11 +100,11 @@ export default class HUD extends Phaser.Scene {
 
 
 const createMenu = function (scene, x, y, items, onClick) {
-  const backgroundArray = [];
-  for (let i = 0; i < items.length; i += 1) {
-    let backgroundBtn = scene.add.image(x, y * i + 10, 'btn_background');
-    backgroundArray.push(backgroundBtn);
-  }
+  // const backgroundArray = [];
+  // for (let i = 0; i < items.length; i += 1) {
+  //   let backgroundBtn = scene.add.image(x, y * i + 10, 'btn_background');
+  //   backgroundArray.push(backgroundBtn);
+  // }
 
   let menu = scene.rexUI.add
     .menu({
@@ -97,11 +113,18 @@ const createMenu = function (scene, x, y, items, onClick) {
       width: 150,
       orientation: 'y',
       items: items,
+      space: { left: 20, right: 20, top: 10, bottom: 10, item: 20 },
+
       createButtonCallback: function (item, i) {
-        return createMenuBtn(scene, item, backgroundArray[i]);
+        if (item.name === 'ON' || item.name === 'OFF') {
+          let backgroundBtn = scene.add.image(x, y, 'btn_background');
+          return createMenuBtn(scene, item, backgroundBtn);
+        } else {
+          let backgroundBtn = scene.add.image(x, y, 'btn_background');
+          return createMenuBtn(scene, item, backgroundBtn);
+        }
       },
   
-      space: { item: 10 },
       easeIn: {
         duration: 500,
         orientation: 'y'
@@ -112,13 +135,23 @@ const createMenu = function (scene, x, y, items, onClick) {
       }
     })
 
-  menu.on('button.click', function (button, index, pointer, event) {
-    console.log(`Click button ${button.text}`);
-    // if(button.name === 'New Game') {
-    //   this.scene.restart('MainScene');
-    //   // this.board.initialization.call(this);
-    // }
-  }, scene)
+    menu.on('button.click', function (button, index, pointer, event) {
+      console.log(`Click button ${button.text}`);
+      if(button.name === 'New Game') {
+        this.scene.restart('MainScene');
+      }
+      // if (button.name === 'Sound') {
+      //   // menu.collapseSubMenu();
+      // }
+      if (button.name === 'ON') {
+        scene.music.play();
+        menu.collapseSubMenu();
+      }
+      if (button.name === 'OFF') {
+        scene.music.stop();
+        menu.collapseSubMenu();
+      }
+    }, scene);
 
   return menu;
 }
@@ -128,14 +161,17 @@ const createMenuBtn = function (scene, item, background) {
     width: 30,
     height: 30,
     name: item.name,
+    background: background,
     text: scene.add.text(0, 0, item.name, {
       fontSize: 18,
-      color: 'black'
+      color: 'green'
     }),
-    background: background,
     space: {
+      left: 30,
+      right: 30,
       top: 10,
-      bottom: 10
+      bottom: 10,
+      // item: 10
     },
     align: 'center',
   })
