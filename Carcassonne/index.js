@@ -7,6 +7,7 @@ import addCell from './controller/cellController.js';
 import HUD from './model/Hud.js';
 import loadImages from './data/loadImages.js';
 import CONSTANTS from './utils/CONSTANTS.js';
+import StartScreen from './model/StartScreen.js';
 
 class MainScene extends Phaser.Scene {
   constructor() {
@@ -128,7 +129,7 @@ const config = {
   width: fullScreenWidth,
   height: fullScreenHeight,
   pixelArt: true,
-  scene: [MainScene, HUD],
+  scene: [StartScreen, MainScene, HUD],
 };
 
 // const config = {
