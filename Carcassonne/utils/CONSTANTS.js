@@ -3,6 +3,8 @@ const CONSTANTS = {
   SIZE: 175,
   CARDS_COUNT: 126,
   SCROLL_SIZE: 6,
+  EMPTY_CELL: 'EMPTY_CELL',
 };
+
 
 export default CONSTANTS;

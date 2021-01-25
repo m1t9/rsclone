@@ -25,7 +25,13 @@ export default class HUD extends Phaser.Scene {
       'rexUI'
     );
     this.load.image('settings', './assets/btns/settings.png');
-    this.load.image('btn_background', './assets/btns/grey_button06.png');
+    this.load.image('start_btn', './assets/btns/start_btn.png');
+    this.load.image('save_btn', './assets/btns/save_btn.png');
+    this.load.image('load_btn', './assets/btns/load_btn.png');
+    this.load.image('about_btn', './assets/btns/about_btn.png');
+    this.load.image('options_btn', './assets/btns/options_btn.png');
+    this.load.image('sound_btn', './assets/btns/sound_btn.png');
+    // this.load.image('btn_background', './assets/btns/grey_button06.png');
     this.load.audio('kingdom_sound', './assets/audio/kingdom.mp3');
   }
 
@@ -119,11 +125,18 @@ const createMenu = function (scene, x, y, items, onClick) {
 
       createButtonCallback: function (item, i) {
         if (item.name === 'ON' || item.name === 'OFF') {
-          let backgroundBtn = scene.add.image(x, y, 'btn_background');
-          return createMenuBtn(scene, item, backgroundBtn);
+          let soundBtn = scene.add.image(x, y, 'sound_btn');
+          return createMenuBtn(scene, item, soundBtn);
         } else {
-          let backgroundBtn = scene.add.image(x, y, 'btn_background');
-          return createMenuBtn(scene, item, backgroundBtn);
+          const btnsBackgrounds = {
+            'New Game': 'start_btn',
+            'Save Game': 'save_btn',
+            'Load Game': 'load_btn',
+            'Sound' : 'sound_btn',
+            'About' : 'about_btn',
+          }
+
+          return createMenuBtn(scene, item, scene.add.image(x, y, btnsBackgrounds[item.name]));
         }
       },
   
