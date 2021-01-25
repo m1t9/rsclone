@@ -2,8 +2,16 @@
 // import Card from '../model/Card.js';
 import CONSTANTS from '../utils/CONSTANTS.js';
 import Card from '../model/Card.js';
+import addPointerSides from './pointer.js';
 
 export default function addCell(board, xx, yy, type) {
+  const shape = new Phaser.Geom.Polygon([
+    new Phaser.Geom.Point(0, 75),
+    new Phaser.Geom.Point(150, 150),
+    new Phaser.Geom.Point(300, 75),
+    new Phaser.Geom.Point(150, 0),
+  ]);
+
   const cell = this.add.isoSprite(xx, yy, 0, type, this.isoGroup);
   let checker = false;
   // cell.scaleX = 0.5;
@@ -13,7 +21,8 @@ export default function addCell(board, xx, yy, type) {
   // cell.setAngle(45);
   // cell.setScale(0.25, 0.5);
   // cell.setX(2);
-  cell.setInteractive();
+  // cell.setInteractive();
+  cell.setInteractive(shape, Phaser.Geom.Polygon.Contains);
   cell.number = board.cellsCount;
 
   cell.addMode = false;
@@ -41,6 +50,7 @@ export default function addCell(board, xx, yy, type) {
           while (checker === false) {
             checker = board.nextCard();
           }
+          addPointerSides.call(this, cell, xx, yy);
         } else {
           cell.setTint(0xff0000);
           setTimeout(() => {

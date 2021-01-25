@@ -52,28 +52,29 @@ export default class HUD extends Phaser.Scene {
 
     let menu = undefined;
     const settingsBtn = this.add.image(this.game.config.width - 50, 30, 'settings').setInteractive();
-    
+
     const items = [
       { name: 'New Game' },
-      { name: 'Save Game'},
-      { name: 'Sound',
-        children: [ 
-        { name: 'ON'},
-        { name: 'OFF'},
-      ]
+      { name: 'Save Game' },
+      {
+        name: 'Sound',
+        children: [
+          { name: 'ON' },
+          { name: 'OFF' },
+        ]
       },
       { name: 'About' }
     ];
 
     settingsBtn.on('pointerdown', function (pointer) {
-        if (menu === undefined) {
-          menu = createMenu(this, this.game.config.width - 200, 50, items)
-        } else if (!menu.isInTouching(pointer)) {
-          // console.log('collapse!');
-          menu.collapse();
-          menu = undefined;
-        }
-      }, this)
+      if (menu === undefined) {
+        menu = createMenu(this, this.game.config.width - 200, 50, items)
+      } else if (!menu.isInTouching(pointer)) {
+        // console.log('collapse!');
+        menu.collapse();
+        menu = undefined;
+      }
+    }, this)
   }
 
   initHudCard(name) {
@@ -100,7 +101,6 @@ export default class HUD extends Phaser.Scene {
   }
 }
 
-
 const createMenu = function (scene, x, y, items, onClick) {
   // const backgroundArray = [];
   // for (let i = 0; i < items.length; i += 1) {
@@ -126,7 +126,7 @@ const createMenu = function (scene, x, y, items, onClick) {
           return createMenuBtn(scene, item, backgroundBtn);
         }
       },
-  
+
       easeIn: {
         duration: 500,
         orientation: 'y'
@@ -137,23 +137,23 @@ const createMenu = function (scene, x, y, items, onClick) {
       }
     })
 
-    menu.on('button.click', function (button, index, pointer, event) {
-      console.log(`Click button ${button.text}`);
-      if(button.name === 'New Game') {
-        this.scene.restart('MainScene');
-      }
-      // if (button.name === 'Sound') {
-      //   // menu.collapseSubMenu();
-      // }
-      if (button.name === 'ON') {
-        scene.music.resume();
-        menu.collapseSubMenu();
-      }
-      if (button.name === 'OFF') {
-        scene.music.pause();
-        menu.collapseSubMenu();
-      }
-    }, scene);
+  menu.on('button.click', function (button, index, pointer, event) {
+    console.log(`Click button ${button.text}`);
+    if (button.name === 'New Game') {
+      this.scene.restart('MainScene');
+    }
+    // if (button.name === 'Sound') {
+    //   // menu.collapseSubMenu();
+    // }
+    if (button.name === 'ON') {
+      scene.music.resume();
+      menu.collapseSubMenu();
+    }
+    if (button.name === 'OFF') {
+      scene.music.pause();
+      menu.collapseSubMenu();
+    }
+  }, scene);
 
   return menu;
 }
