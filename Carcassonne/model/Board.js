@@ -40,7 +40,7 @@ export default class Board {
     // this.board.currentCard = new PlayerCard('grass', 'road', 'road', 'grass', 'road_straight');
 
     nextCard.call(this.board, 0);
-    window.HUD.initHudCard(this.board.currentCard.name);
+    // window.HUD.initHudCard(this.board.currentCard.name);
   }
 
   cellsCountIncrease() {
@@ -104,7 +104,7 @@ export default class Board {
   }
 
   nextCard() {
-    window.HUD.updateCardNumber(this.step);
+    // window.HUD.updateCardNumber(this.step);
 
     if (this.step === CONSTANTS.CARDS_COUNT + 1) {
       this.isWin = true;
@@ -116,6 +116,6 @@ export default class Board {
 
     nextCard.call(this, this.step - 1);
     this.step += 1;
-    window.HUD.updateCard(this.currentCard.name);
+    // window.HUD.updateCard(this.currentCard.name);
   }
 }

@@ -44,7 +44,7 @@ class MainScene extends Phaser.Scene {
     this.cursors = this.input.keyboard.createCursorKeys();
     this.keys = this.input.keyboard.addKeys('W, A , S , D, PLUS, MINUS');
 
-    this.input.on('wheel', function(pointer) {
+    this.input.on('wheel', function (pointer) {
       if (pointer.deltaY > 0 && this.cameras.main.zoom > 0.4) {
         this.cameras.main.zoom -= 0.25;
       } else if (pointer.deltaY < 0) {
@@ -61,17 +61,17 @@ class MainScene extends Phaser.Scene {
     // const xNegativeCards = [];
     const yPositiveCards = [];
     // const yNegativeCards = [];
-    
+
     cards.map((item) => {
       if (item.x > 0) {
         xPositiveCards.push(item.x);
-      } 
+      }
       // else if (item.x < 0) {
       //   xNegativeCards.push(item.x);
       // }
-       if (item.y > 0) {
+      if (item.y > 0) {
         yPositiveCards.push(item.y);
-      } 
+      }
       // else if (item.y < 0) {
       //   yNegativeCards.push(item.y);
       // }
@@ -83,7 +83,6 @@ class MainScene extends Phaser.Scene {
       if (cam.scrollX < (- Math.max(...xPositiveCards) - 100)) {
         cam.setScroll(0, cam.scrollY);
       }
-
     } else if (this.keys.D.isDown) {
       cam.scrollX += CONSTANTS.SCROLL_SIZE;
 
@@ -98,7 +97,6 @@ class MainScene extends Phaser.Scene {
       if (cam.scrollY < (- Math.max(...yPositiveCards) - 100)) {
         cam.setScroll(cam.scrollX, 0);
       }
-
     } else if (this.keys.S.isDown) {
       cam.scrollY += CONSTANTS.SCROLL_SIZE;
 
@@ -129,7 +127,18 @@ const config = {
   width: fullScreenWidth,
   height: fullScreenHeight,
   pixelArt: true,
-  scene: [StartScreen, MainScene, HUD],
+  // scene: [StartScreen, MainScene, HUD],
+  scene: [MainScene, HUD],
+  // physics: {
+  //   default: 'matter',
+  //   matter: {
+  //     debug: true,
+  //   },
+  // },
+  arcade: {
+    debug: true,
+    // gravity: { y: 200 }
+  },
 };
 
 // const config = {
@@ -140,4 +149,4 @@ const config = {
 //   scene: [MainScene, HUD],
 // };
 
-new Phaser.Game(config);
+const game = new Phaser.Game(config);
