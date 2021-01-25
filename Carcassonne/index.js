@@ -42,7 +42,7 @@ class MainScene extends Phaser.Scene {
     // this.cameras.main.setBounds(0.5, 0.3, 10000, 10000);
     this.cameras.main.setZoom(1);
     this.cursors = this.input.keyboard.createCursorKeys();
-    this.keys = this.input.keyboard.addKeys('W, A , S , D');
+    this.keys = this.input.keyboard.addKeys('W, A , S , D, PLUS, MINUS');
 
     this.input.on('wheel', function(pointer) {
       if (pointer.deltaY > 0 && this.cameras.main.zoom > 0.4) {

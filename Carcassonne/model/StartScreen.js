@@ -4,9 +4,12 @@ export default class StartScreen extends Phaser.Scene {
     }
   
     preload () {
-      this.load.image('castle1', './assets/test_startScreen/castle_01.png')
-      this.load.image('castle2', './assets/test_startScreen/castle_02.png');
-      this.load.image('castle3', './assets/test_startScreen/castle_03.png');
+      this.load.image('castle1', './assets/startScreen/castle_01.png')
+      this.load.image('castle2', './assets/startScreen/castle_02.png');
+      this.load.image('castle3', './assets/startScreen/castle_03.png');
+      this.load.image('castle4', './assets/startScreen/castle_04.png');
+      this.load.image('castle5', './assets/startScreen/castle_05.png');
+      this.load.image('castle6', './assets/startScreen/castle_06.png');
   
       this.load.image('grey_btn', './assets/btns/grey_button06.png');
       this.load.scenePlugin(
@@ -26,11 +29,15 @@ export default class StartScreen extends Phaser.Scene {
         frames: [
           { key: 'castle1', duration: 100 },
           { key: 'castle2', duration: 100 }, 
-          { key: 'castle3', duration: 100 }
+          { key: 'castle3', duration: 100 },
+          { key: 'castle4', duration: 100 },
+          { key: 'castle5', duration: 100 },
+          { key: 'castle6', duration: 100 },
         ],
-        framrate: 10,
+        frameRate: 8,
         repeat: -1,
       });
+  
   
       this.add.sprite(this.game.config.width / 2, 450, 'castle1').setScale(1.1).play('castleAnim');
   
