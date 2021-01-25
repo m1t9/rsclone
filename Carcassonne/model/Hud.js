@@ -118,7 +118,8 @@ const createMenu = function (scene, x, y, items, onClick) {
     .menu({
       x: x,
       y: y,
-      width: 150,
+      width: 220,
+      height: 55,
       orientation: 'y',
       items: items,
       space: { left: 20, right: 20, top: 10, bottom: 10, item: 20 },
@@ -174,16 +175,16 @@ const createMenu = function (scene, x, y, items, onClick) {
 const createMenuBtn = function (scene, item, background) {
   return scene.rexUI.add.label({
     width: 30,
-    height: 30,
+    height: 55,
     name: item.name,
     background: background,
     text: scene.add.text(0, 0, item.name, {
       fontSize: 18,
-      color: 'green'
+      color: 'black'
     }),
     space: {
       left: 30,
-      right: 30,
+      right: 45,
       top: 10,
       bottom: 10,
       // item: 10
