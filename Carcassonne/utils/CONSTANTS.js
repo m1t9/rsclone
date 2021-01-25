@@ -6,4 +6,5 @@ const CONSTANTS = {
   EMPTY_CELL: 'EMPTY_CELL',
 };
 
+
 export default CONSTANTS;
