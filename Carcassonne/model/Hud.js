@@ -3,7 +3,8 @@ import CONSTANTS from '../utils/CONSTANTS.js';
 
 export default class HUD extends Phaser.Scene {
   constructor() {
-    super({ key: 'UIScene', active: true });
+    super({ key: 'UIScene' });
+    // super({ key: 'UIScene', active: true });
 
     this.score = 0;
     this.underCardText = '';
@@ -25,7 +26,7 @@ export default class HUD extends Phaser.Scene {
     );
     this.load.image('settings', './assets/btns/settings.png');
     this.load.image('btn_background', './assets/btns/grey_button06.png');
-    this.load.audio('kingdom_sound', './assets/audio/king_music.mp3');
+    this.load.audio('kingdom_sound', './assets/audio/kingdom.mp3');
   }
 
   create() {
@@ -47,6 +48,7 @@ export default class HUD extends Phaser.Scene {
       loop: true,
       delay: 1000
     });
+    this.music.play();
 
     let menu = undefined;
     const settingsBtn = this.add.image(this.game.config.width - 50, 30, 'settings').setInteractive();
@@ -144,11 +146,11 @@ const createMenu = function (scene, x, y, items, onClick) {
       //   // menu.collapseSubMenu();
       // }
       if (button.name === 'ON') {
-        scene.music.play();
+        scene.music.resume();
         menu.collapseSubMenu();
       }
       if (button.name === 'OFF') {
-        scene.music.stop();
+        scene.music.pause();
         menu.collapseSubMenu();
       }
     }, scene);
