@@ -127,8 +127,8 @@ const config = {
   width: fullScreenWidth,
   height: fullScreenHeight,
   pixelArt: true,
-  // scene: [StartScreen, MainScene, HUD],
-  scene: [MainScene, HUD],
+  scene: [StartScreen, MainScene, HUD],
+  // scene: [MainScene, HUD],
   // physics: {
   //   default: 'matter',
   //   matter: {

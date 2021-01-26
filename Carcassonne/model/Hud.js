@@ -3,8 +3,8 @@ import CONSTANTS from '../utils/CONSTANTS.js';
 
 export default class HUD extends Phaser.Scene {
   constructor() {
-    super({ key: 'UIScene' });
-    // super({ key: 'UIScene', active: true });
+    // super({ key: 'UIScene' });
+    super({ key: 'UIScene', active: true });
 
     this.score = 0;
     this.underCardText = '';
@@ -61,16 +61,17 @@ export default class HUD extends Phaser.Scene {
 
     const items = [
       { name: 'New Game' },
-      { name: 'Save Game' },
-      {
-        name: 'Sound',
-        children: [
-          { name: 'ON' },
-          { name: 'OFF' },
-        ]
+      { name: 'Save Game'},
+      { name: 'Load Game'},
+      { name: 'Sound',
+        children: [ 
+        { name: 'ON'},
+        { name: 'OFF'},
+      ]
       },
       { name: 'About' }
     ];
+
 
     settingsBtn.on('pointerdown', function (pointer) {
       if (menu === undefined) {
