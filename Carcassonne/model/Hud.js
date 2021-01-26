@@ -61,16 +61,17 @@ export default class HUD extends Phaser.Scene {
 
     const items = [
       { name: 'New Game' },
-      { name: 'Save Game' },
-      {
-        name: 'Sound',
-        children: [
-          { name: 'ON' },
-          { name: 'OFF' },
-        ]
+      { name: 'Save Game'},
+      { name: 'Load Game'},
+      { name: 'Sound',
+        children: [ 
+        { name: 'ON'},
+        { name: 'OFF'},
+      ]
       },
       { name: 'About' }
     ];
+
 
     settingsBtn.on('pointerdown', function (pointer) {
       if (menu === undefined) {
