@@ -66,8 +66,9 @@ export default class StartScreen extends Phaser.Scene {
 
     startBtn.on('button.click', function (button, index, pointer, event) {
       console.log(`Click button ${button.text}`);
-      this.scene.launch('UIScene');
-      this.scene.launch('MainScene');
+      // this.scene.launch('UIScene');
+      // this.scene.launch('MainScene');
+      this.scene.launch('Boot');
       this.scene.remove('StartScreen');
       // startBtn.clearButtons(true);
     }, this);

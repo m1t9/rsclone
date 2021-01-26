@@ -3,8 +3,8 @@ import CONSTANTS from '../utils/CONSTANTS.js';
 
 export default class HUD extends Phaser.Scene {
   constructor() {
-    // super({ key: 'UIScene' });
-    super({ key: 'UIScene', active: true });
+    super({ key: 'UIScene' });
+    // super({ key: 'UIScene', active: true });
 
     this.score = 0;
     this.underCardText = '';

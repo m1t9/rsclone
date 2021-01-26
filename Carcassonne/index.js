@@ -8,6 +8,7 @@ import HUD from './model/Hud.js';
 import loadImages from './data/loadImages.js';
 import CONSTANTS from './utils/CONSTANTS.js';
 import StartScreen from './model/StartScreen.js';
+import Boot from './model/Boot.js';
 
 class MainScene extends Phaser.Scene {
   constructor() {
@@ -22,7 +23,7 @@ class MainScene extends Phaser.Scene {
   }
 
   preload() {
-    loadImages.call(this);
+    // loadImages.call(this);
     this.load.scenePlugin({
       key: 'IsoPlugin',
       url: IsoPlugin,
@@ -127,7 +128,7 @@ const config = {
   width: fullScreenWidth,
   height: fullScreenHeight,
   pixelArt: true,
-  scene: [StartScreen, MainScene, HUD],
+  scene: [StartScreen, Boot, MainScene, HUD],
   // scene: [MainScene, HUD],
   // physics: {
   //   default: 'matter',
