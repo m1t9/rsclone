@@ -25,7 +25,8 @@ export default class HUD extends Phaser.Scene {
       'rexUI',
       'rexUI'
     );
-    this.load.image('settings', './assets/btns/settings.png');
+    // this.load.image('settings', './assets/btns/settings.png');
+    this.load.image('settings_2', './assets/btns/settings_2.png');
     this.load.image('start_btn', './assets/btns/start_btn.png');
     this.load.image('save_btn', './assets/btns/save_btn.png');
     this.load.image('load_btn', './assets/btns/load_btn.png');
@@ -33,7 +34,6 @@ export default class HUD extends Phaser.Scene {
     this.load.image('options_btn', './assets/btns/options_btn.png');
     this.load.image('sound_btn', './assets/btns/sound_btn.png');
     this.load.image('no_sound_btn', './assets/btns/no_sound_btn.png');
-    // this.load.image('btn_background', './assets/btns/grey_button06.png');
     this.load.audio('kingdom_sound', './assets/audio/kingdom.mp3');
   }
 
@@ -59,7 +59,7 @@ export default class HUD extends Phaser.Scene {
     this.music.play();
 
     let menu = undefined;
-    const settingsBtn = this.add.image(this.game.config.width - 50, 30, 'settings').setInteractive();
+    const settingsBtn = this.add.image(this.game.config.width - 50, 30, 'settings_2').setInteractive();
 
     const items = [
       { name: 'New Game' },

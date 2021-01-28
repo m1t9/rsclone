@@ -5,6 +5,9 @@ export default class StartScreen extends Phaser.Scene {
 
   preload() {
     this.load.image('cursor', './assets/other/cursor.png');
+    this.load.image('new_game', './assets/btns/start_btn.png');
+    this.load.image('options', './assets/btns/options_btn.png');
+
     this.load.image('castle1', './assets/startScreen/castle_01.png')
     this.load.image('castle2', './assets/startScreen/castle_02.png');
     this.load.image('castle3', './assets/startScreen/castle_03.png');
@@ -41,10 +44,10 @@ export default class StartScreen extends Phaser.Scene {
       repeat: -1,
     });
 
-    this.add.sprite(this.game.config.width / 2, 450, 'castle1').setScale(1.1).play('castleAnim');
+    this.add.sprite(this.game.config.width / 2 + 150, 430, 'castle1').setScale(1.1).play('castleAnim');
 
-    const startBtnBackground = this.add.image(0, 0, 'grey_btn');
-    const optionsBtnBackground = this.add.image(0, 0, 'grey_btn');
+    const startBtnBackground = this.add.image(0, 0, 'new_game');
+    const optionsBtnBackground = this.add.image(0, 0, 'options');
     let startBtn = this.rexUI.add
       .buttons({
         x: 0,
@@ -55,8 +58,8 @@ export default class StartScreen extends Phaser.Scene {
           item: 10,
         },
         anchor: {
-          left: 'center -125',
-          centerY: 'center -15',
+          left: 'center-400',
+          centerY: 'center-30',
         },
         buttons: [
           createBtn(this, 'New Game', startBtnBackground),
@@ -81,7 +84,7 @@ export default class StartScreen extends Phaser.Scene {
 const createBtn = function (scene, text, background) {
   return scene.rexUI.add.label({
     width: 30,
-    height: 30,
+    height: 55,
     name: text,
     text: scene.add.text(0, 0, text, {
       fontSize: 18,
@@ -89,10 +92,11 @@ const createBtn = function (scene, text, background) {
     }),
     background: background,
     space: {
-      // left: 10,
-      // right: 10,
-      top: 20,
-      bottom: 20,
+      left: 30,
+      right: 45,
+      top: 10,
+      bottom: 10,
+      // item: 10
     },
     align: 'center',
   });
