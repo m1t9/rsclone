@@ -25,14 +25,14 @@ export default class Boot extends Phaser.Scene {
     loadImages.call(this);
 
     this.load.on('progress', function (value) {
-      newGraphics.clear()
-      newGraphics.fillStyle(0x3587e2, 1)
+      newGraphics.clear();
+      newGraphics.fillStyle(0x3587e2, 1);
       // this.newGraphics.fillRectShape(new Phaser.Geom.Rectangle(205, 205, percentage*390, 40));
-      newGraphics.fillRect((width/ 2) - 395, 455, 795 * value, 40)
-      loadingText.setText('Loading ' + (value * 100).toFixed(2) + '%')
+      newGraphics.fillRect((width/ 2) - 395, 455, 795 * value, 40);
+      loadingText.setText('Loading ' + (value * 100).toFixed(2) + '%');
     })
 
-    this.load.on('complete', this.completeBar, { scene: this.scene })
+    this.load.on('complete', this.completeBar, { scene: this.scene });
   }
 
   completeBar () {

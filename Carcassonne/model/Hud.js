@@ -25,6 +25,7 @@ export default class HUD extends Phaser.Scene {
       'rexUI',
       'rexUI'
     );
+    this.load.audio('kingdom_sound', './assets/audio/kingdom.mp3');
     // this.load.image('settings', './assets/btns/settings.png');
     this.load.image('settings_2', './assets/btns/settings_2.png');
     this.load.image('start_btn', './assets/btns/start_btn.png');
@@ -34,7 +35,9 @@ export default class HUD extends Phaser.Scene {
     this.load.image('options_btn', './assets/btns/options_btn.png');
     this.load.image('sound_btn', './assets/btns/sound_btn.png');
     this.load.image('no_sound_btn', './assets/btns/no_sound_btn.png');
-    this.load.audio('kingdom_sound', './assets/audio/kingdom.mp3');
+    this.load.image('turn_btn', './assets/btns/turn_btn.png');
+    this.load.image('set_chip_btn', './assets/btns/set_chip_btn.png');
+    this.load.image('next_step_btn', './assets/btns/next_step_btn.png');
   }
 
   create() {
@@ -84,6 +87,41 @@ export default class HUD extends Phaser.Scene {
         menu = undefined;
       }
     }, this)
+
+
+    const nextBtnBackground = this.add.image(0, 0, 'next_step_btn');
+    const turnBtnBackground = this.add.image(0, 0, 'turn_btn');
+    const setChipBtnBackground = this.add.image(0, 0, 'set_chip_btn');
+    let controlBtns = this.rexUI.add
+      .buttons({
+        x: this.game.config.width -  125,
+        y: this.game.config.height - 100,
+        // width: 200,
+        orientation: 'x',
+        space: {
+          item: 10,
+        },
+        // anchor: {
+        //   left: 'center-400',
+        //   centerY: 'center-30',
+        // },
+        buttons: [
+          createSimpleBtn(this, 'next_step', nextBtnBackground),
+          createSimpleBtn(this, 'turn_card',  turnBtnBackground),
+          createSimpleBtn(this, 'set_chip', setChipBtnBackground),
+        ],
+        // space: { item: 10 },
+        expand: true
+      })
+      .layout();
+
+    controlBtns.on('button.click', function (button, index, pointer, event) {
+      
+      console.log(`Click button ${button.name}`);
+
+      //CONTROL BUTTONS LOGIC HERE
+
+    }, this);
   }
 
   initHudCard(name) {
@@ -132,11 +170,11 @@ const createMenu = function (scene, x, y, items, onClick) {
         //   let soundBtn = scene.add.image(x, y, 'sound_btn');
         //   return createMenuBtn(scene, item, soundBtn);
         // } else {
-          const btnsBackgrounds = {
+          let btnsBackgrounds = {
             'New Game': 'start_btn',
             'Save Game': 'save_btn',
             'Load Game': 'load_btn',
-            'Sound' : 'sound_btn',
+            'Sound' : scene.musicON ? 'sound_btn': 'no_sound_btn',
             'About' : 'about_btn',
           }
 
@@ -209,4 +247,25 @@ const createMenuBtn = function (scene, item, background) {
     },
     align: 'center',
   })
+}
+
+const createSimpleBtn = function (scene, text, background) {
+  return scene.rexUI.add.label({
+    width: 55,
+    height: 55,
+    name: text,
+    // text: scene.add.text(0, 0, text, {
+    //   fontSize: 18,
+    //   color: 'black',
+    // }),
+    background: background,
+    space: {
+      // left: 30,
+      // right: 45,
+      top: 10,
+      bottom: 10,
+      // item: 10
+    },
+    align: 'center',
+  });
 }

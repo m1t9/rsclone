@@ -48,7 +48,7 @@ export default class StartScreen extends Phaser.Scene {
 
     const startBtnBackground = this.add.image(0, 0, 'new_game');
     const optionsBtnBackground = this.add.image(0, 0, 'options');
-    let startBtn = this.rexUI.add
+    let startScreenBtns = this.rexUI.add
       .buttons({
         x: 0,
         y: 0,
@@ -70,7 +70,7 @@ export default class StartScreen extends Phaser.Scene {
       })
       .layout();
 
-    startBtn.on('button.click', function (button, index, pointer, event) {
+    startScreenBtns.on('button.click', function (button, index, pointer, event) {
       console.log(`Click button ${button.text}`);
       // this.scene.launch('UIScene');
       // this.scene.launch('MainScene');
