@@ -11,6 +11,7 @@ export default class HUD extends Phaser.Scene {
     this.currentCardHUD = null;
     // this.currentCardNumber = 0;
     this.music = undefined;
+    this.musicON = true;
   }
 
   preload() {
@@ -31,6 +32,7 @@ export default class HUD extends Phaser.Scene {
     this.load.image('about_btn', './assets/btns/about_btn.png');
     this.load.image('options_btn', './assets/btns/options_btn.png');
     this.load.image('sound_btn', './assets/btns/sound_btn.png');
+    this.load.image('no_sound_btn', './assets/btns/no_sound_btn.png');
     // this.load.image('btn_background', './assets/btns/grey_button06.png');
     this.load.audio('kingdom_sound', './assets/audio/kingdom.mp3');
   }
@@ -64,10 +66,10 @@ export default class HUD extends Phaser.Scene {
       { name: 'Save Game'},
       { name: 'Load Game'},
       { name: 'Sound',
-        children: [ 
-        { name: 'ON'},
-        { name: 'OFF'},
-      ]
+      //   children: [ 
+      //   { name: 'ON'},
+      //   { name: 'OFF'},
+      // ]
       },
       { name: 'About' }
     ];
@@ -126,10 +128,10 @@ const createMenu = function (scene, x, y, items, onClick) {
       space: { left: 20, right: 20, top: 10, bottom: 10, item: 20 },
 
       createButtonCallback: function (item, i) {
-        if (item.name === 'ON' || item.name === 'OFF') {
-          let soundBtn = scene.add.image(x, y, 'sound_btn');
-          return createMenuBtn(scene, item, soundBtn);
-        } else {
+        // if (item.name === 'ON' || item.name === 'OFF') {
+        //   let soundBtn = scene.add.image(x, y, 'sound_btn');
+        //   return createMenuBtn(scene, item, soundBtn);
+        // } else {
           const btnsBackgrounds = {
             'New Game': 'start_btn',
             'Save Game': 'save_btn',
@@ -139,7 +141,7 @@ const createMenu = function (scene, x, y, items, onClick) {
           }
 
           return createMenuBtn(scene, item, scene.add.image(x, y, btnsBackgrounds[item.name]));
-        }
+        // }
       },
 
       easeIn: {
@@ -157,17 +159,32 @@ const createMenu = function (scene, x, y, items, onClick) {
     if (button.name === 'New Game') {
       this.scene.restart('MainScene');
     }
-    // if (button.name === 'Sound') {
-    //   // menu.collapseSubMenu();
+    if (button.name === 'Sound') {
+      // console.log(button.backgroundChildren[0].texture);
+      this.musicON = !this.musicON;
+
+      if (this.musicON) {
+        this.musicON = true;
+        scene.music.resume();
+        // scene.music.pause();
+        button.backgroundChildren[0].setTexture('sound_btn', 0);
+      } else {
+        this.musicON = false;
+        scene.music.pause();
+        button.backgroundChildren[0].setTexture('no_sound_btn', 0);
+      }
+
+      // menu.collapseSubMenu();
+    }
+
+    // if (button.name === 'ON') {
+    //   scene.music.resume();
+    //   menu.collapseSubMenu();
     // }
-    if (button.name === 'ON') {
-      scene.music.resume();
-      menu.collapseSubMenu();
-    }
-    if (button.name === 'OFF') {
-      scene.music.pause();
-      menu.collapseSubMenu();
-    }
+    // if (button.name === 'OFF') {
+    //   scene.music.pause();
+    //   menu.collapseSubMenu();
+    // }
   }, scene);
 
   return menu;
