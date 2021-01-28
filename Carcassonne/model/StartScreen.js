@@ -4,6 +4,7 @@ export default class StartScreen extends Phaser.Scene {
   }
 
   preload() {
+    this.load.image('cursor', './assets/other/cursor.png');
     this.load.image('castle1', './assets/startScreen/castle_01.png')
     this.load.image('castle2', './assets/startScreen/castle_02.png');
     this.load.image('castle3', './assets/startScreen/castle_03.png');
@@ -23,6 +24,8 @@ export default class StartScreen extends Phaser.Scene {
   create() {
     // this.stage.background = 0x1b1a1c;
     this.cameras.main.setBackgroundColor(0x1b1a1c);
+
+    this.input.setDefaultCursor('url(./assets/other/cursor.png), pointer');
 
     this.anims.create({
       key: 'castleAnim',
