@@ -4,6 +4,10 @@ export default class StartScreen extends Phaser.Scene {
   }
 
   preload() {
+    this.load.image('cursor', './assets/other/cursor.png');
+    this.load.image('new_game', './assets/btns/start_btn.png');
+    this.load.image('options', './assets/btns/options_btn.png');
+
     this.load.image('castle1', './assets/startScreen/castle_01.png')
     this.load.image('castle2', './assets/startScreen/castle_02.png');
     this.load.image('castle3', './assets/startScreen/castle_03.png');
@@ -24,6 +28,8 @@ export default class StartScreen extends Phaser.Scene {
     // this.stage.background = 0x1b1a1c;
     this.cameras.main.setBackgroundColor(0x1b1a1c);
 
+    this.input.setDefaultCursor('url(./assets/other/cursor.png), pointer');
+
     this.anims.create({
       key: 'castleAnim',
       frames: [
@@ -38,11 +44,11 @@ export default class StartScreen extends Phaser.Scene {
       repeat: -1,
     });
 
-    this.add.sprite(this.game.config.width / 2, 450, 'castle1').setScale(1.1).play('castleAnim');
+    this.add.sprite(this.game.config.width / 2 + 150, 430, 'castle1').setScale(1.1).play('castleAnim');
 
-    const startBtnBackground = this.add.image(0, 0, 'grey_btn');
-    const optionsBtnBackground = this.add.image(0, 0, 'grey_btn');
-    let startBtn = this.rexUI.add
+    const startBtnBackground = this.add.image(0, 0, 'new_game');
+    const optionsBtnBackground = this.add.image(0, 0, 'options');
+    let startScreenBtns = this.rexUI.add
       .buttons({
         x: 0,
         y: 0,
@@ -52,8 +58,8 @@ export default class StartScreen extends Phaser.Scene {
           item: 10,
         },
         anchor: {
-          left: 'center -125',
-          centerY: 'center -15',
+          left: 'center-400',
+          centerY: 'center-30',
         },
         buttons: [
           createBtn(this, 'New Game', startBtnBackground),
@@ -64,7 +70,7 @@ export default class StartScreen extends Phaser.Scene {
       })
       .layout();
 
-    startBtn.on('button.click', function (button, index, pointer, event) {
+    startScreenBtns.on('button.click', function (button, index, pointer, event) {
       console.log(`Click button ${button.text}`);
       // this.scene.launch('UIScene');
       // this.scene.launch('MainScene');
@@ -78,7 +84,7 @@ export default class StartScreen extends Phaser.Scene {
 const createBtn = function (scene, text, background) {
   return scene.rexUI.add.label({
     width: 30,
-    height: 30,
+    height: 55,
     name: text,
     text: scene.add.text(0, 0, text, {
       fontSize: 18,
@@ -86,10 +92,11 @@ const createBtn = function (scene, text, background) {
     }),
     background: background,
     space: {
-      // left: 10,
-      // right: 10,
-      top: 20,
-      bottom: 20,
+      left: 30,
+      right: 45,
+      top: 10,
+      bottom: 10,
+      // item: 10
     },
     align: 'center',
   });
