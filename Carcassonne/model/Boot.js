@@ -17,8 +17,9 @@ export default class Boot extends Phaser.Scene {
     newGraphics.fillStyle(0x3587e2, 1);
     newGraphics.fillRectShape(progressBarFill);
 
-    let loadingText = this.add.text((width / 2) - 100, 400, 'Loading...', {
-      fontSize: '30px',
+    let loadingText = this.add.text((width / 2) - 100, 380, 'Loading...', {
+      fontFamily: 'Thintel',
+      fontSize: '60px',
       fill: '#fff'
     });
 

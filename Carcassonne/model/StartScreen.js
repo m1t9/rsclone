@@ -1,3 +1,5 @@
+import CONSTANTS from '../utils/CONSTANTS.js';
+
 export default class StartScreen extends Phaser.Scene {
   constructor() {
     super({ key: 'StartScreen' });
@@ -78,6 +80,15 @@ export default class StartScreen extends Phaser.Scene {
       this.scene.remove('StartScreen');
       // startBtn.clearButtons(true);
     }, this);
+
+    startScreenBtns.on('button.over', function(button, index, ponter, event) {
+      button.backgroundChildren[0].setTint(CONSTANTS.BTNS_HOVER_COLOR);
+    });
+
+    startScreenBtns.on('button.out', function(button, index, ponter, event) {
+      button.backgroundChildren[0].clearTint();
+    });
+
   }
 }
 
@@ -87,14 +98,15 @@ const createBtn = function (scene, text, background) {
     height: 55,
     name: text,
     text: scene.add.text(0, 0, text, {
-      fontSize: 18,
+      fontFamily: 'Thintel',
+      fontSize: '38px',
       color: 'black',
     }),
     background: background,
     space: {
       left: 30,
       right: 45,
-      top: 10,
+      top: 0,
       bottom: 10,
       // item: 10
     },
