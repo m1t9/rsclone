@@ -87,14 +87,15 @@ const createBtn = function (scene, text, background) {
     height: 55,
     name: text,
     text: scene.add.text(0, 0, text, {
-      fontSize: 18,
+      fontFamily: 'Thintel',
+      fontSize: 38,
       color: 'black',
     }),
     background: background,
     space: {
       left: 30,
       right: 45,
-      top: 10,
+      top: 0,
       bottom: 10,
       // item: 10
     },

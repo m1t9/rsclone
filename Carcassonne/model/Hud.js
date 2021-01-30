@@ -44,7 +44,7 @@ export default class HUD extends Phaser.Scene {
     // this.add.image(650, 410, 'chip1');
     const mainScene = this.scene.get('MainScene').board.currentCard;
     // this.add.text(10, 10, 'Current card:', { font: '20px', fill: '#ffffff' });
-    this.underCardText = this.add.text(10, 10, `Current card (1 / ${CONSTANTS.CARDS_COUNT}):`, { font: '20px', fill: '#ffffff' });
+    this.underCardText = this.add.text(10, 5, `Current card (1 / ${CONSTANTS.CARDS_COUNT}):`, { fontFamily: 'Thintel', fontSize: 40, fill: '#ffffff' });
     // this.currentCardHUD.setInteractive();
     // this.currentCardHUD.on('pointerdown', function (pointer) {
     //   console.log('current_card');
@@ -52,7 +52,7 @@ export default class HUD extends Phaser.Scene {
 
     this.music = this.sound.add('kingdom_sound', {
       // mute: false,
-      volume: 0.7,
+      volume: 0.5,
       rate: 1,
       // detune: 0,
       // seek: 0,
@@ -126,7 +126,7 @@ export default class HUD extends Phaser.Scene {
 
   initHudCard(name) {
     setTimeout(() => {
-      this.currentCardHUD = this.add.image(100, 120, name);
+      this.currentCardHUD = this.add.image(100, 140, name);
       this.currentCardHUD.setScale(0.3);
     }, 100);
   }
@@ -143,7 +143,7 @@ export default class HUD extends Phaser.Scene {
 
   updateCard(name) {
     this.currentCardHUD.destroy();
-    this.currentCardHUD = this.add.image(100, 120, name);
+    this.currentCardHUD = this.add.image(100, 140, name);
     this.currentCardHUD.setScale(0.3);
   }
 }
@@ -235,13 +235,14 @@ const createMenuBtn = function (scene, item, background) {
     name: item.name,
     background: background,
     text: scene.add.text(0, 0, item.name, {
-      fontSize: 18,
+      fontFamily: 'Thintel',
+      fontSize: 38,
       color: 'black'
     }),
     space: {
       left: 30,
       right: 45,
-      top: 10,
+      top: 0,
       bottom: 10,
       // item: 10
     },
