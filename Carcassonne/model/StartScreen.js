@@ -6,9 +6,10 @@ export default class StartScreen extends Phaser.Scene {
   }
 
   preload() {
+    window.StartScreen = this;
     this.load.image('cursor', './assets/other/cursor.png');
     this.load.image('new_game', './assets/btns/start_btn.png');
-    this.load.image('options', './assets/btns/options_btn.png');
+    this.load.image('about', './assets/btns/about_btn.png');
 
     this.load.image('castle1', './assets/startScreen/castle_01.png')
     this.load.image('castle2', './assets/startScreen/castle_02.png');
@@ -28,6 +29,7 @@ export default class StartScreen extends Phaser.Scene {
 
   create() {
     // this.stage.background = 0x1b1a1c;
+    
     this.cameras.main.setBackgroundColor(0x1b1a1c);
 
     this.input.setDefaultCursor('url(./assets/other/cursor.png), pointer');
@@ -49,7 +51,7 @@ export default class StartScreen extends Phaser.Scene {
     this.add.sprite(this.game.config.width / 2 + 150, 430, 'castle1').setScale(1.1).play('castleAnim');
 
     const startBtnBackground = this.add.image(0, 0, 'new_game');
-    const optionsBtnBackground = this.add.image(0, 0, 'options');
+    const optionsBtnBackground = this.add.image(0, 0, 'about');
     let startScreenBtns = this.rexUI.add
       .buttons({
         x: 0,
@@ -65,21 +67,19 @@ export default class StartScreen extends Phaser.Scene {
         },
         buttons: [
           createBtn(this, 'New Game', startBtnBackground),
-          createBtn(this, 'Options', optionsBtnBackground),
+          createBtn(this, 'About', optionsBtnBackground),
         ],
         // space: { item: 10 },
         expand: true
       })
       .layout();
 
-    startScreenBtns.on('button.click', function (button, index, pointer, event) {
-      console.log(`Click button ${button.text}`);
-      // this.scene.launch('UIScene');
-      // this.scene.launch('MainScene');
-      this.scene.launch('Boot');
-      this.scene.remove('StartScreen');
-      // startBtn.clearButtons(true);
-    }, this);
+    // startScreenBtns.on('button.click', function (button, index, pointer, event) {
+    //   console.log(`Click button ${button.text}`);
+    //   // this.scene.launch('Boot');
+    //   // this.scene.stop('StartScreen');
+    //   // startBtn.clearButtons(true);
+    // }, this);
 
     startScreenBtns.on('button.over', function(button, index, ponter, event) {
       button.backgroundChildren[0].setTint(CONSTANTS.BTNS_HOVER_COLOR);
@@ -89,7 +89,97 @@ export default class StartScreen extends Phaser.Scene {
       button.backgroundChildren[0].clearTint();
     });
 
+    let newGameBtn = startScreenBtns.getButton(0);
+    newGameBtn.on('pointerup', function() {
+
+      newGameBtn.disableInteractive();
+
+      let dialog = this.rexUI.add.dialog({
+        // x: 412,
+        // y: 250,
+        anchor: {
+          left: 'center-455',
+          centerY: 'center-220',
+        },
+        background: this.rexUI.add.roundRectangle(0, 0, 50, 50, 20, 0xe3b483),
+        title: this.rexUI.add.label({
+          background: this.rexUI.add.roundRectangle(0, 0, 50, 20, 10, 0xaf6a39),
+          text: this.add.text(0, 0, 'Select the number of players', {
+            fontFamily: 'Thintel',
+            fontSize: '35px'
+          }),
+          space: {
+            left: 15,
+            right: 15,
+            top: 0,
+            bottom: 10
+          }
+        }),
+
+        // content: this.add.text(0, 0, '1 + 1 + 1 + 1 + 1 = ', {
+        //   fontSize: '24px'
+        // }),
+
+        choices: [
+          createLabel(this, '2'),
+          createLabel(this, '3'),
+          createLabel(this, '4'),
+        ],
+
+        space: {
+          title: 10,
+          content: 0,
+          choice: 10,
+
+          left: 10,
+          right: 10,
+          top: 10,
+          bottom: 10
+        },
+        align: 'center',
+
+        expand: {
+          content: false // Content is a pure text object
+        }
+      })
+      .layout()
+      .popUp(500);
+
+      // this.print = this.add.text(0, 0, '')
+      dialog.on('button.click', function (button, groupName, index) {
+            // this.print.text += index + ': ' + button.text + '\n'
+        this.numOfPlayers = button.text;
+        this.scene.launch('Boot');
+        this.scene.stop('StartScreen');
+      },this)
+        .on('button.over', function (button, groupName, index) {
+          button.getElement('background').setStrokeStyle(2, 0x7b4626)
+        })
+        .on('button.out', function (button, groupName, index) {
+          button.getElement('background').setStrokeStyle()
+        })
+
+    }, this);
+
   }
+}
+
+const createLabel = function (scene, text, backgroundColor) {
+  return scene.rexUI.add.label({
+    background: scene.rexUI.add.roundRectangle(0, 0, 50, 40, 20, 0xaf6a39),
+
+    text: scene.add.text(0, 0, text, {
+      fontFamily: 'Thintel',
+      fontSize: '35px'
+    }),
+    space: {
+      left: 0,
+      right: 0,
+      top: 0,
+      bottom: 5
+    },
+    align: 'center',
+  })
 }
 
 const createBtn = function (scene, text, background) {

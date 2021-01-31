@@ -1,17 +1,25 @@
 /* eslint-disable import/extensions */
 import CONSTANTS from '../utils/CONSTANTS.js';
+import config from '../index.js';
 
 export default class HUD extends Phaser.Scene {
   constructor() {
-    super({ key: 'UIScene' });
+    super({ key: 'UIScene'});
     // super({ key: 'UIScene', active: true });
-
+    
     this.score = 0;
     this.underCardText = '';
     this.currentCardHUD = null;
     // this.currentCardNumber = 0;
     this.music = undefined;
     this.musicON = true;
+    // this.settingsBtn;
+  }
+
+  init() {
+    this.nextBtn = this.add.image(this.game.config.width -  200, this.game.config.height - 100, 'next_step_btn').setInteractive();
+    this.turnBtn = this.add.image(this.game.config.width -  150, this.game.config.height - 100, 'turn_btn').setInteractive();
+    this.setChipBtn = this.add.image(this.game.config.width -  100, this.game.config.height - 100, 'set_chip_btn').setInteractive();
   }
 
   preload() {
@@ -25,19 +33,6 @@ export default class HUD extends Phaser.Scene {
       'rexUI',
       'rexUI'
     );
-    this.load.audio('kingdom_sound', './assets/audio/kingdom.mp3');
-    // this.load.image('settings', './assets/btns/settings.png');
-    this.load.image('settings_2', './assets/btns/settings_2.png');
-    this.load.image('start_btn', './assets/btns/start_btn.png');
-    this.load.image('save_btn', './assets/btns/save_btn.png');
-    this.load.image('load_btn', './assets/btns/load_btn.png');
-    this.load.image('about_btn', './assets/btns/about_btn.png');
-    this.load.image('options_btn', './assets/btns/options_btn.png');
-    this.load.image('sound_btn', './assets/btns/sound_btn.png');
-    this.load.image('no_sound_btn', './assets/btns/no_sound_btn.png');
-    this.load.image('turn_btn', './assets/btns/turn_btn.png');
-    this.load.image('set_chip_btn', './assets/btns/set_chip_btn.png');
-    this.load.image('next_step_btn', './assets/btns/next_step_btn.png');
   }
 
   create() {
@@ -56,21 +51,17 @@ export default class HUD extends Phaser.Scene {
       loop: true,
       delay: 1000
     });
-    this.music.play();
+    // this.music.play();
 
     let menu = undefined;
-    const settingsBtn = this.add.image(this.game.config.width - 50, 30, 'settings_2').setInteractive();
+    const settingsBtn = this.add.image(this.game.config.width - 50, 40, 'settings_2').setInteractive();
+    // this.settingsBtn = this.add.image(this.game.config.width - 50, 30, 'settings_2');
 
     const items = [
       { name: 'New Game' },
       { name: 'Save Game'},
       { name: 'Load Game'},
-      { name: 'Sound',
-      //   children: [ 
-      //   { name: 'ON'},
-      //   { name: 'OFF'},
-      // ]
-      },
+      { name: 'Sound' },
       { name: 'About' }
     ];
 
@@ -90,50 +81,55 @@ export default class HUD extends Phaser.Scene {
         menu.collapse();
         menu = undefined;
       }
-    }, this)
-
-
-    const nextBtnBackground = this.add.image(0, 0, 'next_step_btn');
-    const turnBtnBackground = this.add.image(0, 0, 'turn_btn');
-    const setChipBtnBackground = this.add.image(0, 0, 'set_chip_btn');
-    let controlBtns = this.rexUI.add
-      .buttons({
-        x: this.game.config.width -  125,
-        y: this.game.config.height - 100,
-        // width: 200,
-        orientation: 'x',
-        space: {
-          item: 10,
-        },
-        // anchor: {
-        //   left: 'center-400',
-        //   centerY: 'center-30',
-        // },
-        buttons: [
-          createSimpleBtn(this, 'next_step', nextBtnBackground),
-          createSimpleBtn(this, 'turn_card',  turnBtnBackground),
-          createSimpleBtn(this, 'set_chip', setChipBtnBackground),
-        ],
-        // space: { item: 10 },
-        expand: true
-      })
-      .layout();
-
-    controlBtns.on('button.click', function (button, index, pointer, event) {
-      
-      console.log(`Click button ${button.name}`);
-
-      //CONTROL BUTTONS LOGIC HERE
-
     }, this);
 
-    controlBtns.on('button.over', function(button, index, ponter, event) {
-      button.backgroundChildren[0].setTint(CONSTANTS.BTNS_HOVER_COLOR);
-    });
+    for (let i = 1; i < parseInt(window.StartScreen.numOfPlayers, 10) + 1; i += 1) {
+      this["player_"+i] = this.add.text(700 + i*100, 20, `Player ${i}`, { fontFamily: 'Thintel', fontSize: '40px', fill: '#ffffff' });
+    }
 
-    controlBtns.on('button.out', function(button, index, ponter, event) {
-      button.backgroundChildren[0].clearTint();
-    });
+    // console.log(this.player_1, this.player_2)
+
+    // const nextBtnBackground = this.add.image(0, 0, 'next_step_btn');
+    // const turnBtnBackground = this.add.image(0, 0, 'turn_btn');
+    // const setChipBtnBackground = this.add.image(0, 0, 'set_chip_btn');
+    // this.controlBtns = this.rexUI.add
+    //   .buttons({
+    //     x: this.game.config.width -  125,
+    //     y: this.game.config.height - 100,
+    //     // width: 200,
+    //     orientation: 'x',
+    //     space: {
+    //       item: 10,
+    //     },
+    //     // anchor: {
+    //     //   left: 'center-400',
+    //     //   centerY: 'center-30',
+    //     // },
+    //     buttons: [
+    //       createSimpleBtn(this, 'next_step', nextBtnBackground),
+    //       createSimpleBtn(this, 'turn_card',  turnBtnBackground),
+    //       createSimpleBtn(this, 'set_chip', setChipBtnBackground),
+    //     ],
+    //     // space: { item: 10 },
+    //     expand: true
+    //   })
+    //   .layout();
+
+    // this.controlBtns.on('button.click', function (button, index, pointer, event) {
+      
+    //   console.log(`Click button ${button.name}`);
+
+    //   //CONTROL BUTTONS LOGIC HERE
+
+    // }, this);
+
+    // this.controlBtns.on('button.over', function(button, index, ponter, event) {
+    //   button.backgroundChildren[0].setTint(CONSTANTS.BTNS_HOVER_COLOR);
+    // });
+
+    // this.controlBtns.on('button.out', function(button, index, ponter, event) {
+    //   button.backgroundChildren[0].clearTint();
+    // });
   }
 
   initHudCard(name) {
@@ -170,7 +166,7 @@ const createMenu = function (scene, x, y, items, onClick) {
       height: 55,
       orientation: 'y',
       items: items,
-      space: { left: 20, right: 20, top: 10, bottom: 10, item: 20 },
+      space: { left: 20, right: 20, top: 10, bottom: 10, item: 10 },
 
       createButtonCallback: function (item, i) {
           let btnsBackgrounds = {
@@ -208,7 +204,15 @@ const createMenu = function (scene, x, y, items, onClick) {
     console.log(`Click button ${button.text}`);
 
     if (button.name === 'New Game') {
-      this.scene.restart('MainScene');
+      // scene.scene.launch('StartScreen');
+      // scene.scene.stop('MainScene');
+      // scene.scene.stop('UIScene');
+      
+      this.sys.game.destroy(true);
+      new Phaser.Game(config);
+    //   document.addEventListener('mousedown', function newGame () {
+    //     document.removeEventListener('mousedown', newGame);
+    // });
     }
     if (button.name === 'Sound') {
       // console.log(button.backgroundChildren[0].texture);

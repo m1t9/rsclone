@@ -41,6 +41,16 @@ export default class Board {
 
     nextCard.call(this.board, 0);
     window.HUD.initHudCard(this.board.currentCard.name);
+
+    // console.log(this.scene.manager.getScene('MainScene') === true)
+    // console.log(this.scene.get('UIScene'))
+    // if(this.textures.exists('imageFromSceneA')) this.scene.start('sceneC')
+    // console.log(window.HUD.nextBtn);
+    // window.HUD.nextBtn.on('pointerup', function () {
+    //   console.log('wow')
+    // })
+
+    // console.log(window.StartScreen.numOfPlayers)
   }
 
   cellsCountIncrease() {
