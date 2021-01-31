@@ -201,7 +201,7 @@ const createMenu = function (scene, x, y, items, onClick) {
 
   menu.on('button.click', function (button, index, pointer, event) {
     
-    console.log(`Click button ${button.text}`);
+    // console.log(`Click button ${button.text}`);
 
     if (button.name === 'New Game') {
       // scene.scene.launch('StartScreen');

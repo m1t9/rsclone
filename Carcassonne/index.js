@@ -39,8 +39,8 @@ class MainScene extends Phaser.Scene {
     window.MainScene = this;
 
     // camera settings
-    this.cameras.main.setViewport(0.5, 0.3, this.game.config.width, this.game.config.height);
-    // this.cameras.main.setBounds(0.5, 0.3, 10000, 10000);
+    // this.cameras.main.setViewport(0.5, 0.3, this.game.config.width, this.game.config.height);
+    this.cameras.main.setBounds(0.5, 0.3, this.game.config.width, this.game.config.height);
     this.cameras.main.setZoom(1);
     this.cursors = this.input.keyboard.createCursorKeys();
     this.keys = this.input.keyboard.addKeys('W, A , S , D, PLUS, MINUS, UP, DOWN, LEFT, RIGHT');
@@ -53,13 +53,15 @@ class MainScene extends Phaser.Scene {
       }
       // console.log(this.cameras.main.zoom);
     });
+
+    console.log(this.game.config.width)
   }
 
   update() {
     const cards = this.board.board;
     const cam = this.cameras.main;
-    const xPositiveCards = [];
-    const yPositiveCards = [];
+    // const xPositiveCards = [];
+    // const yPositiveCards = [];
     // const xNegativeCards = [];
     // const yNegativeCards = [];
 
@@ -75,13 +77,13 @@ class MainScene extends Phaser.Scene {
     if (this.keys.A.isDown || this.keys.LEFT.isDown) {
       cam.scrollX -= CONSTANTS.SCROLL_SIZE;
 
-      if (cam.scrollX < (- Math.max(...xPositiveCards) - 100)) {
+      if (cam.scrollX < (-this.game.config.width)) {
         cam.setScroll(0, cam.scrollY);
       }
     } else if (this.keys.D.isDown || this.keys.RIGHT.isDown) {
       cam.scrollX += CONSTANTS.SCROLL_SIZE;
 
-      if (cam.scrollX >= (Math.max(...xPositiveCards) + 100)) {
+      if (cam.scrollX >= (this.game.config.width)) {
         cam.setScroll(0, cam.scrollY);
       }
     }
@@ -89,13 +91,13 @@ class MainScene extends Phaser.Scene {
     if (this.keys.W.isDown || this.keys.UP.isDown) {
       cam.scrollY -= CONSTANTS.SCROLL_SIZE;
 
-      if (cam.scrollY < (- Math.max(...yPositiveCards) - 100)) {
+      if (cam.scrollY < ( -this.game.config.height)) {
         cam.setScroll(cam.scrollX, 0);
       }
     } else if (this.keys.S.isDown || this.keys.DOWN.isDown) {
       cam.scrollY += CONSTANTS.SCROLL_SIZE;
 
-      if (cam.scrollY >= (Math.max(...yPositiveCards) + 100)) {
+      if (cam.scrollY >= (this.game.config.height)) {
         cam.setScroll(cam.scrollX, 0);
       }
     }
@@ -136,13 +138,6 @@ const config = {
   },
 };
 
-export default config;
-// const config = {
-//   type: Phaser.AUTO,
-//   width: 1300,
-//   height: 900,
-//   pixelArt: true,
-//   scene: [MainScene, HUD],
-// };
-
 const game = new Phaser.Game(config);
+
+export default config;
