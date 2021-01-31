@@ -2,12 +2,11 @@ import loadImages from '../data/loadImages.js'
 import { cardNames } from '../utils/objectGenerator.js'
 
 export default class Boot extends Phaser.Scene {
-  constructor () {
+  constructor() {
     super({ key: 'Boot' })
   }
 
-  preload () {
-    // window.Boot = this;
+  preload() {
     let width = this.game.config.width;
     let graphics = this.add.graphics();
     let newGraphics = this.add.graphics();
@@ -21,7 +20,7 @@ export default class Boot extends Phaser.Scene {
     let loadingText = this.add.text((width / 2) - 100, 380, 'Loading...', {
       fontFamily: 'Thintel',
       fontSize: '60px',
-      fill: '#fff'
+      fill: '#fff',
     });
 
     this.load.scenePlugin(
@@ -49,17 +48,18 @@ export default class Boot extends Phaser.Scene {
       newGraphics.clear();
       newGraphics.fillStyle(0x3587e2, 1);
       // this.newGraphics.fillRectShape(new Phaser.Geom.Rectangle(205, 205, percentage*390, 40));
-      newGraphics.fillRect((width/ 2) - 395, 455, 795 * value, 40);
+      newGraphics.fillRect((width / 2) - 395, 455, 795 * value, 40);
       loadingText.setText('Loading ' + (value * 100).toFixed(2) + '%');
-    })
+    });
 
     this.load.on('complete', this.completeBar, { scene: this.scene });
   }
 
-  completeBar () {
-    // this.scene.stop('Boot')
-    this.scene.run('UIScene');
-    this.scene.start('MainScene');
+  async completeBar() {
+    this.scene.start('UIScene');
+    setTimeout(() => {
+      this.scene.start('MainScene');
+    }, 1110);
   }
 
   // create() {

@@ -2,7 +2,8 @@
 // import Card from '../model/Card.js';
 import CONSTANTS from '../utils/CONSTANTS.js';
 import Card from '../model/Card.js';
-import addPointerSides from './pointer.js';
+// import addPointerSides from './pointer.js';
+// import HUD from '../model/Hud.js';
 
 export default function addCell(board, xx, yy, type) {
   const shape = new Phaser.Geom.Polygon([
@@ -40,17 +41,34 @@ export default function addCell(board, xx, yy, type) {
       this.isoZ -= 7;
     });
 
+    // window.HUD.controlBtns.buttons[0].on('pointerdown', () => {
+    //   console.log('wow');
+    // });
+    // console.log(window.HUD.getNextStepButton().buttons[0]);
+
     cell.on('pointerdown', (pointer) => {
+      // console.log(window.HUD.controlBtns.buttons[0]);
       if (pointer.leftButtonDown()) {
         if (board.checkOne(xx, yy) && board.isWin === false) {
           cell.removeAllListeners();
           cell.isoPosition.z = 0;
-          addNeib.call(this, board, xx, yy);
+          // addNeib.call(this, board, xx, yy);
+          board.setCurrentCoords(xx, yy);
           board.addCardToBoard(cell.number);
-          while (checker === false) {
-            checker = board.nextCard();
-          }
-          addPointerSides.call(this, cell, xx, yy);
+
+          window.HUD.enableNextButton();
+          window.HUD.enableChipButton();
+          window.HUD.disableTurnButton();
+          window.HUD.destroyCard();
+
+          board.playersCards[`player${board.currnetPlayerNumber}`].push(board.currentCard);
+          // checker = board.nextCard();
+          // while (checker === false) {
+          // }
+          // addPointerSides.call(this, xx, yy);
+          board.emptyCells.forEach((item) => {
+            item.disableInteractive();
+          });
         } else {
           cell.setTint(0xff0000);
           setTimeout(() => {
@@ -72,10 +90,12 @@ function addEmpty(board, x, y) {
   const card = new Card(this.board.cellsCount, x, y);
   board.addItem(card);
   board.cellsCountIncrease();
-  addCell.call(this, board, x, y, 'empty', board.cellsCount);
+  const emptyCell = addCell.call(this, board, x, y, 'empty', board.cellsCount);
+  this.board.emptyCells.push(emptyCell);
 }
 
 function addNeib(board, x, y) {
+  console.log(`${x} ${y}`);
   const localBoard = board.board.map((item) => {
     const localItem = item;
     if (localItem.cardNumber === board.cellsCount) {
@@ -114,5 +134,12 @@ function turnCard(board, cell) {
 
   board.currentCard.turnCard();
   board.currentCardTexture = `${board.currentCard.name}_${board.currentCardDir}`;
-  cell.setTexture(board.currentCardTexture);
+  if (cell) cell.setTexture(board.currentCardTexture);
+  window.HUD.turnHudCard(board.currentCard.name, board.currentCardDir);
 }
+
+export {
+  turnCard,
+  addCell,
+  addNeib,
+};

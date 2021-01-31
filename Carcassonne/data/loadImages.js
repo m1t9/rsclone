@@ -4,6 +4,7 @@ import CONSTANTS from '../utils/CONSTANTS.js';
 
 export default function loadImages() {
   // this.load.json('empty-mett', 'assets/card-shape.json');
+  this.load.image('blue_chip', 'assets/chips/meeple_blue.png');
   this.load.image('pointer_side1', 'assets/pointers/point_side1.png');
   this.load.image('pointer_side2', 'assets/pointers/point_side2.png');
   this.load.image('pointer_side3', 'assets/pointers/point_side3.png');
