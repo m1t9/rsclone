@@ -1,11 +1,14 @@
 /* eslint-disable import/extensions */
-import addCell from '../controller/cellController.js';
+import { addCell, addNeib, turnCard } from '../controller/cellController.js';
+// import addNeib from '../controller/cellController.js';
 import Card from './Card.js';
 // import PlayerCard from './PlayerCard.js';
 import CONSTANTS from '../utils/CONSTANTS.js';
 // import moveCamera from '../utils/camera.js';
 // import CARDS from '../data/gameCards.js';
 import nextCard from '../controller/nextCard.js';
+import addPointerSides from '../controller/pointer.js';
+
 // import CARDS from '../data/gameCards.js';
 
 export default class Board {
@@ -19,6 +22,19 @@ export default class Board {
     this.step = 2;
     this.isWin = false;
     this.emptyCells = [];
+    this.currentX = 0;
+    this.currenty = 0;
+
+    this.currnetPlayerNumber = 1;
+    this.currentCardOnBoard = null;
+    this.sides = [];
+    this.playersCards = {
+      player1: [],
+    };
+    this.playersChips = {
+      player1: 10,
+    };
+    // this.nextStep = null;
   }
 
   initBoard() {
@@ -41,6 +57,64 @@ export default class Board {
 
     nextCard.call(this.board, 0);
     window.HUD.initHudCard(this.board.currentCard.name);
+
+    // let cc = false;
+    // while (cc === false) {
+    //   cc = window.HUD.complete;
+    //   console.log(window.HUD.complete);
+    // }
+
+    // console.log(this.nextStep);
+    // this.nextStep.on('click', function() {
+    //   console.log('wow');
+    // });
+    // console.log(window.HUD.nextBtn);
+    // const sc = this;
+    window.HUD.disableNextButton();
+    window.HUD.disableChipButton();
+
+    console.log(this.board.currentCard);
+
+    window.HUD.turnBtn.on('pointerup', function () {
+      // this.board.currentCardDir += 1;
+      turnCard(this.board);
+      window.HUD.turnHudCard(this.board.currentCard.name, this.board.currentCardDir);
+    }, this);
+
+    window.HUD.nextBtn.on('pointerup', function () {
+      console.log(this.board.playersChips[`player${this.board.currnetPlayerNumber}`]);
+      // console.log(this.board.currnetPlayerNumber);
+      addNeib.call(this, this.board, this.board.currentX, this.board.currentY);
+      this.board.nextCard();
+
+      window.HUD.disableNextButton();
+      window.HUD.disableChipButton();
+      window.HUD.enableTurnButton();
+
+      this.board.emptyCells.forEach((item) => {
+        item.setInteractive();
+      });
+
+      this.board.destroyPointers();
+
+      this.board.sides = [];
+
+      console.log(this.board.playersCards);
+    }, this);
+
+    window.HUD.setChipBtn.on('pointerup', function () {
+      this.board.sides = this.board.sides.concat(
+        addPointerSides.call(this, this.board.currentX, this.board.currentY),
+      );
+      window.HUD.disableChipButton();
+    }, this);
+  }
+
+  destroyPointers() {
+    console.log('destroy');
+    this.sides.forEach((item) => {
+      item.destroy(true);
+    });
   }
 
   cellsCountIncrease() {
@@ -53,6 +127,11 @@ export default class Board {
     this.board[number - 1].side2 = this.currentCard.side2;
     this.board[number - 1].side3 = this.currentCard.side3;
     this.board[number - 1].side4 = this.currentCard.side4;
+  }
+
+  setCurrentCoords(x, y) {
+    this.currentX = x;
+    this.currentY = y;
   }
 
   checkOne(x, y) {

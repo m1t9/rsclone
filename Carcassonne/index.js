@@ -32,11 +32,11 @@ class MainScene extends Phaser.Scene {
   }
 
   create() {
+    window.MainScene = this;
     this.isoGroup = this.add.group();
     this.iso.projector.origin.setTo(0.5, 0.3);
-    this.spawnTiles();
 
-    window.MainScene = this;
+    this.spawnTiles();
 
     // camera settings
     this.cameras.main.setViewport(0.5, 0.3, this.game.config.width, this.game.config.height);
@@ -116,6 +116,7 @@ class MainScene extends Phaser.Scene {
   spawnTiles() {
     this.input.mouse.disableContextMenu();
     this.board.initialization.call(this);
+    // console.log(this);
   }
 }
 
