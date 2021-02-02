@@ -184,7 +184,7 @@ const points = [
   [2, 1, 2, 1, 2],
   [2, 2, 2, 2, 0],
   [2, 0, 2, 0, 0],
-  [4, 0, 4, 2, 0],1
+  [4, 0, 4, 2, 0],
   [2, 1, 2, 1, 0],
   [4, 1, 4, 1, 0],
   [2, 0, 2, 1, 0],
@@ -233,6 +233,21 @@ const points = [
   [0, 1, 1, 1, 0],
   [1, 1, 1, 1, 0]
 ];
+
+const names = {
+  newGame_en: 'New game',
+  newGame_ru: 'Новая игра',
+  saveGame_en: 'Save Game',
+  saveGame_ru: 'Сохранить игру',
+  loadGame_en: 'Load Game',
+  loadGame_ru: 'Загрузить игру',
+  sound_en: 'Sound',
+  sound_ru: 'Звук',
+  about_en: 'About',
+  about_ru: 'О нас',
+  options_en: 'Options',
+  options_ru: 'Настройки'
+}
 
 function objectGenerator() {
   const objArr = [];
