@@ -237,16 +237,22 @@ const points = [
 const names = {
   newGame_en: 'New game',
   newGame_ru: 'Новая игра',
+  newGame_de: 'Neues Spiel',
   saveGame_en: 'Save Game',
   saveGame_ru: 'Сохранить игру',
+  saveGame_de: 'Spiel Speichern',
   loadGame_en: 'Load Game',
-  loadGame_ru: 'Загрузить игру',
+  loadGame_ru: 'Продолжить игру',
+  loadGame_de: 'Weiter',
   sound_en: 'Sound',
   sound_ru: 'Звук',
+  sound_de: 'Klang',
   about_en: 'About',
   about_ru: 'О нас',
+  about_de: 'Über uns',
   options_en: 'Options',
-  options_ru: 'Настройки'
+  options_ru: 'Настройки',
+  options_de: 'Optionen'
 }
 
 function objectGenerator() {
