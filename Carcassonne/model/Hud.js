@@ -244,12 +244,10 @@ export default class HUD extends Phaser.Scene {
       } else if (!menu.isInTouching(pointer)) {
         menu.collapse();
         menu = undefined;
-        try {
+        if (this.rulesOpen !== undefined) {
           this.rulesOpen.fadeOut(300);
-        } catch (e) {
-
+          this.rulesOpen = undefined;
         }
-        this.rulesOpen = undefined;
         settingsBtn.clearTint();
       }
     }, this);
@@ -438,7 +436,7 @@ const createMenu = function (scene, x, y, items, onClick) {
       rulesBtn.setScale(CONSTANTS.BTNS_DEFAULT_SCALE);
 
       const rulesBackground = scene.add.image(0, 0, 'game_rules');
-      scene.rulesOpen = addRules(scene, scene.game.config.width / 2 + 400, 400, rulesBackground, this.lang.gameRulesContent.text);
+      scene.rulesOpen = addRules(scene, scene.game.config.width / 2 + 400, 400, rulesBackground, scene.lang.gameRulesContent.text);
     } else if (!scene.rulesOpen.isInTouching(pointer)) {
       // rulesOpen.destroy();
       scene.rulesOpen.fadeOut(300);
