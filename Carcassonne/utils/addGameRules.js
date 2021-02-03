@@ -2,16 +2,24 @@ const addRules = function (scene, x, y, background, gameRules) {
   return scene.rexUI.add.textArea({
     x,
     y,
+<<<<<<< HEAD
     // width: 453,
     // height: 580,
     width: 553,
     height: 680,
     // background: scene.rexUI.add.roundRectangle(0, 0, 2, 2, 0, 0x260e04),
+=======
+    width: 553,
+    height: 680,
+>>>>>>> origin/develop
     text: scene.add.text(0, 0, '', {
       color: 'black',
       fontFamily: 'Thintel',
       fontSize: '30px',
+<<<<<<< HEAD
       // align: 'center',
+=======
+>>>>>>> origin/develop
     }),
     background,
     content: gameRules,
@@ -35,12 +43,16 @@ const addRules = function (scene, x, y, background, gameRules) {
         left: 50,
         right: 10,
       },
+<<<<<<< HEAD
       // header: 0,
       // footer: 0,
+=======
+>>>>>>> origin/develop
     },
   })
     .layout()
     .fadeIn(500);
+<<<<<<< HEAD
 
   // .drawBounds(scene.add.graphics(), 0xff0000)
   // .setText(rulesContentEn);
@@ -90,3 +102,8 @@ export default addRules;
 // this.controlBtns.on('button.out', function(button, index, ponter, event) {
 //   button.backgroundChildren[0].clearTint();
 // })
+=======
+};
+
+export default addRules;
+>>>>>>> origin/develop

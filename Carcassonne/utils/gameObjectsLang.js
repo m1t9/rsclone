@@ -1,3 +1,4 @@
+/* eslint-disable import/extensions */
 import { rulesContentEn, rulesContentRu, rulesContentDe } from './gameRules.js';
 
 const en = {
@@ -9,10 +10,6 @@ const en = {
     name: 'New Game',
     btn: 'start_btn',
   },
-  // saveGame_btn: {
-  //   name: 'Save Game',
-  //   btn: 'save_btn',
-  // },
   about_btn: {
     name: 'About',
     btn: 'save_btn',
@@ -64,13 +61,13 @@ const en = {
     text: rulesContentEn,
   },
   selectNumberOfPlayers: {
-    text: 'Select the number of players'
+    text: 'Select the number of players',
   },
   enterName: {
-    text: 'Enter the name of the players'
+    text: 'Enter the name of the players',
   },
   readyPlay: {
-    text: 'Ready to Play!'
+    text: 'Ready to Play!',
   },
   playerName: {
     text: 'Player Name',
@@ -79,18 +76,18 @@ const en = {
     text: 'Current card',
   },
   scoreTitle: {
-    text: 'Points of each player'
+    text: 'Points of each player',
   },
   scoreSave_btn: {
-    name: 'Save'
+    name: 'Save',
   },
   finishText: {
-    text: 'Finish'
+    text: 'Finish',
   },
   winText: {
     text: 'END OF THE GAME! THE WINNER IS',
-  }
-}
+  },
+};
 
 const ru = {
   lang_btn: {
@@ -156,13 +153,13 @@ const ru = {
     text: rulesContentRu,
   },
   selectNumberOfPlayers: {
-    text: 'Выберите количество игроков'
+    text: 'Выберите количество игроков',
   },
   enterName: {
-    text: 'Введите имена игроков'
+    text: 'Введите имена игроков',
   },
   readyPlay: {
-    text: 'Вперед играть!'
+    text: 'Вперед играть!',
   },
   playerName: {
     text: 'Имя Игрока',
@@ -171,18 +168,18 @@ const ru = {
     text: 'Текущая карточка',
   },
   scoreTitle: {
-    text: 'Количество очков каждого игрока'
+    text: 'Количество очков каждого игрока',
   },
   scoreSave_btn: {
-    name: 'Сохранить'
+    name: 'Сохранить',
   },
   finishText: {
-    text: 'Конец'
+    text: 'Конец',
   },
   winText: {
     text: 'КОНЕЦ ИГРЫ! ПОБЕДИТЕЛЬ',
-  }
-}
+  },
+};
 
 const de = {
   lang_btn: {
@@ -248,13 +245,13 @@ const de = {
     text: rulesContentDe,
   },
   selectNumberOfPlayers: {
-    text: 'Wählen Sie die Anzahl der Spieler'
+    text: 'Wählen Sie die Anzahl der Spieler',
   },
   enterName: {
-    text: 'Geben Sie die Spielernamen ein'
+    text: 'Geben Sie die Spielernamen ein',
   },
   readyPlay: {
-    text: 'Fertig zu spielen!'
+    text: 'Fertig zu spielen!',
   },
   playerName: {
     text: 'Spielername',
@@ -263,27 +260,17 @@ const de = {
     text: 'Aktuelle karte',
   },
   scoreTitle: {
-    text: 'Punkte jedes Spielers'
+    text: 'Punkte jedes Spielers',
   },
   scoreSave_btn: {
-    name: 'Sparen'
+    name: 'Sparen',
   },
   finishText: {
-    text: 'das Ende'
+    text: 'das Ende',
   },
   winText: {
     text: 'ENDE DES SPIELS! GEWINNER',
-  }
-}
+  },
+};
 
 export { en, ru, de };
-  // this.load.image('start_btn', './assets/btns/start_btn.png');
-  // this.load.image('save_btn', './assets/btns/save_btn.png');
-  // this.load.image('load_btn', './assets/btns/load_btn.png');
-  // this.load.image('about_btn', './assets/btns/about_btn.png');
-  // this.load.image('options_btn', './assets/btns/options_btn.png');
-  // this.load.image('sound_btn', './assets/btns/sound_btn.png');
-  // this.load.image('no_sound_btn', './assets/btns/no_sound_btn.png');
-  // this.load.image('turn_btn', './assets/btns/turn_btn.png');
-  // this.load.image('set_chip_btn', './assets/btns/set_chip_btn.png');
-  // this.load.image('next_step_btn', './assets/btns/next_step_btn.png');

@@ -4,14 +4,10 @@ function setChip(side, x, y, z) {
     this.board.playersChips[`player${this.board.currnetPlayerNumber}`] -= 1;
     this.board.currentCard.chipPos = side;
     this.board.destroyPointers();
-    // console.log(`X: ${x} Y: ${y}`);
-    // console.log(x - 10);
-    // const xx = x - 50;
-    // const yy = y - 50;
-    // this.add.isoSprite(x + 30, y - 30, 50, 'blue_chip', this.sideGroup);
-    const chip = this.add.isoSprite(x, y, z, `chip_${this.board.currnetPlayerNumber}`, this.sideGroup);
-    chip.playerNumber = this.board.currnetPlayerNumber;
 
+    const chip = this.add.isoSprite(x, y, z, `chip_${this.board.currnetPlayerNumber}`, this.sideGroup);
+
+    chip.playerNumber = this.board.currnetPlayerNumber;
     chip.setInteractive();
     chip.on('pointerover', () => {
       chip.setScale(1.1);
@@ -78,35 +74,11 @@ export default function addPointerSides(x, y) {
   side4.alpha = 0.05;
   side5.alpha = 0.05;
 
-  // const sideGroup = this.add.group({
-  //   classType: Phaser.GameObjects.Sprite,
-  //   defaultKey: null,
-  //   defaultFrame: null,
-  //   active: true,
-  //   maxSize: -1,
-  //   runChildUpdate: false,
-  //   createCallback: null,
-  //   removeCallback: null,
-  //   createMultipleCallback: null,
-  // });
-
   side1.setInteractive(shape_side1, Phaser.Geom.Polygon.Contains);
   side2.setInteractive(shape_side2, Phaser.Geom.Polygon.Contains);
   side3.setInteractive(shape_side3, Phaser.Geom.Polygon.Contains);
   side4.setInteractive(shape_side4, Phaser.Geom.Polygon.Contains);
   side5.setInteractive(shape_side5, Phaser.Geom.Polygon.Contains);
-
-  // console.log(sideGroup);
-  // sideGroup.add(side1);
-  // sideGroup.add(side2);
-  // sideGroup.add(side3);
-  // sideGroup.add(side4);
-  // sideGroup.add(side5);
-  // console.log(sideGroup);
-
-  // const testSprite = new Phaser.Plugin.Isometric.IsoSprite(this, x, y, 1, 'pointer_side1');
-  // console.log(testSprite);
-  // this.sideGroup.setInteractive(shape_side5, Phaser.Geom.Polygon.Contains);
 
   side1.on('pointerover', () => {
     side1.alpha = 0.5;
