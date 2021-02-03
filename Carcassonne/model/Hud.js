@@ -244,8 +244,13 @@ export default class HUD extends Phaser.Scene {
       } else if (!menu.isInTouching(pointer)) {
         menu.collapse();
         menu = undefined;
-        // // this.rulesOpen.fadeOut(300);
-        // this.rulesOpen = undefined;
+  
+        if (this.rulesOpen !== undefined) {
+          this.rulesOpen.fadeOut(300);
+          // this.rulesOpen.destroy();
+          this.rulesOpen = undefined;
+        }
+        
         settingsBtn.clearTint();
       }
     }, this);
@@ -434,7 +439,7 @@ const createMenu = function (scene, x, y, items, onClick) {
       rulesBtn.setScale(CONSTANTS.BTNS_DEFAULT_SCALE);
 
       const rulesBackground = scene.add.image(0, 0, 'game_rules');
-      scene.rulesOpen = addRules(scene, scene.game.config.width / 2 + 400, 400, rulesBackground, this.lang.gameRulesContent.text);
+      scene.rulesOpen = addRules(scene, scene.game.config.width / 2 + 400, 400, rulesBackground, scene.lang.gameRulesContent.text);
     } else if (!scene.rulesOpen.isInTouching(pointer)) {
       // rulesOpen.destroy();
       scene.rulesOpen.fadeOut(300);
@@ -491,7 +496,6 @@ const createBtn = function (scene, text, background, left = 0, right = 0, top = 
 
 const createInput = function(scene, content) {
   let keyObj = scene.input.keyboard.addKey('ENTER'); 
-  // const text = scene.add.text(400, 300, 'Hello World', { fixedWidth: 150, fixedHeight: 36 })
   let text = scene.add.text(0, 0, content, {
     color: 'white',
     fontFamily: 'Thintel',
@@ -512,21 +516,13 @@ const createInput = function(scene, content) {
     } 
     scene.plugins.get('rextexteditplugin').edit(text, config);
     text.setColor('black');
-    // scene.playerNames.push(text);
-    // let saveScore = scene.scoreTable.children[scene.scoreTable.children.length - 1].children[scene.scoreTable.children[scene.scoreTable.children.length - 1].children.length - 1];
-    // saveScore.on('pointerdown', function() {
-    //   scene.playerPoints.player1 = Number(text);
-
-    //   console.log(scene.playerPoints);
-    // })
-    
   });
-
-  keyObj.on('up', function(event) { 
-    // if (text.text !== 'Player Name') {
-    //   scene.playerNames.push(text.text);
-    // }
-  });
+  // let saveScore = scene.scoreTable.children[scene.scoreTable.children.length - 1].children[scene.scoreTable.children[scene.scoreTable.children.length - 1].children.length - 1];
+  // keyObj.on('up', function(event) { 
+  //   // if (text.text !== 'Player Name') {
+  //   //   scene.playerNames.push(text.text);
+  //   // }
+  // });
 
   return text;
 }

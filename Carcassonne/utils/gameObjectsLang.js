@@ -99,6 +99,10 @@ const ru = {
     name: 'Сохранить Игру',
     btn: 'save_btn',
   },
+  about_btn: {
+    name: 'О нас',
+    btn: 'save_btn',
+  },
   loadGame_btn: {
     name: 'Продолжить Игру',
     btn: 'load_btn',
@@ -179,6 +183,10 @@ const de = {
   },
   saveGame_btn: {
     name: 'Spiel Speichern',
+    btn: 'save_btn',
+  },
+  about_btn: {
+    name: 'Über uns',
     btn: 'save_btn',
   },
   loadGame_btn: {
