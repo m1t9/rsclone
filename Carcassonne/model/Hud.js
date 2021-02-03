@@ -153,12 +153,15 @@ export default class HUD extends Phaser.Scene {
       this.otherCardBtnText.destroy();
     }, this);
 
-    let openScoreFieldBtn = this.add.image(this.game.config.width - 150, this.game.config.height - 400, 'open_score').setInteractive();
+    let openScoreFieldBtn = this.add.image(100, this.game.config.height - 100, 'open_score_btn').setInteractive();
+
     openScoreFieldBtn.on('pointerover', function () {
+      this.openScoreFieldText = this.add.text(this.openScoreFieldBtn.x - 45, this.openScoreFieldBtn.y - 70, this.lang.otherCard_btn.name, { color: 'black', fontFamily: 'Thintel', fontSize: '30px'});
       this.setScale(CONSTANTS.BTNS_ACTIVE_SCALE);
     });
 
-    openScoreFieldBtn.on('pointerout', function () {
+    openScoreFieldBtn.on('pointerout', function (pointer) {
+      this.openScoreFieldText.destroy();
       this.setScale(CONSTANTS.BTNS_DEFAULT_SCALE);
     });
 
@@ -171,7 +174,7 @@ export default class HUD extends Phaser.Scene {
           openScoreFieldBtn.setTint(CONSTANTS.BTNS_HOVER_COLOR);
           openScoreFieldBtn.setScale(CONSTANTS.BTNS_DEFAULT_SCALE);
   
-          this.scoreField = this.add.sprite(this.game.config.width / 2, this.game.config.height / 2, 'score_field').setScale(1).setInteractive();
+          this.scoreField = this.add.sprite(this.game.config.width / 2, this.game.config.height / 2, 'score_field').setScale(1).setAlpha(0).setInteractive();
 
           this.tweens.add({
             targets: this.scoreField,
@@ -181,16 +184,21 @@ export default class HUD extends Phaser.Scene {
           }, this);
   
           this.showChips();
-          this.scoreTable = addDialog(150, openScoreFieldBtn.x - 20, openScoreFieldBtn.y - 200, this, this.players.length);
+          this.scoreTable = addDialog(150, openScoreFieldBtn.x + 120, openScoreFieldBtn.y - 200, this, this.players.length);
           // this.scoreTable = addDialog(150, this.game.config.width / 2, this.game.config.height / 2, this, this.players.length);
 
 
         } else if (!this.scoreTable.isInTouching(pointer)) {
-          // console.log('collapse!');
           this.removeChips();
-          this.scoreField.destroy();
 
-          // this.chipsOnDesk = [];
+          this.tweens.add({
+            targets: this.scoreField,
+            alpha: 0,
+            duration: 2000,
+            ease: 'Sine.easeInOut'
+          }, this);
+
+          this.scoreField.destroy();
 
           this.scoreTable.fadeOut(500);
           this.scoreTable = undefined;
@@ -198,13 +206,6 @@ export default class HUD extends Phaser.Scene {
           
           openScoreFieldBtn.clearTint();
           // this.scoreFieldOpen = false;
-
-          this.tweens.add({
-            targets: this.scoreField,
-            alpha: 0,
-            duration: 500,
-            ease: 'Sine.easeInOut'
-          }, this);
         }
 
     
@@ -245,6 +246,8 @@ export default class HUD extends Phaser.Scene {
         // console.log('collapse!');
         menu.collapse();
         menu = undefined;
+        this.rulesOpen.fadeOut(300);
+        this.rulesOpen = undefined;
         settingsBtn.clearTint();
       }
     }, this);
@@ -428,18 +431,18 @@ const createMenu = function (scene, x, y, items, onClick) {
   }, scene);
 
   let rulesBtn = menu.getButton(4);
-  let rulesOpen = undefined;
+  scene.rulesOpen = undefined;
   rulesBtn.on('pointerup', function(pointer) {
-    if (rulesOpen === undefined) {
+    if (scene.rulesOpen === undefined) {
       rulesBtn.backgroundChildren[0].setTint(CONSTANTS.BTNS_HOVER_COLOR);
       rulesBtn.setScale(CONSTANTS.BTNS_DEFAULT_SCALE);
 
       const rulesBackground = scene.add.image(0, 0, 'game_rules');
-      rulesOpen = addRules(scene, scene.game.config.width / 2 + 400, 400, rulesBackground, this.lang.gameRulesContent.text);
-    } else if (!rulesOpen.isInTouching(pointer)) {
+      scene.rulesOpen = addRules(scene, scene.game.config.width / 2 + 400, 400, rulesBackground, this.lang.gameRulesContent.text);
+    } else if (!scene.rulesOpen.isInTouching(pointer)) {
       // rulesOpen.destroy();
-      rulesOpen.fadeOut(300);
-      rulesOpen = undefined;
+      scene.rulesOpen.fadeOut(300);
+      scene.rulesOpen = undefined;
       rulesBtn.backgroundChildren[0].clearTint();
     }
   }, scene);
@@ -592,14 +595,9 @@ const addDialog = function(width, x, y, scene, numberOfPlayers) {
     if (button.name === 'save') {
 
       console.log(dialog.getChoice(0).text);
-      // this["player_" + i]
-      // scene.playerPoints["player" + index]
-      // // console.log(index, dialog.getChoice(index));
+
       scene.playerPoints.player1 = parseInt(dialog.getChoice(0).text, 10);
       scene.playerPoints.player2 = parseInt(dialog.getChoice(1).text, 10);
-
-      scene.removeChips();
-      scene.showChips();
 
       if (dialog.getChoice(2) !== undefined && !isNaN(parseInt(dialog.getChoice(2).text, 10))) {
         scene.playerPoints.player3 = parseInt(dialog.getChoice(2).text, 10);
@@ -609,6 +607,8 @@ const addDialog = function(width, x, y, scene, numberOfPlayers) {
         scene.playerPoints.player4 = parseInt(dialog.getChoice(3).text, 10);
       }
 
+      scene.removeChips();
+      scene.showChips();
       // console.log(dialog.getChoice(2).text)
       // scene.playerPoints["player" + i] = parseInt(dialog.getChoice(index).text, 10);
       

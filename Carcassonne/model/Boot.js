@@ -42,16 +42,14 @@ export default class Boot extends Phaser.Scene {
     this.load.image('no_sound_btn', './assets/btns/no_sound_btn.png');
     this.load.image('game_rules', './assets/other/rules_scroll.png');
     this.load.image('score_field', './assets/other/score_field.png');
-    this.load.image('open_score', './assets/btns/options_btn.png');
+    this.load.image('open_score_btn', './assets/btns/score_board_btn.png');
     // this.load.image('lang_btn', './assets/btns/language_btn.png');
     // this.load.image('small_lang_btn', './assets/btns/language_btn_small.png');
 
     this.load.image('turn_btn', './assets/btns/turn_btn.png');
     this.load.image('set_chip_btn', './assets/btns/set_chip_btn.png');
     this.load.image('next_step_btn', './assets/btns/next_step_btn.png');
-    
-    // ПОМЕНЯТЬ ФОН
-    this.load.image('other_card_btn', './assets/btns/next_step_btn.png');
+    this.load.image('other_card_btn', './assets/btns/other_card_btn.png');
 
     loadImages.call(this);
     
