@@ -9,8 +9,12 @@ const en = {
     name: 'New Game',
     btn: 'start_btn',
   },
-  saveGame_btn: {
-    name: 'Save Game',
+  // saveGame_btn: {
+  //   name: 'Save Game',
+  //   btn: 'save_btn',
+  // },
+  about_btn: {
+    name: 'About',
     btn: 'save_btn',
   },
   loadGame_btn: {
@@ -62,9 +66,6 @@ const en = {
   selectNumberOfPlayers: {
     text: 'Select the number of players'
   },
-  selectNumberOfPlayers: {
-    text: 'Select the number of players'
-  },
   enterName: {
     text: 'Enter the name of the players'
   },
@@ -76,6 +77,12 @@ const en = {
   },
   currentCard: {
     text: 'Current card',
+  },
+  scoreTitle: {
+    text: 'Points of each player'
+  },
+  scoreSave_btn: {
+    name: 'Save'
   }
 }
 
@@ -152,6 +159,12 @@ const ru = {
   },
   currentCard: {
     text: 'Текущая карточка',
+  },
+  scoreTitle: {
+    text: 'Количество очков каждого игрока'
+  },
+  scoreSave_btn: {
+    name: 'Сохранить'
   }
 }
 
@@ -228,6 +241,12 @@ const de = {
   },
   currentCard: {
     text: 'Aktuelle karte',
+  },
+  scoreTitle: {
+    text: 'Punkte jedes Spielers'
+  },
+  scoreSave_btn: {
+    name: 'Sparen'
   }
 }
 

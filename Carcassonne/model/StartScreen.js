@@ -1,5 +1,4 @@
 import CONSTANTS from '../utils/CONSTANTS.js';
-import { changeText } from '../utils/activeButtonColor.js';
 import addRules from '../utils/addGameRules.js';
 import { en, ru, de } from '../utils/gameObjectsLang.js';
 
@@ -53,7 +52,7 @@ export default class StartScreen extends Phaser.Scene {
     // this.stage.background = 0x1b1a1c;
     
     this.cameras.main.setBackgroundColor(0x1b1a1c);
-
+    // 0x1b1a1c
     this.input.setDefaultCursor('url(./assets/other/cursor.png), pointer');
     this.add.sprite(this.game.config.width / 2 + 250, 100, 'game_logo').setScale(0.5).setDepth(2);
 
