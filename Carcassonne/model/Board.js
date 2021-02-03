@@ -87,10 +87,6 @@ export default class Board {
       this.board.sides = [];
 
       this.board.nextPlayer();
-<<<<<<< HEAD
-      console.log(this.board.currnetPlayerNumber);
-=======
->>>>>>> origin/develop
     }, this);
 
     window.HUD.setChipBtn.on('pointerup', function() {
