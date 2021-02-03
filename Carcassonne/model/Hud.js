@@ -12,6 +12,7 @@ export default class HUD extends Phaser.Scene {
     // this.currentCardNumber = 0;
     this.music = undefined;
     this.musicON = true;
+    this.language = 'en';
   }
 
   preload() {
@@ -19,6 +20,8 @@ export default class HUD extends Phaser.Scene {
     // this.load.image('chip1', 'assets/chip-1.png');
     // this.load.image('road_straight', 'assets/pack1/road_straight.png');
     // this.load.image('road_bend', 'assets/pack1/road_bend.png');
+    this.load.image('back_img', './assets/back_img_3.png');
+
     this.load.scenePlugin(
       'rexuiplugin',
       'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexuiplugin.min.js',
@@ -27,11 +30,11 @@ export default class HUD extends Phaser.Scene {
     );
   }
 
-  init() {
-    this.nextBtn = this.add.image(this.game.config.width - 200, this.game.config.height - 100, 'next_step_btn');
-    this.turnBtn = this.add.image(this.game.config.width - 150, this.game.config.height - 100, 'turn_btn').setInteractive();
-    this.setChipBtn = this.add.image(this.game.config.width - 100, this.game.config.height - 100, 'set_chip_btn');
-  }
+  // init() {
+  //   this.nextBtn = this.add.image(this.game.config.width - 200, this.game.config.height - 100, 'next_step_btn');
+  //   this.turnBtn = this.add.image(this.game.config.width - 150, this.game.config.height - 100, 'turn_btn').setInteractive();
+  //   this.setChipBtn = this.add.image(this.game.config.width - 100, this.game.config.height - 100, 'set_chip_btn');
+  // }
 
   enableNextButton() {
     this.nextBtn.setInteractive();
@@ -64,6 +67,7 @@ export default class HUD extends Phaser.Scene {
   }
 
   create() {
+    // this.bg = this.add.tileSprite(0, 0, this.game.config.width, this.game.config.height, 'back_img').setOrigin(0);
     // this.add.image(650, 410, 'chip1');
     const mainScene = this.scene.get('MainScene').board.currentCard;
     // this.add.text(10, 10, 'Current card:', { font: '20px', fill: '#ffffff' });
@@ -73,11 +77,15 @@ export default class HUD extends Phaser.Scene {
     //   console.log('current_card');
     // });
 
+    this.nextBtn = this.add.image(this.game.config.width - 200, this.game.config.height - 100, 'next_step_btn');
+    this.turnBtn = this.add.image(this.game.config.width - 150, this.game.config.height - 100, 'turn_btn').setInteractive();
+    this.setChipBtn = this.add.image(this.game.config.width - 100, this.game.config.height - 100, 'set_chip_btn');
+
     this.music = this.sound.add('kingdom_sound', {
       volume: 0.5,
       rate: 1,
       loop: true,
-      delay: 1000
+      delay: 1000,
     });
     // this.music.play();
 
@@ -203,7 +211,7 @@ export default class HUD extends Phaser.Scene {
 
   turnHudCard(name, side) {
     const angle = (side - 1) * 90;
-    console.log(angle);
+    // console.log(angle);
     this.updateCard(name, angle);
   }
 
@@ -213,7 +221,6 @@ export default class HUD extends Phaser.Scene {
 }
 
 const createMenu = function (scene, x, y, items, onClick) {
-
   let menu = scene.rexUI.add
     .menu({
       x: x,
@@ -259,7 +266,7 @@ const createMenu = function (scene, x, y, items, onClick) {
 
     console.log(`Click button ${button.text}`);
 
-    if (button.name === 'New Game') {
+    if (button.name === CONSTANTS.newGame_en || button.name === CONSTANTS.newGame_ru) {
       this.scene.restart('MainScene');
     }
     if (button.name === 'Sound') {

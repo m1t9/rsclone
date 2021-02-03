@@ -23,8 +23,6 @@ export default class Boot extends Phaser.Scene {
       fill: '#fff',
     });
 
-    loadImages.call(this);
-
     this.load.audio('kingdom_sound', './assets/audio/kingdom.mp3');
     // this.load.image('settings', './assets/btns/settings.png');
     this.load.image('settings_2', './assets/btns/settings_2.png');
@@ -38,6 +36,7 @@ export default class Boot extends Phaser.Scene {
     this.load.image('turn_btn', './assets/btns/turn_btn.png');
     this.load.image('set_chip_btn', './assets/btns/set_chip_btn.png');
     this.load.image('next_step_btn', './assets/btns/next_step_btn.png');
+    loadImages.call(this);
 
     this.load.on('progress', function (value) {
       newGraphics.clear();

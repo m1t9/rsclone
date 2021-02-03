@@ -1,13 +1,48 @@
 function setChip(side, x, y, z) {
-  this.board.playersChips[`player${this.board.currnetPlayerNumber}`] -= 1;
-  this.board.currentCard.chipPos = side;
-  this.board.destroyPointers();
-  console.log(`X: ${x} Y: ${y}`);
+  // console.log(`X: ${x} Y: ${y}`);
   // console.log(x - 10);
   // const xx = x - 50;
   // const yy = y - 50;
   // this.add.isoSprite(x + 30, y - 30, 50, 'blue_chip', this.sideGroup);
-  this.add.isoSprite(x, y, z, 'blue_chip', this.sideGroup);
+  console.log(`-- ${this.board.currentCard.belongs} ${this.board.currnetPlayerNumber}`);
+
+  const isBusy = this.board.checkOwner({
+    card: this.board.currentCard,
+    x: this.board.currentX,
+    y: this.board.currentY,
+    // chip: insertChip,
+    chipSide: side,
+  }, 'land');
+
+  // if (this.board.currentCard[`point${side}`] !== 0
+  //   && (!this.board.currentCard.belongs
+  //   || this.board.currentCard.belongs === `player${this.board.currnetPlayerNumber}`)) {
+  if (this.board.currentCard[`point${side}`] !== 0
+    && !isBusy) {
+    this.board.playersChips[`player${this.board.currnetPlayerNumber}`] -= 1;
+    this.board.currentCard.chipPos = side;
+    this.board.currentCard.chipOwner = this.board.currnetPlayerNumber;
+    this.board.destroyPointers();
+    const insertChip = this.add.isoSprite(x, y, z, `chip_${this.board.currnetPlayerNumber}`, this.sideGroup);
+
+    // this.board.currentCard.x = x;
+    // this.board.currentCard.y = y;
+    // this.board.getCheckPoints(this.board.currentCard, this.board.currnetPlayerNumber);
+
+    this.board.currentCard.belongs = `player${this.board.currnetPlayerNumber}`;
+    this.board.playersPointCards[`player${this.board.currnetPlayerNumber}`].push({
+      card: this.board.currentCard,
+      x: this.board.currentX,
+      y: this.board.currentY,
+      chip: insertChip,
+      chipSide: side,
+    });
+
+    // if (this.board.currentCard.name.includes('castle_half')) {
+
+    // }
+    console.log(this.board.playersPointCards);
+  }
 }
 
 export default function addPointerSides(x, y) {

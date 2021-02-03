@@ -5,7 +5,7 @@ import Board from './model/Board.js';
 import Card from './model/Card.js';
 import addCell from './controller/cellController.js';
 import HUD from './model/Hud.js';
-import loadImages from './data/loadImages.js';
+// import loadImages from './data/loadImages.js';
 import CONSTANTS from './utils/CONSTANTS.js';
 import StartScreen from './model/StartScreen.js';
 import Boot from './model/Boot.js';
