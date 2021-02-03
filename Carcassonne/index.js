@@ -33,17 +33,26 @@ class MainScene extends Phaser.Scene {
   }
 
   create() {
+    this.cameras.main.setBackgroundColor(CONSTANTS.SCENE_BACKGROUND);
+    // this.backgroundGame = this.add.tileSprite(-1000, -1000, this.game.config.width * 5, this.game.config.height * 5, 'gameBg').setOrigin(0);
+    // this.backgroundGame = this.add.sprite(0, 0, this.game.config.width * 5, this.game.config.height * 5, 'gameBg').setOrigin(0);
+    // this.backgroundGame.z = -10;
+    // this.backgroundGame.setDisplaySize(10000, 10000)
     this.isoGroup = this.add.group();
     this.iso.projector.origin.setTo(0.5, 0.3);
-
     this.spawnTiles();
+    // const img = this.add.isoSprite(100, 100, 100, 'gameBg', this.isoGroup);
+    // console.log(this.game.world);
+    // this.game.world.bringToTop(this.spawnTiles());
 
     // camera settings
+    
     this.cameras.main.setViewport(0.5, 0.3, this.game.config.width, this.game.config.height);
     // this.cameras.main.setBounds(0.5, 0.3, this.game.config.width * 2, this.game.config.height * 2);
-    // this.backgroundGame = this.add.tileSprite(-this.game.config.width * 2.5, -this.game.config.height * 2.5, this.game.config.width * 5, this.game.config.height * 5, 'gameBg').setOrigin(0)
+    // 
     // this.backgroundGame.setScrollFactor(0);
     // this.backgroundGame.fixedToCamera = true;
+
     this.cameras.main.setZoom(1);
     this.cursors = this.input.keyboard.createCursorKeys();
     this.keys = this.input.keyboard.addKeys('W, A , S , D, PLUS, MINUS, UP, DOWN, LEFT, RIGHT');
@@ -60,6 +69,7 @@ class MainScene extends Phaser.Scene {
   }
 
   update() {
+
     const gameBG = this.backgroundGame;
     const cam = this.cameras.main;
 

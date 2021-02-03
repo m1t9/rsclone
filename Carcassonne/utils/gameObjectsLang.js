@@ -76,6 +76,12 @@ const en = {
   },
   currentCard: {
     text: 'Current card',
+  },
+  scoreTitle: {
+    text: 'Points of each player'
+  },
+  scoreSave_btn: {
+    name: 'Save'
   }
 }
 
@@ -152,6 +158,12 @@ const ru = {
   },
   currentCard: {
     text: 'Текущая карточка',
+  },
+  scoreTitle: {
+    text: 'Количество очков каждого игрока'
+  },
+  scoreSave_btn: {
+    name: 'Сохранить'
   }
 }
 
@@ -228,6 +240,12 @@ const de = {
   },
   currentCard: {
     text: 'Aktuelle karte',
+  },
+  scoreTitle: {
+    text: 'Punkte jedes Spielers'
+  },
+  scoreSave_btn: {
+    name: 'Sparen'
   }
 }
 

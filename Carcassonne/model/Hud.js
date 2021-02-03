@@ -164,7 +164,7 @@ export default class HUD extends Phaser.Scene {
     this.openScoreFieldBtn = this.add.image(100, this.game.config.height - 100, 'open_score_btn').setInteractive();
 
     this.openScoreFieldBtn.on('pointerover', function () {
-      this.openScoreFieldText = this.add.text(this.openScoreFieldBtn.x - 45, this.openScoreFieldBtn.y - 70, this.lang.otherCard_btn.name, { color: 'black', fontFamily: 'Thintel', fontSize: '30px'});
+      this.openScoreFieldText = this.add.text(this.openScoreFieldBtn.x - 45, this.openScoreFieldBtn.y - 70, this.lang.openScoreField.name, { color: 'black', fontFamily: 'Thintel', fontSize: '30px'});
       this.openScoreFieldBtn.setScale(CONSTANTS.BTNS_ACTIVE_SCALE);
     }, this);
 
@@ -574,14 +574,14 @@ const addDialog = function(width, x, y, scene, numberOfPlayers) {
       // (new Array(scene.players.length).fill().map((v, i) => v = createLabel(scene, scene.players[i]))),
       title: scene.rexUI.add.label({
         background: scene.rexUI.add.roundRectangle(0, 0, 100, 50, 20, 0xaf6a39),
-        text: scene.add.text(0, 0, 'Количество очков каждого игрока', {
+        text: scene.add.text(0, 0, scene.lang.scoreTitle.text, {
           fontFamily: 'Thintel',
           fontSize: '30px',
           align: 'center',
         }),
         space: { left: 10, right: 10, top: 5, bottom: 10}
       }),
-      choices: (new Array(scene.players.length).fill().map((v, i) => v = createInetactiveLabel(scene, scene.playerPoints[`player${i + 1}`], scene.chipsOnDesk[i]))).concat([createLabel(scene, 'Сохранить')]),
+      choices: (new Array(scene.players.length).fill().map((v, i) => v = createInetactiveLabel(scene, scene.playerPoints[`player${i + 1}`], scene.chipsOnDesk[i]))).concat([createLabel(scene, scene.lang.scoreSave_btn.name)]),
       space: {
         title: 5,
         content: 5,
