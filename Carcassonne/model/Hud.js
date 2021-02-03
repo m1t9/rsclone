@@ -330,10 +330,12 @@ export default class HUD extends Phaser.Scene {
         }
         iter += 1;
       }
-      this.add.text(this.game.config.width / 2 - 250, this.game.config.height / 2,
-        `${this.lang.winText.text} ${winnerVal === 0 ? 'nobody' : this.players[winnerPos]}`,
+      this.add.text(this.game.config.width / 2 - 500, this.game.config.height / 2,
+        `${this.lang.winText.text} ${winnerVal === 0 ? 'NOBODY' : this.players[winnerPos]} !`,
         { color: 'white', fontFamily: 'Thintel', fontSize: '100px' });
       this.currentCardHUD.destroy();
+
+      this.add.sprite(this.game.config.width / 2, 280 , 'win_crown').setScale(1);
     }
     // console.log(number);
   }

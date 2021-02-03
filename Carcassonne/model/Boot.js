@@ -43,6 +43,7 @@ export default class Boot extends Phaser.Scene {
     this.load.image('game_rules', './assets/other/rules_scroll.png');
     this.load.image('score_field', './assets/other/score_field.png');
     this.load.image('open_score_btn', './assets/btns/score_board_btn.png');
+    this.load.image('win_crown', './assets/other/crown.png');
     // this.load.image('lang_btn', './assets/btns/language_btn.png');
     // this.load.image('small_lang_btn', './assets/btns/language_btn_small.png');
 
