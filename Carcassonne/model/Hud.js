@@ -336,6 +336,16 @@ export default class HUD extends Phaser.Scene {
       this.underCardText.setText(`Current card (${number} / ${CONSTANTS.CARDS_COUNT}):`);
     } else {
       this.underCardText.setText('Finish');
+      let winnerVal = 0;
+      let winnerPos = 0;
+      let iter = 0;
+      for (const [key, value] of Object.entries(this.playerPoints)) {
+        if (value > winnerVal) winnerPos = iter;
+        iter += 1;
+      }
+      this.add.text(this.game.config.width / 2 - 250, this.game.config.height / 2,
+        `END! WINNER ${winnerVal === 0 ? 'nobody' : this.players[winnerPos]}`,
+        { color: 'white', fontFamily: 'Thintel', fontSize: '100px' });
       this.currentCardHUD.destroy();
     }
     // console.log(number);
