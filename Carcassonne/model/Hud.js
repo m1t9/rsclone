@@ -173,7 +173,7 @@ export default class HUD extends Phaser.Scene {
         this.addDialog = addDialog(150, this.openScoreFieldBtn.x - 100, this.openScoreFieldBtn.y - 250, this, this.players.length);
       
       } else {
-        
+
         this.openScoreFieldBtn.clearTint();
         this.scoreFieldOpen = false;
         this.tweens.add({
@@ -187,9 +187,6 @@ export default class HUD extends Phaser.Scene {
 
     }, this);
 
-    let menu = undefined;
-    const settingsBtn = this.add.image(this.game.config.width - 50, 40, 'settings_2').setInteractive();
-    // this.settingsBtn = this.add.image(this.game.config.width - 50, 30, 'settings_2');
     let menu = undefined;
     const settingsBtn = this.add.image(this.game.config.width - 50, 40, 'settings_2').setInteractive();
     const items = [
@@ -499,7 +496,7 @@ const createInput = function(scene, content) {
 const createInetactiveLabel = function (scene, content, backgroundColor) {
   return scene.rexUI.add.label({
     background: scene.rexUI.add.roundRectangle(0, 0, 100, 40, 20, 0xaf6a39),
-    icon: scene.add.image(0, 0, 'blue_chip'),
+    icon: scene.add.image(0, 0, scene.playerChip),
     text: createInput(scene, content),
     space: {
       left: 10,
