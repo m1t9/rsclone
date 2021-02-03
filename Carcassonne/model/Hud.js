@@ -24,10 +24,10 @@ export default class HUD extends Phaser.Scene {
     // this.scoreTable = undefined;
 
     this.playerPoints = {
-      player1: 14,
-      player2: 8,
-      player3: 37,
-      player4: 25,
+      player1: 0,
+      player2: 0,
+      player3: 0,
+      player4: 0,
     };
   }
 
@@ -164,7 +164,7 @@ export default class HUD extends Phaser.Scene {
     this.openScoreFieldBtn = this.add.image(100, this.game.config.height - 100, 'open_score_btn').setInteractive();
 
     this.openScoreFieldBtn.on('pointerover', function () {
-      this.openScoreFieldText = this.add.text(this.openScoreFieldBtn.x - 45, this.openScoreFieldBtn.y - 70, this.lang.openScoreField.name, { color: 'black', fontFamily: 'Thintel', fontSize: '30px'});
+      this.openScoreFieldText = this.add.text(this.openScoreFieldBtn.x - 45, this.openScoreFieldBtn.y - 70, this.lang.otherCard_btn.name, { color: 'black', fontFamily: 'Thintel', fontSize: '30px'});
       this.openScoreFieldBtn.setScale(CONSTANTS.BTNS_ACTIVE_SCALE);
     }, this);
 
@@ -336,6 +336,16 @@ export default class HUD extends Phaser.Scene {
       this.underCardText.setText(`Current card (${number} / ${CONSTANTS.CARDS_COUNT}):`);
     } else {
       this.underCardText.setText('Finish');
+      let winnerVal = 0;
+      let winnerPos = 0;
+      let iter = 0;
+      for (const [key, value] of Object.entries(this.playerPoints)) {
+        if (value > winnerVal) winnerPos = iter;
+        iter += 1;
+      }
+      this.add.text(this.game.config.width / 2 - 250, this.game.config.height / 2,
+        `END! WINNER ${winnerVal === 0 ? 'nobody' : this.players[winnerPos]}`,
+        { color: 'white', fontFamily: 'Thintel', fontSize: '100px' });
       this.currentCardHUD.destroy();
     }
     // console.log(number);
