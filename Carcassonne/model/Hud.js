@@ -4,6 +4,7 @@ import config from '../index.js';
 // import MainScene from '../index.js';
 import addRules from '../utils/addGameRules.js';
 import { en, ru, de } from '../utils/gameObjectsLang.js';
+import COORDS from '../utils/deskCoordinates.js';
 
 export default class HUD extends Phaser.Scene {
   constructor() {
@@ -19,6 +20,13 @@ export default class HUD extends Phaser.Scene {
     // this.settingsBtn;
     this.lang = undefined;
     this.player = undefined;
+
+    this.playerPoints = {
+      player1: 14,
+      player2: 8,
+      player3: 37,
+      player4: 25,
+    };
   }
 
   // init() {
@@ -39,7 +47,7 @@ export default class HUD extends Phaser.Scene {
       'rexUI',
     );
   }
-  
+
   enableNextButton() {
     this.nextBtn.setInteractive();
     this.nextBtn.clearTint();
@@ -85,7 +93,7 @@ export default class HUD extends Phaser.Scene {
       volume: 0.5,
       rate: 1,
       loop: true,
-      delay: 1000
+      delay: 1000,
     });
     // this.music.play();
 
@@ -96,15 +104,15 @@ export default class HUD extends Phaser.Scene {
     this.turnBtn.on('pointerover', function(pointer) {
       console.log(this.turnBtn.x)
       this.turnBtnText = this.add.text(this.turnBtn.x - 45, this.turnBtn.y - 70, this.lang.turnCard_btn.name, { color: 'black', fontFamily: 'Thintel', fontSize: '30px'});
-    }, this)
+    }, this);
 
     this.turnBtn.on('pointerout', function(pointer) {
       this.turnBtnText.destroy();
-    }, this)
+    }, this);
 
     this.nextBtn.on('pointerover', function(pointer) {
       this.nextBtnText = this.add.text(this.nextBtn.x - 45, this.nextBtn.y - 70, this.lang.nextStep_btn.name, { color: 'black', fontFamily: 'Thintel', fontSize: '30px'});
-    }, this)
+    }, this);
 
     this.nextBtn.on('pointerout', function(pointer) {
       this.nextBtnText.destroy();
@@ -112,15 +120,17 @@ export default class HUD extends Phaser.Scene {
 
     this.setChipBtn.on('pointerover', function(pointer) {
       this.setChipBtnText = this.add.text(this.setChipBtn.x - 45, this.setChipBtn.y - 70, this.lang.setChip_btn.name, { color: 'black', fontFamily: 'Thintel', fontSize: '30px'});
-    }, this)
+    }, this);
 
     this.setChipBtn.on('pointerout', function(pointer) {
       this.setChipBtnText.destroy();
-    }, this)
+    }, this);
 
     this.openScoreFieldBtn = this.add.image(this.game.config.width - 150, this.game.config.height - 400, 'open_score').setInteractive();
     this.openScoreFieldBtn.on('pointerup', function(pointer) {
-      this.scoreField = this.add.sprite(this.game.config.width / 2 , this.game.config.height /2, 'score_field').setScale(0.8).setInteractive();
+      this.scoreField = this.add.sprite(this.game.config.width / 2, this.game.config.height / 2, 'score_field').setScale(1).setInteractive();
+      // this.scoreField = this.add.sprite(0,0 , 'score_field').setScale(0.8).setInteractive();
+      this.showChips();
     }, this);
 
     let menu = undefined;
@@ -183,6 +193,21 @@ export default class HUD extends Phaser.Scene {
     this.player.setText(this.players[playerNumber]);
     this.playerChip.destroy();
     this.playerChip = this.add.sprite(this.game.config.width - this.game.config.width / 2 - 50, 85, `chipHUD_${playerNumber + 1}`);
+  }
+
+  showChips() {
+    this.chipsOnDesk = [];
+    // this.playerPoints.forEach((point, index) => {
+    //   this.chipsOnDesk.push(this.add.sprite(index + 100, index + 100, )
+    // });
+    for (let i = 0; i < this.players.length; i += 1) {
+      // console.log(this.playerPoints[`player${i + 1}`]);
+      this.chipsOnDesk.push(this.add.sprite(
+        this.game.config.width / 2 + COORDS[this.playerPoints[`player${i + 1}`]].x,
+        this.game.config.height / 2 + COORDS[this.playerPoints[`player${i + 1}`]].y,
+        `chipBoard_${i + 1}`,
+      ));
+    }
   }
 
   initHudCard(name) {
@@ -337,7 +362,7 @@ const createMenu = function (scene, x, y, items, onClick) {
   return menu;
 }
 
-const createMenuBtn = function (scene, text, background, left=0, right=0, top=0, bottom=0) {
+const createMenuBtn = function (scene, text, background, left = 0, right = 0, top = 0, bottom = 0) {
   return scene.rexUI.add.label({
      // width: 50,
     // height: 55,

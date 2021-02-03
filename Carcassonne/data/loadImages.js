@@ -13,6 +13,10 @@ export default function loadImages() {
   this.load.image('chipHUD_2', 'assets/chips/board_meeple_green_big.png');
   this.load.image('chipHUD_3', 'assets/chips/board_meeple_red_big.png');
   this.load.image('chipHUD_4', 'assets/chips/board_meeple_yellow_big.png');
+  this.load.image('chipBoard_1', 'assets/chips/board_meeple_blue_small.png');
+  this.load.image('chipBoard_2', 'assets/chips/board_meeple_green_small.png');
+  this.load.image('chipBoard_3', 'assets/chips/board_meeple_red_small.png');
+  this.load.image('chipBoard_4', 'assets/chips/board_meeple_yellow_small.png');
   this.load.image('pointer_side1', 'assets/pointers/point_side1.png');
   this.load.image('pointer_side2', 'assets/pointers/point_side2.png');
   this.load.image('pointer_side3', 'assets/pointers/point_side3.png');

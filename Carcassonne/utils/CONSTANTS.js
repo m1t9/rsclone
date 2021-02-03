@@ -31,5 +31,4 @@ const CONSTANTS = {
   // options_de: 'Optionen'
 };
 
-
 export default CONSTANTS;
