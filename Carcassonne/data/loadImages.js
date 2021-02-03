@@ -4,12 +4,19 @@ import CONSTANTS from '../utils/CONSTANTS.js';
 
 export default function loadImages() {
   // this.load.json('empty-mett', 'assets/card-shape.json');
-  this.load.image('blue_chip', 'assets/chips/meeple_blue.png');
-  this.load.image('green_chip', 'assets/chips/meeple_green.png');
-  this.load.image('red_chip', 'assets/chips/meeple_red.png');
-  this.load.image('grey_chip', 'assets/chips/meeple_grey.png');
-  this.load.image('grey_chip', 'assets/chips/meeple_grey.png');
-  this.load.image('yellow_chip', 'assets/chips/meeple_yellow.png');
+  this.load.image('back', 'assets/back2.png');
+  this.load.image('chip_1', 'assets/chips/meeple_blue.png');
+  this.load.image('chip_2', 'assets/chips/meeple_green.png');
+  this.load.image('chip_3', 'assets/chips/meeple_red.png');
+  this.load.image('chip_4', 'assets/chips/meeple_yellow.png');
+  this.load.image('chipHUD_1', 'assets/chips/board_meeple_blue_big.png');
+  this.load.image('chipHUD_2', 'assets/chips/board_meeple_green_big.png');
+  this.load.image('chipHUD_3', 'assets/chips/board_meeple_red_big.png');
+  this.load.image('chipHUD_4', 'assets/chips/board_meeple_yellow_big.png');
+  this.load.image('chipBoard_1', 'assets/chips/board_meeple_blue_small.png');
+  this.load.image('chipBoard_2', 'assets/chips/board_meeple_green_small.png');
+  this.load.image('chipBoard_3', 'assets/chips/board_meeple_red_small.png');
+  this.load.image('chipBoard_4', 'assets/chips/board_meeple_yellow_small.png');
   this.load.image('pointer_side1', 'assets/pointers/point_side1.png');
   this.load.image('pointer_side2', 'assets/pointers/point_side2.png');
   this.load.image('pointer_side3', 'assets/pointers/point_side3.png');

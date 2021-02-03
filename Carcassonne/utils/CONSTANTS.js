@@ -3,7 +3,7 @@ const CONSTANTS = {
   SIZE: 175,
   CARDS_COUNT: 126,
   SCROLL_SIZE: 6,
-  EMPTY_CELL: 'EMPTY_CELL',
+  EMPTY_CELL: 'EMPTY_CELL2',
   BTNS_DEFAULT_SCALE: 1,
   BTNS_ACTIVE_SCALE: 1.05,
   // BTNS_HOVER_COLOR: 0xd6d3cb,
@@ -30,6 +30,5 @@ const CONSTANTS = {
   // options_ru: 'Настройки',
   // options_de: 'Optionen'
 };
-
 
 export default CONSTANTS;

@@ -1,5 +1,5 @@
 import CONSTANTS from '../utils/CONSTANTS.js';
-// import { changeText } from '../utils/activeButtonColor.js';
+import { changeText } from '../utils/activeButtonColor.js';
 import addRules from '../utils/addGameRules.js';
 import { en, ru, de } from '../utils/gameObjectsLang.js';
 

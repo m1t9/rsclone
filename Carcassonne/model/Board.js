@@ -18,7 +18,7 @@ export default class Board {
     this.currentCardTexture = 'road_straight_1';
     this.currentCardDir = 1;
     this.currentCard = null;
-    this.currentCardName = null; // ?
+    this.currentCardName = null;
     this.step = 2;
     this.isWin = false;
     this.emptyCells = [];
@@ -30,9 +30,20 @@ export default class Board {
     this.sides = [];
     this.playersCards = {
       player1: [],
+      player2: [],
+      player3: [],
+      player4: [],
     };
+
+    this.playersCount = 2;
+
+    // this.currnetPlayer = 1;
+
     this.playersChips = {
       player1: 10,
+      player2: 10,
+      player3: 10,
+      player4: 10,
     };
     // this.nextStep = null;
   }
@@ -46,6 +57,7 @@ export default class Board {
   }
 
   initialization() {
+    this.board.playersCount = window.HUD.players.length;
     const card = new Card(this.board.cellsCount, CONSTANTS.SIZE, CONSTANTS.SIZE);
 
     // moveCamera.call(this);
@@ -82,7 +94,7 @@ export default class Board {
     window.HUD.disableNextButton();
     window.HUD.disableChipButton();
 
-    console.log(this.board.currentCard);
+    // console.log(this.board.currentCard);
 
     window.HUD.turnBtn.on('pointerup', function () {
       // this.board.currentCardDir += 1;
@@ -91,7 +103,7 @@ export default class Board {
     }, this);
 
     window.HUD.nextBtn.on('pointerup', function () {
-      console.log(this.board.playersChips[`player${this.board.currnetPlayerNumber}`]);
+      // console.log(this.board.playersChips[`player${this.board.currnetPlayerNumber}`]);
       // console.log(this.board.currnetPlayerNumber);
       addNeib.call(this, this.board, this.board.currentX, this.board.currentY);
       this.board.nextCard();
@@ -108,7 +120,10 @@ export default class Board {
 
       this.board.sides = [];
 
-      console.log(this.board.playersCards);
+      // console.log(this.board.playersCards);
+      this.board.nextPlayer();
+    console.log(this.board.currnetPlayerNumber);
+
     }, this);
 
     window.HUD.setChipBtn.on('pointerup', function () {
@@ -120,7 +135,7 @@ export default class Board {
   }
 
   destroyPointers() {
-    console.log('destroy');
+    // console.log('destroy');
     this.sides.forEach((item) => {
       item.destroy(true);
     });
@@ -205,5 +220,11 @@ export default class Board {
     nextCard.call(this, this.step - 1);
     this.step += 1;
     window.HUD.updateCard(this.currentCard.name);
+  }
+
+  nextPlayer() {
+    this.currnetPlayerNumber += 1;
+    if (this.currnetPlayerNumber > this.playersCount) this.currnetPlayerNumber = 1;
+    window.HUD.updatePlayerName(this.currnetPlayerNumber - 1);
   }
 }

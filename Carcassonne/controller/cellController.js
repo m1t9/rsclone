@@ -14,6 +14,8 @@ export default function addCell(board, xx, yy, type) {
   ]);
 
   const cell = this.add.isoSprite(xx, yy, 0, type, this.isoGroup);
+  const back = this.add.isoSprite(xx, yy, -5, 'back', this.isoGroup);
+
   let checker = false;
   // cell.scaleX = 0.5;
   // cell.scaleY = 1;
@@ -33,12 +35,14 @@ export default function addCell(board, xx, yy, type) {
       cell.addMode = !cell.addMode;
       cell.setTexture(board.currentCardTexture);
       this.isoZ += 7;
+      back.isoZ += 7;
     });
 
     cell.on('pointerout', function () {
       cell.setTexture('empty');
       cell.addMode = !cell.addMode;
       this.isoZ -= 7;
+      back.isoZ -= 7;
     });
 
     // window.HUD.controlBtns.buttons[0].on('pointerdown', () => {
@@ -52,6 +56,7 @@ export default function addCell(board, xx, yy, type) {
         if (board.checkOne(xx, yy) && board.isWin === false) {
           cell.removeAllListeners();
           cell.isoPosition.z = 0;
+          back.isoPosition.z = -5;
           // addNeib.call(this, board, xx, yy);
           board.setCurrentCoords(xx, yy);
           board.addCardToBoard(cell.number);

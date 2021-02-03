@@ -4,6 +4,7 @@ import config from '../index.js';
 // import MainScene from '../index.js';
 import addRules from '../utils/addGameRules.js';
 import { en, ru, de } from '../utils/gameObjectsLang.js';
+import COORDS from '../utils/deskCoordinates.js';
 
 export default class HUD extends Phaser.Scene {
   constructor() {
@@ -16,9 +17,16 @@ export default class HUD extends Phaser.Scene {
     // this.currentCardNumber = 0;
     this.music = undefined;
     this.musicON = true;
-    this.scoreFieldOpen = false;
     // this.settingsBtn;
     this.lang = undefined;
+    this.player = undefined;
+
+    this.playerPoints = {
+      player1: 14,
+      player2: 8,
+      player3: 37,
+      player4: 25,
+    };
   }
 
   // init() {
@@ -39,7 +47,6 @@ export default class HUD extends Phaser.Scene {
       'rexUI',
     );
   }
-  
   enableNextButton() {
     this.nextBtn.setInteractive();
     this.nextBtn.clearTint();
@@ -89,13 +96,6 @@ export default class HUD extends Phaser.Scene {
   
   create() {
     this.lang = window.StartScreen.lang;
-    if (window.StartScreen.playerNames.length === 0) {
-      this.players = new Array(Number(window.StartScreen.numOfPlayers)).fill().map((v, i) => v = `Player ${i + 1}`);
-    } else {
-      this.players = [...new Set(window.StartScreen.playerNames)];
-    }
-
-    console.log(this.players);
     // this.add.image(650, 410, 'chip1');
     const mainScene = this.scene.get('MainScene').board.currentCard;
     // this.add.text(10, 10, 'Current card:', { font: '20px', fill: '#ffffff' });
@@ -109,7 +109,7 @@ export default class HUD extends Phaser.Scene {
       volume: 0.5,
       rate: 1,
       loop: true,
-      delay: 1000
+      delay: 1000,
     });
     // this.music.play();
 
@@ -120,15 +120,15 @@ export default class HUD extends Phaser.Scene {
     this.turnBtn.on('pointerover', function(pointer) {
       console.log(this.turnBtn.x)
       this.turnBtnText = this.add.text(this.turnBtn.x - 45, this.turnBtn.y - 70, this.lang.turnCard_btn.name, { color: 'black', fontFamily: 'Thintel', fontSize: '30px'});
-    }, this)
+    }, this);
 
     this.turnBtn.on('pointerout', function(pointer) {
       this.turnBtnText.destroy();
-    }, this)
+    }, this);
 
     this.nextBtn.on('pointerover', function(pointer) {
       this.nextBtnText = this.add.text(this.nextBtn.x - 45, this.nextBtn.y - 70, this.lang.nextStep_btn.name, { color: 'black', fontFamily: 'Thintel', fontSize: '30px'});
-    }, this)
+    }, this);
 
     this.nextBtn.on('pointerout', function(pointer) {
       this.nextBtnText.destroy();
@@ -146,37 +146,34 @@ export default class HUD extends Phaser.Scene {
     this.openScoreFieldBtn.on('pointerover', function () {
       this.setScale(CONSTANTS.BTNS_ACTIVE_SCALE);
     });
+
     this.openScoreFieldBtn.on('pointerout', function () {
       this.setScale(CONSTANTS.BTNS_DEFAULT_SCALE);
-    });
+    }, this);
 
+    this.setChipBtn.on('pointerout', function(pointer) {
+      this.setChipBtnText.destroy();
+    }, this);
+
+    this.openScoreFieldBtn = this.add.image(this.game.config.width - 150, this.game.config.height - 400, 'open_score').setInteractive();
     this.openScoreFieldBtn.on('pointerup', function(pointer) {
       this.scoreFieldOpen != this.scoreFieldOpen;
 
       if (!this.scoreFieldOpen) {
         this.scoreFieldOpen = true;
-
-        this.openScoreFieldBtn.setTint(CONSTANTS.BTNS_HOVER_COLOR);
-        this.openScoreFieldBtn.setScale(CONSTANTS.BTNS_DEFAULT_SCALE);
-
-        this.scoreField = this.add.sprite(this.game.config.width / 2 , this.game.config.height /2, 'score_field').setAlpha(0).setInteractive();
+        this.scoreField = this.add.sprite(this.game.config.width / 2, this.game.config.height / 2, 'score_field').setScale(1).setInteractive();
         this.tweens.add({
           targets: this.scoreField,
           alpha: 1,
           ease: 'Sine.easeInOut',
-          // yoyo: true,
-          // repeat: -1,
           duration: 2000
         }, this);
 
+        this.showChips();
         this.addDialog = addDialog(150, this.openScoreFieldBtn.x - 100, this.openScoreFieldBtn.y - 250, this, this.players.length);
-        // const text = this.add.text(400, 300, 'Hello World', { fixedWidth: 150, fixedHeight: 36 })
-        // text.setOrigin(0.5, 0.5)
       
-        // text.setInteractive().on('pointerdown', () => {
-        //   this.rexUI.edit(text)
-        // })
       } else {
+        
         this.openScoreFieldBtn.clearTint();
         this.scoreFieldOpen = false;
         this.tweens.add({
@@ -185,11 +182,14 @@ export default class HUD extends Phaser.Scene {
           duration: 2000,
           ease: 'Sine.easeInOut'
         }, this);
+
       }
 
-      // console.log(this.scoreFieldOpen);
     }, this);
 
+    let menu = undefined;
+    const settingsBtn = this.add.image(this.game.config.width - 50, 40, 'settings_2').setInteractive();
+    // this.settingsBtn = this.add.image(this.game.config.width - 50, 30, 'settings_2');
     let menu = undefined;
     const settingsBtn = this.add.image(this.game.config.width - 50, 40, 'settings_2').setInteractive();
     const items = [
@@ -231,7 +231,38 @@ export default class HUD extends Phaser.Scene {
 
     // for (let i = 1; i < parseInt(window.StartScreen.numOfPlayers, 10) + 1; i += 1) {
     //   this["player_" + i] = this.add.text(700 + i*100, 20, `Player ${i}`, { fontFamily: 'Thintel', fontSize: '40px', fill: '#ffffff' });
-    // }  
+    // }
+    
+    if (window.StartScreen.playerNames.length === 0) {
+      this.players = new Array(Number(window.StartScreen.numOfPlayers)).fill().map((v, i) => v = `Player ${i + 1}`);
+    } else {
+      this.players = [...new Set(window.StartScreen.playerNames)];
+    }
+
+    this.player = this.add.text(this.game.config.width - this.game.config.width / 2, 70, this.players[0], { color: 'white', fontFamily: 'Thintel', fontSize: '30px' });
+    this.playerChip = this.add.sprite(this.game.config.width - this.game.config.width / 2 - 50, 85, 'chipHUD_1');
+    // console.log(this.players);
+  }
+
+  updatePlayerName(playerNumber) {
+    this.player.setText(this.players[playerNumber]);
+    this.playerChip.destroy();
+    this.playerChip = this.add.sprite(this.game.config.width - this.game.config.width / 2 - 50, 85, `chipHUD_${playerNumber + 1}`);
+  }
+
+  showChips() {
+    this.chipsOnDesk = [];
+    // this.playerPoints.forEach((point, index) => {
+    //   this.chipsOnDesk.push(this.add.sprite(index + 100, index + 100, )
+    // });
+    for (let i = 0; i < this.players.length; i += 1) {
+      // console.log(this.playerPoints[`player${i + 1}`]);
+      this.chipsOnDesk.push(this.add.sprite(
+        this.game.config.width / 2 + COORDS[this.playerPoints[`player${i + 1}`]].x,
+        this.game.config.height / 2 + COORDS[this.playerPoints[`player${i + 1}`]].y,
+        `chipBoard_${i + 1}`,
+      ));
+    }
   }
 
   initHudCard(name) {
@@ -386,7 +417,7 @@ const createMenu = function (scene, x, y, items, onClick) {
   return menu;
 }
 
-const createMenuBtn = function (scene, text, background, left=0, right=0, top=0, bottom=0) {
+const createMenuBtn = function (scene, text, background, left = 0, right = 0, top = 0, bottom = 0) {
   return scene.rexUI.add.label({
      // width: 50,
     // height: 55,

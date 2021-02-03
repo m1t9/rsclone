@@ -61,7 +61,7 @@ const en = {
     text: 'Enter the name of the players'
   },
   readyPlay: {
-    text: 'READY TO PLAY!'
+    text: 'Ready to Play!'
   },
   playerName: {
     text: 'Player Name',
@@ -126,7 +126,7 @@ const ru = {
     text: 'Введите имена игроков'
   },
   readyPlay: {
-    text: 'ВПЕРЕД ИГРАТЬ!'
+    text: 'Вперед играть!'
   },
   playerName: {
     text: 'Имя Игрока',
@@ -191,7 +191,7 @@ const de = {
     text: 'Geben Sie die Spielernamen ein'
   },
   readyPlay: {
-    text: 'FERTIG ZU SPIELEN!'
+    text: 'Fertig zu spielen!'
   },
   playerName: {
     text: 'Spielername',

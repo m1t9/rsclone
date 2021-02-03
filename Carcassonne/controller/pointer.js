@@ -1,13 +1,31 @@
 function setChip(side, x, y, z) {
-  this.board.playersChips[`player${this.board.currnetPlayerNumber}`] -= 1;
-  this.board.currentCard.chipPos = side;
-  this.board.destroyPointers();
-  console.log(`X: ${x} Y: ${y}`);
-  // console.log(x - 10);
-  // const xx = x - 50;
-  // const yy = y - 50;
-  // this.add.isoSprite(x + 30, y - 30, 50, 'blue_chip', this.sideGroup);
-  this.add.isoSprite(x, y, z, 'blue_chip', this.sideGroup);
+  if (this.board.currentCard[`point${side}`] !== 0
+    && this.board.playersChips[`player${this.board.currnetPlayerNumber}`] > 0) {
+    this.board.playersChips[`player${this.board.currnetPlayerNumber}`] -= 1;
+    this.board.currentCard.chipPos = side;
+    this.board.destroyPointers();
+    // console.log(`X: ${x} Y: ${y}`);
+    // console.log(x - 10);
+    // const xx = x - 50;
+    // const yy = y - 50;
+    // this.add.isoSprite(x + 30, y - 30, 50, 'blue_chip', this.sideGroup);
+    const chip = this.add.isoSprite(x, y, z, `chip_${this.board.currnetPlayerNumber}`, this.sideGroup);
+    chip.playerNumber = this.board.currnetPlayerNumber;
+
+    chip.setInteractive();
+    chip.on('pointerover', () => {
+      chip.setScale(1.1);
+    });
+
+    chip.on('pointerout', () => {
+      chip.setScale(1);
+    });
+
+    chip.on('pointerdown', (pointer) => {
+      if (pointer.rightButtonDown()) chip.destroy();
+      this.board.playersChips[`player${chip.playerNumber}`] += 1;
+    });
+  }
 }
 
 export default function addPointerSides(x, y) {
