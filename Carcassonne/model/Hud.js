@@ -20,6 +20,8 @@ export default class HUD extends Phaser.Scene {
     // this.settingsBtn;
     this.lang = undefined;
     this.player = undefined;
+    // this.scoreField = undefined;
+    // this.scoreTable = undefined;
 
     this.playerPoints = {
       player1: 14,
@@ -155,37 +157,53 @@ export default class HUD extends Phaser.Scene {
       this.setChipBtnText.destroy();
     }, this);
 
-    this.openScoreFieldBtn = this.add.image(this.game.config.width - 150, this.game.config.height - 400, 'open_score').setInteractive();
-    this.openScoreFieldBtn.on('pointerup', function(pointer) {
-      this.scoreFieldOpen != this.scoreFieldOpen;
+    this.scoreField = undefined;
+    this.scoreTable = undefined;
 
-      if (!this.scoreFieldOpen) {
-        this.scoreFieldOpen = true;
-        this.scoreField = this.add.sprite(this.game.config.width / 2, this.game.config.height / 2, 'score_field').setScale(1).setInteractive();
-        this.tweens.add({
-          targets: this.scoreField,
-          alpha: 1,
-          ease: 'Sine.easeInOut',
-          duration: 2000
-        }, this);
+    let openScoreFieldBtn = this.add.image(this.game.config.width - 150, this.game.config.height - 400, 'open_score').setInteractive();
 
-        this.showChips();
-        // КООРДИНАТЫ!
-        this.scoreTable = addDialog(150, this.openScoreFieldBtn.x - 20, this.openScoreFieldBtn.y - 200, this, this.players.length);
-      
-      } else {
+    openScoreFieldBtn.on('pointerdown', function(pointer) {
+      // this.scoreFieldOpen != this.scoreFieldOpen;
+        if (this.scoreField === undefined && this.scoreTable === undefined) {
+          // this.openScoreFieldBtn.setTint(CONSTANTS.BTNS_HOVER_COLOR);
+          // this.openScoreFieldBtn.setScale(CONSTANTS.BTNS_DEFAULT_SCALE);
+  
+          this.scoreField = this.add.sprite(this.game.config.width / 2, this.game.config.height / 2, 'score_field').setScale(1).setInteractive();
 
-        this.openScoreFieldBtn.clearTint();
-        this.scoreFieldOpen = false;
-        this.tweens.add({
-          targets: this.scoregGroup,
-          alpha: 0,
-          duration: 2000,
-          ease: 'Sine.easeInOut'
-        }, this);
+          this.tweens.add({
+            targets: this.scoreField,
+            alpha: 1,
+            ease: 'Sine.easeInOut',
+            duration: 500
+          }, this);
+  
+          this.showChips();
+          this.scoreTable = addDialog(150, openScoreFieldBtn.x - 20, openScoreFieldBtn.y - 200, this, this.players.length);
+          // this.scoreTable = addDialog(150, this.game.config.width / 2, this.game.config.height / 2, this, this.players.length);
 
-      }
 
+        } else if (!this.scoreTable.isInTouching(pointer)) {
+          // console.log('collapse!');
+          this.scoreField.destroy();
+
+          // this.chipsOnDesk = [];
+
+          this.scoreTable.fadeOut(500);
+          this.scoreTable = undefined;
+          this.scoreField = undefined;
+          
+          // openScoreFieldBtn.clearTint();
+          // this.scoreFieldOpen = false;
+
+          this.tweens.add({
+            targets: this.scoreField,
+            alpha: 0,
+            duration: 500,
+            ease: 'Sine.easeInOut'
+          }, this);
+        }
+
+    
     }, this);
 
     let menu = undefined;
@@ -262,7 +280,7 @@ export default class HUD extends Phaser.Scene {
       ));
     }
 
-    console.log(this.chipsOnDesk);
+    // console.log(this.chipsOnDesk);
   }
 
   initHudCard(name) {
