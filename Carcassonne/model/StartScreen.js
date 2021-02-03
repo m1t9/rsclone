@@ -1,8 +1,22 @@
 import CONSTANTS from '../utils/CONSTANTS.js';
+import { changeText } from '../utils/activeButtonColor.js';
+import addRules from '../utils/addGameRules.js';
+import { en, ru, de } from '../utils/gameObjectsLang.js';
 
 export default class StartScreen extends Phaser.Scene {
   constructor() {
     super({ key: 'StartScreen' });
+
+    this.playerNames = [];
+    // this.rulesOpened = false;
+    this.lang = en;
+    this.selectLang = {
+      'en': en,
+      'ru': ru,
+      'de': de,
+    }
+    // this.tooltipStart;
+    // this.lang = 'en';
   }
 
   preload() {
@@ -10,13 +24,20 @@ export default class StartScreen extends Phaser.Scene {
     this.load.image('cursor', './assets/other/cursor.png');
     this.load.image('new_game', './assets/btns/start_btn.png');
     this.load.image('about', './assets/btns/about_btn.png');
-
+    this.load.image('game_logo', './assets/other/logo.png');
+    this.load.image('game_rules', './assets/other/rules_scroll.png');
     this.load.image('castle1', './assets/startScreen/castle_01.png')
     this.load.image('castle2', './assets/startScreen/castle_02.png');
     this.load.image('castle3', './assets/startScreen/castle_03.png');
     this.load.image('castle4', './assets/startScreen/castle_04.png');
     this.load.image('castle5', './assets/startScreen/castle_05.png');
     this.load.image('castle6', './assets/startScreen/castle_06.png');
+
+    this.load.image('lang_btn', './assets/btns/language_btn.png');
+    this.load.image('en_btn', './assets/btns/language_btn_small.png');
+    this.load.image('ru_btn', './assets/btns/language_btn_small.png');
+    this.load.image('de_btn', './assets/btns/language_btn_small.png');
+
 
     this.load.image('grey_btn', './assets/btns/grey_button06.png');
     this.load.scenePlugin(
@@ -25,6 +46,7 @@ export default class StartScreen extends Phaser.Scene {
       'rexUI',
       'rexUI',
     );
+    this.load.plugin('rextexteditplugin', 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rextexteditplugin.min.js', true);
   }
 
   create() {
@@ -33,6 +55,7 @@ export default class StartScreen extends Phaser.Scene {
     this.cameras.main.setBackgroundColor(0x1b1a1c);
 
     this.input.setDefaultCursor('url(./assets/other/cursor.png), pointer');
+    this.add.sprite(this.game.config.width / 2 + 250, 100, 'game_logo').setScale(0.5).setDepth(2);
 
     this.anims.create({
       key: 'castleAnim',
@@ -48,10 +71,11 @@ export default class StartScreen extends Phaser.Scene {
       repeat: -1,
     });
 
-    this.add.sprite(this.game.config.width / 2 + 150, 430, 'castle1').setScale(1.1).play('castleAnim');
+    this.add.sprite(this.game.config.width / 2 + 150, 500, 'castle1').setScale(1.1).play('castleAnim');
 
     const startBtnBackground = this.add.image(0, 0, 'new_game');
-    const optionsBtnBackground = this.add.image(0, 0, 'about');
+    const aboutBtnBackground = this.add.image(0, 0, 'about');
+    const langBtnBackground = this.add.image(0, 0, 'lang_btn');
     let startScreenBtns = this.rexUI.add
       .buttons({
         x: 0,
@@ -63,129 +87,302 @@ export default class StartScreen extends Phaser.Scene {
         },
         anchor: {
           left: 'center-400',
-          centerY: 'center-30',
+          centerY: 'center+20',
         },
         buttons: [
-          createBtn(this, 'New Game', startBtnBackground),
-          createBtn(this, 'About', optionsBtnBackground),
+          createBtn(this, this.lang.newGame_btn.name, startBtnBackground, 10, 50, 0, 10),
+          createBtn(this, this.lang.gameRules_btn.name, aboutBtnBackground, 10, 40, 0, 10),
+          createBtn(this, this.lang.lang_btn.name, langBtnBackground, 10, 50, 0, 10),
         ],
         // space: { item: 10 },
         expand: true
       })
-      .layout();
-
-    // startScreenBtns.on('button.click', function (button, index, pointer, event) {
-    //   console.log(`Click button ${button.text}`);
-    //   // this.scene.launch('Boot');
-    //   // this.scene.stop('StartScreen');
-    //   // startBtn.clearButtons(true);
-    // }, this);
+      .layout()
+      // .setInteractive();
 
     startScreenBtns.on('button.over', function(button, index, ponter, event) {
-      button.backgroundChildren[0].setTint(CONSTANTS.BTNS_HOVER_COLOR);
+      // button.backgroundChildren[0].setTint(CONSTANTS.BTNS_HOVER_COLOR);
+      button.setScale(CONSTANTS.BTNS_ACTIVE_SCALE);
     });
 
     startScreenBtns.on('button.out', function(button, index, ponter, event) {
-      button.backgroundChildren[0].clearTint();
+      // button.backgroundChildren[0].clearTint();
+      button.setScale(CONSTANTS.BTNS_DEFAULT_SCALE);
     });
 
-    let newGameBtn = startScreenBtns.getButton(0);
-    newGameBtn.on('pointerup', function() {
+    let rulesBtn = startScreenBtns.getButton(1);
+    this.rulesOpen = undefined;
 
+    rulesBtn.on('pointerup', function(pointer) {
+      if (this.rulesOpen === undefined) {
+        rulesBtn.backgroundChildren[0].setTint(CONSTANTS.BTNS_HOVER_COLOR);
+        rulesBtn.setScale(CONSTANTS.BTNS_DEFAULT_SCALE);
+
+        const rulesBackground = this.add.image(0, 0, 'game_rules');
+        this.rulesOpen = addRules(this, this.game.config.width / 2 + 160, 460, rulesBackground, this.lang.gameRulesContent.text);
+      } else if (!this.rulesOpen.isInTouching(pointer)) {
+        // rulesOpen.destroy();
+        this.rulesOpen.fadeOut(300);
+        this.rulesOpen = undefined;
+        rulesBtn.backgroundChildren[0].clearTint();
+      }
+    }, this);
+
+    
+    let newGameBtn = startScreenBtns.getButton(0);
+    this.dialog = undefined;
+    // this.selectPlayersNum = undefined;
+
+    newGameBtn.on('pointerup', function(pointer) {
+
+      newGameBtn.backgroundChildren[0].setTint(CONSTANTS.BTNS_HOVER_COLOR);
+      newGameBtn.setScale(CONSTANTS.BTNS_DEFAULT_SCALE);
       newGameBtn.disableInteractive();
 
-      let dialog = this.rexUI.add.dialog({
-        // x: 412,
-        // y: 250,
+      this.selectPlayersNum = this.rexUI.add.dialog({
         anchor: {
-          left: 'center-455',
-          centerY: 'center-220',
+          left: 'center-435',
+          centerY: 'center-230',
         },
-        background: this.rexUI.add.roundRectangle(0, 0, 50, 50, 20, 0xe3b483),
+        background: this.rexUI.add.roundRectangle(0, 0, 100, 100, 20, 0xe3b483),
         title: this.rexUI.add.label({
-          background: this.rexUI.add.roundRectangle(0, 0, 50, 20, 10, 0xaf6a39),
-          text: this.add.text(0, 0, 'Select the number of players', {
+          background: this.rexUI.add.roundRectangle(0, 0, 100, 50, 20, 0xaf6a39),
+          text: this.add.text(0, 0, this.lang.selectNumberOfPlayers.text, {
             fontFamily: 'Thintel',
-            fontSize: '35px'
+            fontSize: '30px'
           }),
           space: {
-            left: 15,
-            right: 15,
-            top: 0,
+            left: 20,
+            right: 20,
+            top: 5,
             bottom: 10
           }
         }),
-
-        // content: this.add.text(0, 0, '1 + 1 + 1 + 1 + 1 = ', {
-        //   fontSize: '24px'
-        // }),
-
         choices: [
           createLabel(this, '2'),
           createLabel(this, '3'),
           createLabel(this, '4'),
         ],
-
         space: {
           title: 10,
-          content: 0,
-          choice: 10,
-
-          left: 10,
-          right: 10,
-          top: 10,
-          bottom: 10
+          choice: 5,
+          left: 15,
+          right: 15,
+          top: 15,
+          bottom: 15,
         },
         align: 'center',
-
         expand: {
           content: false // Content is a pure text object
         }
       })
       .layout()
-      .popUp(500);
+      .fadeIn(500)
+      
+      // console.log(this.selectPlayersNum.children[1].children[1]);
+      // chidren[1]
 
-      // this.print = this.add.text(0, 0, '')
-      dialog.on('button.click', function (button, groupName, index) {
-            // this.print.text += index + ': ' + button.text + '\n'
+      this.selectPlayersNum.on('button.click', function (button, groupName, index) {
         this.numOfPlayers = button.text;
-        this.scene.launch('Boot');
-        this.scene.stop('StartScreen');
+        // console.log(this.numOfPlayers, newGameBtn)
+        // this.selectPlayersNum.removeChoice(0, false);
+        // this.selectPlayersNum.removeChoice(1, false);
+        // this.selectPlayersNum.removeChoice(2, false);
+        // this.selectPlayersNum = undefined;
+        // this.selectPlayersNum = undefined;
+        // this.selectPlayersNum = undefined;
+        this.selectPlayersNum.destroy();
+
+        if (this.dialog === undefined) {
+          // this.selectPlayersNum = null;
+          // this.selectPlayersNum.setChoiceEnable(2, false);
+          
+          this.tooltipStart = this.add.text(newGameBtn.x - 400, 150, this.lang.tooltip_start.text, { fontFamily: 'Thintel', fontSize: '35px', wordWrap: {width: 250}, align: 'justify'});
+          this.dialog = addDialog(this, Number(this.numOfPlayers), newGameBtn);
+
+          // console.log(this.dialog.children[1].children[1])
+        }
+        // } else if (!this.dialog.isInTouching(pointer)) {
+
+        //   // console.log('out of dialog')
+        //   this.dialog.fadeOut(300);
+        //   this.dialog = undefined;
+        //   this.tooltipStart.destroy();
+        //   newGameBtn.backgroundChildren[0].clearTint();
+        // }
       },this)
         .on('button.over', function (button, groupName, index) {
-          button.getElement('background').setStrokeStyle(2, 0x7b4626)
-        })
+          button.getElement('background').setStrokeStyle(4, 0x7b4626)
+        }, this)
         .on('button.out', function (button, groupName, index) {
           button.getElement('background').setStrokeStyle()
-        })
-
+        },this);
     }, this);
 
+    let changeLangBtn = startScreenBtns.getButton(2);
+    this.selectLangBtns = undefined;
+
+    changeLangBtn.on('pointerup', function(pointer) {
+
+      if (this.selectLangBtns === undefined) {
+        changeLangBtn.backgroundChildren[0].setTint(CONSTANTS.BTNS_HOVER_COLOR);
+        changeLangBtn.setScale(CONSTANTS.BTNS_DEFAULT_SCALE);
+
+        let enBtnBackground = this.add.image(0, 0, 'en_btn');
+        let ruBtnBackground = this.add.image(0, 0, 'ru_btn');
+        let deBtnBackground = this.add.image(0, 0, 'de_btn');
+
+        this.selectLangBtns = this.rexUI.add.buttons({
+          x: changeLangBtn.x,
+          y: changeLangBtn.y + 70,
+          // width: 200,
+          orientation: 'x',
+          space: {
+            item: 8,
+          },
+          buttons: [
+            createBtn(this, 'en', enBtnBackground, 15, 15, 0, 10),
+            createBtn(this, 'ru', ruBtnBackground, 15, 15, 0, 10),
+            createBtn(this, 'de', deBtnBackground, 15, 15, 0, 10),
+          ],
+          // expand: true
+        })
+        .layout()
+        .fadeIn(500)
+
+        this.selectLangBtns.on('button.click', function (button, groupName, index) {
+
+          this.lang = this.selectLang[button.text];
+          changeLangBtn.text = this.lang.lang_btn.name;
+          changeLangBtn.setText(this.lang.lang_btn.name);
+          rulesBtn.setText(this.lang.gameRules_btn.name);
+          newGameBtn.setText(this.lang.newGame_btn.name);
+
+          if (this.tooltipStart !== undefined) this.tooltipStart.setText(this.lang.tooltip_start.text);
+          if (this.rulesOpen !== undefined) this.rulesOpen.setText(this.lang.gameRulesContent.text);
+
+          if (this.selectPlayersNum !== undefined &&  this.selectPlayersNum.active === true)  {
+            // || this.selectPlayersNum.children.length !== 0
+            this.selectPlayersNum.children[1].children[1].setText(this.lang.selectNumberOfPlayers.text)
+          }
+
+          if (this.dialog !== undefined && this.selectPlayersNum.active === false) {
+            // console.log(this.selectPlayersNum);
+
+            // this.dialog.children[1].children[1].setText(this.lang.enterName.text);
+            // console.log(this.dialog.children[2].buttons);
+
+            if (this.dialog.children[2].buttons.length === 3) {
+              this.dialog.children[2].buttons[0].setText(this.lang.playerName.text);
+              this.dialog.children[2].buttons[1].setText(this.lang.playerName.text);
+              this.dialog.children[2].buttons[2].setText(this.lang.readyPlay.text);
+            } else if (this.dialog.children[2].buttons.length === 4) {
+              this.dialog.children[2].buttons[0].setText(this.lang.playerName.text);
+              this.dialog.children[2].buttons[1].setText(this.lang.playerName.text);
+              this.dialog.children[2].buttons[2].setText(this.lang.playerName.text);
+              this.dialog.children[2].children[3].setText(this.lang.readyPlay.text);
+            } else if (this.dialog.children[2].buttons.length === 5) {
+              this.dialog.children[2].buttons[0].setText(this.lang.playerName.text);
+              this.dialog.children[2].buttons[1].setText(this.lang.playerName.text);
+              this.dialog.children[2].buttons[2].setText(this.lang.playerName.text);
+              this.dialog.children[2].children[3].setText(this.lang.playerName.text);
+              this.dialog.children[2].children[4].setText(this.lang.readyPlay.text);
+            }
+          }
+
+          // if (this.dialog.choices[choices.length -1])
+          // this.lang.readyPlay.text
+
+          // scene.lang.readyPlay.text
+        }, this);
+
+      } else if (!this.selectLangBtns.isInTouching(pointer)) {
+        this.selectLangBtns.fadeOut(300);
+        this.selectLangBtns = undefined;
+        changeLangBtn.backgroundChildren[0].clearTint();
+      }
+  
+    }, this);
+  
   }
+
 }
 
-const createLabel = function (scene, text, backgroundColor) {
-  return scene.rexUI.add.label({
-    background: scene.rexUI.add.roundRectangle(0, 0, 50, 40, 20, 0xaf6a39),
+const createInput = function(scene, content) {
+  let keyObj = scene.input.keyboard.addKey('ENTER'); 
+  // const text = scene.add.text(400, 300, 'Hello World', { fixedWidth: 150, fixedHeight: 36 })
+  let text = scene.add.text(0, 0, content, {
+    color: 'white',
+    fontFamily: 'Thintel',
+    fontSize: '30px',
+    fixedWidth: 150,
+    fixedHeight: 40,
+    align: 'center',
+    halign: 'center',
+  })
 
-    text: scene.add.text(0, 0, text, {
-      fontFamily: 'Thintel',
-      fontSize: '35px'
-    }),
+	text.setInteractive().on('pointerdown', () => {
+    // scene.rexUI.edit(text);
+    let config = {
+      onTextChanged: function(textObject, text) {
+        textObject.text = text;
+      },
+      selectAll: true
+    }
+          
+    scene.plugins.get('rextexteditplugin').edit(text, config);
+    text.setColor('black');
+    // scene.playerNames.push(text);
+  });
+
+  keyObj.on('up', function(event) { 
+    if (text.text !== 'Player Name') {
+      scene.playerNames.push(text.text);
+    }
+  });
+
+  return text;
+}
+
+const createInetactiveLabel = function (scene, content, backgroundColor) {
+  return scene.rexUI.add.label({
+    background: scene.rexUI.add.roundRectangle(0, 0, 80, 40, 20, 0xaf6a39),
+    text: createInput(scene, content),
     space: {
-      left: 0,
-      right: 0,
-      top: 0,
-      bottom: 5
+      left: 10,
+      right: 10,
+      top: 5,
+      bottom: 10
     },
     align: 'center',
   })
 }
 
-const createBtn = function (scene, text, background) {
+const createLabel = function (scene, text, backgroundColor) {
   return scene.rexUI.add.label({
-    width: 30,
-    height: 55,
+    background: scene.rexUI.add.roundRectangle(0, 0, 80, 40, 20, 0xaf6a39),
+    name: 'Ready to Play!',
+    text: scene.add.text(0, 0, text, {
+      fontFamily: 'Thintel',
+      fontSize: '30px'
+    }),
+    space: {
+      // left: 0,
+      // right: 0,
+      // top: 0,
+      // bottom: 5,
+      left: 10,
+      right: 10,
+      top: 5,
+      bottom: 10
+    },
+    align: 'center',
+  })
+}
+const createBtn = function (scene, text, background, left=0, right=0, top=0, bottom=0) {
+  return scene.rexUI.add.label({
+    // width: 50,
+    // height: 55,
     name: text,
     text: scene.add.text(0, 0, text, {
       fontFamily: 'Thintel',
@@ -194,12 +391,72 @@ const createBtn = function (scene, text, background) {
     }),
     background: background,
     space: {
-      left: 30,
-      right: 45,
-      top: 0,
-      bottom: 10,
-      // item: 10
+      left: left,
+      right: right,
+      top: top,
+      bottom: bottom,
     },
     align: 'center',
   });
+}
+
+
+const addDialog = function(scene, numberOfPlayers) {
+  let dialog = scene.rexUI.add.dialog({
+      // x: 412,
+      // y: 250,
+      anchor: {
+        left: 'center-445',
+        centerY: 'center-240',
+      },
+      background: scene.rexUI.add.roundRectangle(0, 0, 100, 100, 20, 0xe3b483),
+      title: scene.rexUI.add.label({
+        background: scene.rexUI.add.roundRectangle(0, 0, 100, 50, 20, 0xaf6a39),
+        text: scene.add.text(0, 0, scene.lang.enterName.text, {
+          fontFamily: 'Thintel',
+          fontSize: '30px'
+        }),
+        space: {
+          left: 20,
+          right: 20,
+          top: 5,
+          bottom: 10
+        }
+      }),
+      choices: (new Array(numberOfPlayers).fill().map((v) => v = createInetactiveLabel(scene, scene.lang.playerName.text))).concat([createLabel(scene, scene.lang.readyPlay.text)]),
+      space: {
+        title: 10,
+        content: 10,
+        choice: 10,
+        left: 10,
+        right: 10,
+        top: 10,
+        bottom: 10,
+      },
+      align: 'center',
+      expand: {
+        content: false // Content is a pure text object
+      }
+    })
+    .layout()
+    .fadeIn(500)
+
+  dialog.on('button.click', function (button, groupName, index) {
+    if (button.name === 'Ready to Play!') {
+      scene.scene.launch('Boot');
+      scene.scene.stop('StartScreen');
+    };
+  },scene)
+    .on('button.over', function (button, groupName, index) {
+      // button.backgroundChildren[0].setTint(CONSTANTS.BTNS_HOVER_COLOR);
+      button.getElement('background').setStrokeStyle(4, 0x7b4626)
+      // button.backgroundChildren[0].setFillStyle(0x7b4626)
+    },scene)
+    .on('button.out', function (button, groupName, index) {
+      // button.backgroundChildren[0].clearTint();
+      button.getElement('background').setStrokeStyle()
+      // button.backgroundChildren[0].setFillStyle()
+    },scene);
+
+  return dialog;
 }
