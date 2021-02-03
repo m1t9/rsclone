@@ -121,58 +121,66 @@ export default class HUD extends Phaser.Scene {
     this.otherCardBtn = this.add.image(this.game.config.width - 60, this.game.config.height - 100, 'other_card_btn').setInteractive();
 
     this.turnBtn.on('pointerover', function(pointer) {
-      console.log(this.turnBtn.x)
+      // console.log(this.turnBtn.x)
       this.turnBtnText = this.add.text(this.turnBtn.x - 45, this.turnBtn.y - 70, this.lang.turnCard_btn.name, { color: 'black', fontFamily: 'Thintel', fontSize: '30px'});
+      this.turnBtn.setScale(CONSTANTS.BTNS_ACTIVE_SCALE);
     }, this);
 
     this.turnBtn.on('pointerout', function(pointer) {
       this.turnBtnText.destroy();
+      this.turnBtn.setScale(CONSTANTS.BTNS_DEFAULT_SCALE);
     }, this);
 
     this.nextBtn.on('pointerover', function(pointer) {
       this.nextBtnText = this.add.text(this.nextBtn.x - 45, this.nextBtn.y - 70, this.lang.nextStep_btn.name, { color: 'black', fontFamily: 'Thintel', fontSize: '30px'});
+      this.nextBtn.setScale(CONSTANTS.BTNS_ACTIVE_SCALE);
     }, this);
 
     this.nextBtn.on('pointerout', function(pointer) {
       this.nextBtnText.destroy();
+      this.nextBtn.setScale(CONSTANTS.BTNS_DEFAULT_SCALE);
     }, this);
 
     this.setChipBtn.on('pointerover', function(pointer) {
       this.setChipBtnText = this.add.text(this.setChipBtn.x - 45, this.setChipBtn.y - 70, this.lang.setChip_btn.name, { color: 'black', fontFamily: 'Thintel', fontSize: '30px'});
+      this.setChipBtn.setScale(CONSTANTS.BTNS_ACTIVE_SCALE);
     }, this)
 
     this.setChipBtn.on('pointerout', function(pointer) {
       this.setChipBtnText.destroy();
+      this.setChipBtn.setScale(CONSTANTS.BTNS_DEFAULT_SCALE);
     }, this)
 
     this.otherCardBtn.on('pointerover', function(pointer) {
       this.otherCardBtnText = this.add.text(this.otherCardBtn.x - 45, this.otherCardBtn.y - 70, this.lang.otherCard_btn.name, { color: 'black', fontFamily: 'Thintel', fontSize: '30px'});
+      this.otherCardBtn.setScale(CONSTANTS.BTNS_ACTIVE_SCALE);
     }, this);
 
     this.otherCardBtn.on('pointerout', function(pointer) {
       this.otherCardBtnText.destroy();
+      this.otherCardBtn.setScale(CONSTANTS.BTNS_DEFAULT_SCALE);
     }, this);
 
-    let openScoreFieldBtn = this.add.image(100, this.game.config.height - 100, 'open_score_btn').setInteractive();
+    this.openScoreFieldBtn = this.add.image(100, this.game.config.height - 100, 'open_score_btn').setInteractive();
 
-    openScoreFieldBtn.on('pointerover', function () {
+    this.openScoreFieldBtn.on('pointerover', function () {
       this.openScoreFieldText = this.add.text(this.openScoreFieldBtn.x - 45, this.openScoreFieldBtn.y - 70, this.lang.otherCard_btn.name, { color: 'black', fontFamily: 'Thintel', fontSize: '30px'});
-      this.setScale(CONSTANTS.BTNS_ACTIVE_SCALE);
-    });
+      this.openScoreFieldBtn.setScale(CONSTANTS.BTNS_ACTIVE_SCALE);
+    }, this);
 
-    openScoreFieldBtn.on('pointerout', function (pointer) {
+    this.openScoreFieldBtn.on('pointerout', function (pointer) {
       this.openScoreFieldText.destroy();
-      this.setScale(CONSTANTS.BTNS_DEFAULT_SCALE);
-    });
+      this.openScoreFieldBtn.setScale(CONSTANTS.BTNS_DEFAULT_SCALE);
+    }, this);
 
     this.scoreField = undefined;
     this.scoreTable = undefined;
 
-    openScoreFieldBtn.on('pointerdown', function(pointer) {
+    this.openScoreFieldBtn.on('pointerdown', function(pointer) {
       // this.scoreFieldOpen != this.scoreFieldOpen;
         if (this.scoreField === undefined && this.scoreTable === undefined) {
-          openScoreFieldBtn.setTint(CONSTANTS.BTNS_HOVER_COLOR);
-          openScoreFieldBtn.setScale(CONSTANTS.BTNS_DEFAULT_SCALE);
+          this.openScoreFieldBtn.setTint(CONSTANTS.BTNS_HOVER_COLOR);
+          this.openScoreFieldBtn.setScale(CONSTANTS.BTNS_DEFAULT_SCALE);
   
           this.scoreField = this.add.sprite(this.game.config.width / 2, this.game.config.height / 2, 'score_field').setScale(1).setAlpha(0).setInteractive();
 
@@ -184,7 +192,7 @@ export default class HUD extends Phaser.Scene {
           }, this);
   
           this.showChips();
-          this.scoreTable = addDialog(150, openScoreFieldBtn.x + 120, openScoreFieldBtn.y - 200, this, this.players.length);
+          this.scoreTable = addDialog(150, this.openScoreFieldBtn.x + 120, this.openScoreFieldBtn.y - 200, this, this.players.length);
           // this.scoreTable = addDialog(150, this.game.config.width / 2, this.game.config.height / 2, this, this.players.length);
 
 
@@ -204,7 +212,7 @@ export default class HUD extends Phaser.Scene {
           this.scoreTable = undefined;
           this.scoreField = undefined;
           
-          openScoreFieldBtn.clearTint();
+          this.openScoreFieldBtn.clearTint();
           // this.scoreFieldOpen = false;
         }
 
