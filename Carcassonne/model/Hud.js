@@ -170,7 +170,7 @@ export default class HUD extends Phaser.Scene {
         }, this);
 
         this.showChips();
-        this.addDialog = addDialog(150, this.openScoreFieldBtn.x - 100, this.openScoreFieldBtn.y - 250, this, this.players.length);
+        this.addDialog = addDialog(150, this.openScoreFieldBtn.x - 20, this.openScoreFieldBtn.y - 150, this, this.players.length);
       
       } else {
 
@@ -260,6 +260,8 @@ export default class HUD extends Phaser.Scene {
         `chipBoard_${i + 1}`,
       ));
     }
+
+    console.log(this.chipsOnDesk);
   }
 
   initHudCard(name) {
@@ -435,7 +437,7 @@ const createMenuBtn = function (scene, text, background, left = 0, right = 0, to
   })
 }
 
-const createBtn = function (scene, text, background, left=0, right=0, top=0, bottom=0) {
+const createBtn = function (scene, text, background, left = 0, right = 0, top = 0, bottom = 0) {
   return scene.rexUI.add.label({
     // width: 50,
     // height: 55,
@@ -493,16 +495,16 @@ const createInput = function(scene, content) {
   return text;
 }
 
-const createInetactiveLabel = function (scene, content, backgroundColor) {
+const createInetactiveLabel = function (scene, content, icon, backgroundColor) {
   return scene.rexUI.add.label({
-    background: scene.rexUI.add.roundRectangle(0, 0, 100, 40, 20, 0xaf6a39),
-    icon: scene.add.image(0, 0, scene.playerChip),
+    background: scene.rexUI.add.roundRectangle(0, 0, 100, 50, 20, 0xaf6a39),
+    icon: scene.add.image(0, 0, icon.texture.key),
     text: createInput(scene, content),
     space: {
       left: 10,
       right: 10,
       top: 5,
-      bottom: 5
+      bottom: 10
     },
     align: 'center',
     halign: 'center',
@@ -528,9 +530,9 @@ const addDialog = function(width, x, y, scene, numberOfPlayers) {
           fontSize: '30px',
           align: 'center',
         }),
-        space: { left: 10, right: 10, top: 5, bottom: 5 }
+        space: { left: 10, right: 10, top: 5, bottom: 10}
       }),
-      choices: (new Array(scene.players.length).fill().map((v, i) => v = createInetactiveLabel(scene, scene.players[i]))).concat([createLabel(scene, 'Сохранить')]),
+      choices: (new Array(scene.players.length).fill().map((v, i) => v = createInetactiveLabel(scene, scene.players[i], scene.chipsOnDesk[i]))).concat([createLabel(scene, 'Сохранить')]),
       space: {
         title: 5,
         content: 5,
@@ -538,7 +540,7 @@ const addDialog = function(width, x, y, scene, numberOfPlayers) {
         left: 5,
         right: 5,
         top: 5,
-        bottom: 5,
+        bottom: 10
       },
       align: 'center',
       expand: {
