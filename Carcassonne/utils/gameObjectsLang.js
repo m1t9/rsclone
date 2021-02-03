@@ -45,6 +45,10 @@ const en = {
     name: 'Next Step',
     btn: 'next_step_btn',
   },
+  otherCard_btn: {
+    name: 'Other Card',
+    btn: 'next_step_btn',
+  },
   tooltip_start: {
     text: 'Click text to start editing, press ENTER key to save name!',
   },
@@ -65,6 +69,9 @@ const en = {
   },
   playerName: {
     text: 'Player Name',
+  },
+  currentCard: {
+    text: 'Current card',
   }
 }
 
@@ -130,6 +137,9 @@ const ru = {
   },
   playerName: {
     text: 'Имя Игрока',
+  },
+  currentCard: {
+    text: 'Текущая карточка',
   }
 }
 
@@ -195,6 +205,9 @@ const de = {
   },
   playerName: {
     text: 'Spielername',
+  },
+  currentCard: {
+    text: 'Aktuelle karte',
   }
 }
 

@@ -49,6 +49,9 @@ export default class Boot extends Phaser.Scene {
     this.load.image('turn_btn', './assets/btns/turn_btn.png');
     this.load.image('set_chip_btn', './assets/btns/set_chip_btn.png');
     this.load.image('next_step_btn', './assets/btns/next_step_btn.png');
+    
+    // ПОМЕНЯТЬ ФОН
+    this.load.image('other_card_btn', './assets/btns/next_step_btn.png');
 
     loadImages.call(this);
     

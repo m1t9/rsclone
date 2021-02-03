@@ -20,8 +20,6 @@ export default class HUD extends Phaser.Scene {
     // this.settingsBtn;
     this.lang = undefined;
     this.player = undefined;
-    // this.scoreField = undefined;
-    // this.scoreTable = undefined;
 
     this.playerPoints = {
       player1: 14,
@@ -101,7 +99,7 @@ export default class HUD extends Phaser.Scene {
     // this.add.image(650, 410, 'chip1');
     const mainScene = this.scene.get('MainScene').board.currentCard;
     // this.add.text(10, 10, 'Current card:', { font: '20px', fill: '#ffffff' });
-    this.underCardText = this.add.text(10, 5, `Current card (1 / ${CONSTANTS.CARDS_COUNT}):`, { fontFamily: 'Thintel', fontSize: '40px', fill: '#ffffff' });
+    this.underCardText = this.add.text(10, 5, `${this.lang.currentCard.text} (1 / ${CONSTANTS.CARDS_COUNT}):`, { fontFamily: 'Thintel', fontSize: '40px', fill: '#ffffff' });
     // this.currentCardHUD.setInteractive();
     // this.currentCardHUD.on('pointerdown', function (pointer) {
     //   console.log('current_card');
@@ -118,6 +116,7 @@ export default class HUD extends Phaser.Scene {
     this.nextBtn = this.add.image(this.game.config.width - 300, this.game.config.height - 100, 'next_step_btn').setInteractive();
     this.turnBtn = this.add.image(this.game.config.width - 220, this.game.config.height - 100, 'turn_btn').setInteractive();
     this.setChipBtn = this.add.image(this.game.config.width - 140, this.game.config.height - 100, 'set_chip_btn').setInteractive();
+    this.otherCardBtn = this.add.image(this.game.config.width - 60, this.game.config.height - 100, 'other_card_btn').setInteractive();
 
     this.turnBtn.on('pointerover', function(pointer) {
       console.log(this.turnBtn.x)
@@ -144,29 +143,31 @@ export default class HUD extends Phaser.Scene {
       this.setChipBtnText.destroy();
     }, this)
 
-    this.openScoreFieldBtn = this.add.image(this.game.config.width - 150, this.game.config.height - 400, 'open_score').setInteractive();
-    this.openScoreFieldBtn.on('pointerover', function () {
+    this.otherCardBtn.on('pointerover', function(pointer) {
+      this.otherCardBtnText = this.add.text(this.otherCardBtn.x - 45, this.otherCardBtn.y - 70, this.lang.otherCard_btn.name, { color: 'black', fontFamily: 'Thintel', fontSize: '30px'});
+    }, this);
+
+    this.otherCardBtn.on('pointerout', function(pointer) {
+      this.otherCardBtnText.destroy();
+    }, this);
+
+    let openScoreFieldBtn = this.add.image(this.game.config.width - 150, this.game.config.height - 400, 'open_score').setInteractive();
+    openScoreFieldBtn.on('pointerover', function () {
       this.setScale(CONSTANTS.BTNS_ACTIVE_SCALE);
     });
 
-    this.openScoreFieldBtn.on('pointerout', function () {
+    openScoreFieldBtn.on('pointerout', function () {
       this.setScale(CONSTANTS.BTNS_DEFAULT_SCALE);
-    }, this);
-
-    this.setChipBtn.on('pointerout', function(pointer) {
-      this.setChipBtnText.destroy();
-    }, this);
+    });
 
     this.scoreField = undefined;
     this.scoreTable = undefined;
 
-    let openScoreFieldBtn = this.add.image(this.game.config.width - 150, this.game.config.height - 400, 'open_score').setInteractive();
-
     openScoreFieldBtn.on('pointerdown', function(pointer) {
       // this.scoreFieldOpen != this.scoreFieldOpen;
         if (this.scoreField === undefined && this.scoreTable === undefined) {
-          // this.openScoreFieldBtn.setTint(CONSTANTS.BTNS_HOVER_COLOR);
-          // this.openScoreFieldBtn.setScale(CONSTANTS.BTNS_DEFAULT_SCALE);
+          openScoreFieldBtn.setTint(CONSTANTS.BTNS_HOVER_COLOR);
+          openScoreFieldBtn.setScale(CONSTANTS.BTNS_DEFAULT_SCALE);
   
           this.scoreField = this.add.sprite(this.game.config.width / 2, this.game.config.height / 2, 'score_field').setScale(1).setInteractive();
 
@@ -192,7 +193,7 @@ export default class HUD extends Phaser.Scene {
           this.scoreTable = undefined;
           this.scoreField = undefined;
           
-          // openScoreFieldBtn.clearTint();
+          openScoreFieldBtn.clearTint();
           // this.scoreFieldOpen = false;
 
           this.tweens.add({
