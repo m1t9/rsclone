@@ -32,7 +32,7 @@ export default class Boot extends Phaser.Scene {
 
     this.load.image('gameBg', './assets/other/image_1.png');
     this.load.audio('kingdom_sound', './assets/audio/kingdom.mp3');
-    this.load.image('settings_2', './assets/btns/settings_2.png');
+    this.load.image('settings', './assets/btns/settings_2.png');
     this.load.image('start_btn', './assets/btns/start_btn.png');
     this.load.image('save_btn', './assets/btns/save_btn.png');
     this.load.image('load_btn', './assets/btns/load_btn.png');

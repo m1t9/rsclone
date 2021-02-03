@@ -103,7 +103,7 @@ export default class HUD extends Phaser.Scene {
       loop: true,
       delay: 1000,
     });
-    // this.music.play();
+    this.music.play();
 
     this.nextBtn = this.add.image(this.game.config.width - 300, this.game.config.height - 100, 'next_step_btn').setInteractive();
     this.turnBtn = this.add.image(this.game.config.width - 220, this.game.config.height - 100, 'turn_btn').setInteractive();

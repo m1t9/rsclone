@@ -48,13 +48,10 @@ export default class StartScreen extends Phaser.Scene {
     this.load.plugin('rextexteditplugin', 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rextexteditplugin.min.js', true);
   }
 
-  create() {
-    // this.stage.background = 0x1b1a1c;
-    
-    this.cameras.main.setBackgroundColor(0x1b1a1c);
-    // 0x1b1a1c
+  create() {    
+    this.cameras.main.setBackgroundColor(CONSTANTS.START_SCENE_BACKGROUND);
     this.input.setDefaultCursor('url(./assets/other/cursor.png), pointer');
-    this.add.sprite(this.game.config.width / 2 + 250, 100, 'game_logo').setScale(0.5).setDepth(2);
+    this.add.sprite(this.game.config.width / 2 + 220, 100, 'game_logo').setScale(0.5).setDepth(2);
 
     this.anims.create({
       key: 'castleAnim',
@@ -70,7 +67,7 @@ export default class StartScreen extends Phaser.Scene {
       repeat: -1,
     });
 
-    this.add.sprite(this.game.config.width / 2 + 150, 500, 'castle1').setScale(1.1).play('castleAnim');
+    this.add.sprite(this.game.config.width / 2 + 150, 500, 'castle1').setScale(1.2).play('castleAnim');
 
     const startBtnBackground = this.add.image(0, 0, 'new_game');
     const aboutBtnBackground = this.add.image(0, 0, 'about');
