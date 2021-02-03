@@ -126,11 +126,10 @@ export default class Board {
 
       // console.log(this.board.playersCards);
       this.board.nextPlayer();
-    console.log(this.board.currnetPlayerNumber);
-
+      console.log(this.board.currnetPlayerNumber);
     }, this);
 
-    window.HUD.setChipBtn.on('pointerup', function () {
+    window.HUD.setChipBtn.on('pointerup', function() {
       this.board.sides = this.board.sides.concat(
         addPointerSides.call(this, this.board.currentX, this.board.currentY),
       );

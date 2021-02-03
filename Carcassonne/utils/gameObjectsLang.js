@@ -9,8 +9,12 @@ const en = {
     name: 'New Game',
     btn: 'start_btn',
   },
-  saveGame_btn: {
-    name: 'Save Game',
+  // saveGame_btn: {
+  //   name: 'Save Game',
+  //   btn: 'save_btn',
+  // },
+  about_btn: {
+    name: 'About',
     btn: 'save_btn',
   },
   loadGame_btn: {
@@ -58,9 +62,6 @@ const en = {
   },
   gameRulesContent: {
     text: rulesContentEn,
-  },
-  selectNumberOfPlayers: {
-    text: 'Select the number of players'
   },
   selectNumberOfPlayers: {
     text: 'Select the number of players'

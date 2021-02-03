@@ -9,19 +9,15 @@ import COORDS from '../utils/deskCoordinates.js';
 export default class HUD extends Phaser.Scene {
   constructor() {
     super({ key: 'UIScene'});
-    // super({ key: 'UIScene', active: true });
-    
+
     this.score = 0;
     this.underCardText = '';
     this.currentCardHUD = null;
     // this.currentCardNumber = 0;
     this.music = undefined;
     this.musicON = true;
-    // this.settingsBtn;
     this.lang = undefined;
     this.player = undefined;
-    // this.scoreField = undefined;
-    // this.scoreTable = undefined;
 
     this.playerPoints = {
       player1: 0,
@@ -30,12 +26,6 @@ export default class HUD extends Phaser.Scene {
       player4: 0,
     };
   }
-
-  // init() {
-  //   this.nextBtn = this.add.image(this.game.config.width -  200, this.game.config.height - 100, 'next_step_btn').setInteractive();
-  //   this.turnBtn = this.add.image(this.game.config.width -  150, this.game.config.height - 100, 'turn_btn').setInteractive();
-  //   this.setChipBtn = this.add.image(this.game.config.width -  100, this.game.config.height - 100, 'set_chip_btn').setInteractive();
-  // }
 
   preload() {
     window.HUD = this;
@@ -164,7 +154,7 @@ export default class HUD extends Phaser.Scene {
     this.openScoreFieldBtn = this.add.image(100, this.game.config.height - 100, 'open_score_btn').setInteractive();
 
     this.openScoreFieldBtn.on('pointerover', function () {
-      this.openScoreFieldText = this.add.text(this.openScoreFieldBtn.x - 45, this.openScoreFieldBtn.y - 70, this.lang.otherCard_btn.name, { color: 'black', fontFamily: 'Thintel', fontSize: '30px'});
+      this.openScoreFieldText = this.add.text(this.openScoreFieldBtn.x - 45, this.openScoreFieldBtn.y - 70, this.lang.openScoreField.name, { color: 'black', fontFamily: 'Thintel', fontSize: '30px'});
       this.openScoreFieldBtn.setScale(CONSTANTS.BTNS_ACTIVE_SCALE);
     }, this);
 
@@ -223,10 +213,11 @@ export default class HUD extends Phaser.Scene {
     const settingsBtn = this.add.image(this.game.config.width - 50, 40, 'settings_2').setInteractive();
     const items = [
       { name: this.lang.newGame_btn.name },
-      { name: this.lang.saveGame_btn.name },
-      { name: this.lang.loadGame_btn.name },
+      // { name: this.lang.saveGame_btn.name },
+      // { name: this.lang.loadGame_btn.name },
       { name: this.lang.sound_btn.name },
       { name: this.lang.gameRules_btn.name },
+      { name: this.lang.about_btn.name },
       // { name: this.lang.lang_btn.name ,
       //   children: [
       //     { name: 'en' },
@@ -251,11 +242,10 @@ export default class HUD extends Phaser.Scene {
 
         menu = createMenu(this, this.game.config.width - 200, 50, items);
       } else if (!menu.isInTouching(pointer)) {
-        // console.log('collapse!');
         menu.collapse();
         menu = undefined;
-        this.rulesOpen.fadeOut(300);
-        this.rulesOpen = undefined;
+        // // this.rulesOpen.fadeOut(300);
+        // this.rulesOpen = undefined;
         settingsBtn.clearTint();
       }
     }, this);
@@ -315,19 +305,6 @@ export default class HUD extends Phaser.Scene {
 
   getNextStepButton() {
     const buttons = this.controlBtns;
-    // console.log(typeof this.controlBtns === 'undefined');
-    // // while (typeof this.controlBtns === 'undefined') {
-    // //   console.log(false);
-    // // }
-    // setTimeout(() => {
-    //   console.log(this.controlBtns);
-    // }, 1000);
-    // console.log(buttons);
-    // return button;
-
-    // const button = await new Promise((resolve, reject) => resolve(this.controlBtns));
-    // return null;
-    // console.log(this.controlBtns);
     return buttons;
   }
 
@@ -429,7 +406,7 @@ const createMenu = function (scene, x, y, items, onClick) {
     new Phaser.Game(config);
   }, scene);
 
-  let soundBtn = menu.getButton(3);
+  let soundBtn = menu.getButton(1);
   soundBtn.on('pointerup', function(pointer) {
     scene.musicON = !scene.musicON;
       if (scene.musicON) {
@@ -448,9 +425,10 @@ const createMenu = function (scene, x, y, items, onClick) {
       }
   }, scene);
 
-  let rulesBtn = menu.getButton(4);
+  let rulesBtn = menu.getButton(2);
   scene.rulesOpen = undefined;
   rulesBtn.on('pointerup', function(pointer) {
+
     if (scene.rulesOpen === undefined) {
       rulesBtn.backgroundChildren[0].setTint(CONSTANTS.BTNS_HOVER_COLOR);
       rulesBtn.setScale(CONSTANTS.BTNS_DEFAULT_SCALE);
