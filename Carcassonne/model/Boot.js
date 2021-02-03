@@ -23,8 +23,15 @@ export default class Boot extends Phaser.Scene {
       fill: '#fff',
     });
 
+    this.load.scenePlugin(
+      'rexuiplugin',
+      'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexuiplugin.min.js',
+      'rexUI',
+      'rexUI'
+    );
+
+    this.load.image('gameBg', './assets/other/image_1.png');
     this.load.audio('kingdom_sound', './assets/audio/kingdom.mp3');
-    // this.load.image('settings', './assets/btns/settings.png');
     this.load.image('settings_2', './assets/btns/settings_2.png');
     this.load.image('start_btn', './assets/btns/start_btn.png');
     this.load.image('save_btn', './assets/btns/save_btn.png');
@@ -33,11 +40,18 @@ export default class Boot extends Phaser.Scene {
     this.load.image('options_btn', './assets/btns/options_btn.png');
     this.load.image('sound_btn', './assets/btns/sound_btn.png');
     this.load.image('no_sound_btn', './assets/btns/no_sound_btn.png');
+    this.load.image('game_rules', './assets/other/rules_scroll.png');
+    this.load.image('score_field', './assets/other/score_field.png');
+    this.load.image('open_score', './assets/btns/options_btn.png');
+    // this.load.image('lang_btn', './assets/btns/language_btn.png');
+    // this.load.image('small_lang_btn', './assets/btns/language_btn_small.png');
+
     this.load.image('turn_btn', './assets/btns/turn_btn.png');
     this.load.image('set_chip_btn', './assets/btns/set_chip_btn.png');
     this.load.image('next_step_btn', './assets/btns/next_step_btn.png');
-    loadImages.call(this);
 
+    loadImages.call(this);
+    
     this.load.on('progress', function (value) {
       newGraphics.clear();
       newGraphics.fillStyle(0x3587e2, 1);
@@ -53,6 +67,12 @@ export default class Boot extends Phaser.Scene {
     this.scene.start('UIScene');
     setTimeout(() => {
       this.scene.start('MainScene');
-    }, 1110);
+    }, 1000);
   }
+
+  // create() {
+  //       // this.scene.stop('Boot')
+  //       this.scene.start('UIScene');
+  //       this.scene.start('MainScene');
+  // }
 }

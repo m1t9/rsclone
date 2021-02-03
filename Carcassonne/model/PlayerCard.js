@@ -4,7 +4,6 @@ export default class PlayerCard {
     side2,
     side3,
     side4,
-    side5,
     name,
     point1,
     point2,
@@ -16,16 +15,14 @@ export default class PlayerCard {
     this.side2 = side2;
     this.side3 = side3;
     this.side4 = side4;
-    this.side5 = side5;
     this.name = name;
     this.point1 = point1;
     this.point2 = point2;
     this.point3 = point3;
     this.point4 = point4;
     this.point5 = point5;
-    // this.side5 = 'center';
+    this.side5 = 'center';
     this.chipPos = -1;
-    this.belongs = 'nobody';
   }
 
   turnCard() {

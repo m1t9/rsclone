@@ -15,6 +15,7 @@ export default function addCell(board, xx, yy, type) {
 
   const cell = this.add.isoSprite(xx, yy, 0, type, this.isoGroup);
   const back = this.add.isoSprite(xx, yy, -5, 'back', this.isoGroup);
+
   let checker = false;
   // cell.scaleX = 0.5;
   // cell.scaleY = 1;
@@ -60,29 +61,12 @@ export default function addCell(board, xx, yy, type) {
           board.setCurrentCoords(xx, yy);
           board.addCardToBoard(cell.number);
 
-          board.allCards.push({
-            card: board.currentCard,
-            // x: (board.currentX - CONSTANTS.SIZE) / CONSTANTS.SIZE,
-            // y: (board.currentY - CONSTANTS.SIZE) / CONSTANTS.SIZE,
-            x: board.currentX,
-            y: board.currentY,
-          });
-
           window.HUD.enableNextButton();
           window.HUD.enableChipButton();
           window.HUD.disableTurnButton();
           window.HUD.destroyCard();
 
-          // board.playersCards[`player${board.currnetPlayerNumber}`].push(board.previousCard);
-          // console.log(board.previousCard);
-
-          // if (board.previousCard) {
-          //   board.findNeibs(board.previousCard.x, board.previousCard.y, board.currnetPlayerNumbe);
-          //   console.log(board.previousCard);
-          //   console.log(board.currentCard);
-          //   console.log(board.allCards);
-          // }
-          // board.previousCard = board.currentCard;
+          board.playersCards[`player${board.currnetPlayerNumber}`].push(board.currentCard);
           // checker = board.nextCard();
           // while (checker === false) {
           // }
@@ -116,7 +100,7 @@ function addEmpty(board, x, y) {
 }
 
 function addNeib(board, x, y) {
-  // console.log(`${x} ${y}`);
+  console.log(`${x} ${y}`);
   const localBoard = board.board.map((item) => {
     const localItem = item;
     if (localItem.cardNumber === board.cellsCount) {
@@ -125,14 +109,14 @@ function addNeib(board, x, y) {
     return localItem;
   });
 
+  if (localBoard.filter((cell) => (cell.x === x + CONSTANTS.SIZE && cell.y === y)).length === 0) {
+    // console.log('4');
+    addEmpty.call(this, board, x + CONSTANTS.SIZE, y);
+  }
+
   if (localBoard.filter((cell) => (cell.x === x - CONSTANTS.SIZE && cell.y === y)).length === 0) {
     // console.log('1');
     addEmpty.call(this, board, x - CONSTANTS.SIZE, y);
-  }
-
-  if (localBoard.filter((cell) => (cell.x === x && cell.y === y - CONSTANTS.SIZE)).length === 0) {
-    // console.log('2');
-    addEmpty.call(this, board, x, y - CONSTANTS.SIZE);
   }
 
   if (localBoard.filter((cell) => (cell.x === x && cell.y === y + CONSTANTS.SIZE)).length === 0) {
@@ -140,9 +124,9 @@ function addNeib(board, x, y) {
     addEmpty.call(this, board, x, y + CONSTANTS.SIZE);
   }
 
-  if (localBoard.filter((cell) => (cell.x === x + CONSTANTS.SIZE && cell.y === y)).length === 0) {
-    // console.log('4');
-    addEmpty.call(this, board, x + CONSTANTS.SIZE, y);
+  if (localBoard.filter((cell) => (cell.x === x && cell.y === y - CONSTANTS.SIZE)).length === 0) {
+    // console.log('2');
+    addEmpty.call(this, board, x, y - CONSTANTS.SIZE);
   }
 }
 

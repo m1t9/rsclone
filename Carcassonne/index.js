@@ -5,7 +5,7 @@ import Board from './model/Board.js';
 import Card from './model/Card.js';
 import addCell from './controller/cellController.js';
 import HUD from './model/Hud.js';
-// import loadImages from './data/loadImages.js';
+import loadImages from './data/loadImages.js';
 import CONSTANTS from './utils/CONSTANTS.js';
 import StartScreen from './model/StartScreen.js';
 import Boot from './model/Boot.js';
@@ -23,6 +23,7 @@ class MainScene extends Phaser.Scene {
   }
 
   preload() {
+    window.MainScene = this;
     // loadImages.call(this);
     this.load.scenePlugin({
       key: 'IsoPlugin',
@@ -32,7 +33,6 @@ class MainScene extends Phaser.Scene {
   }
 
   create() {
-    window.MainScene = this;
     this.isoGroup = this.add.group();
     this.iso.projector.origin.setTo(0.5, 0.3);
 
@@ -40,10 +40,13 @@ class MainScene extends Phaser.Scene {
 
     // camera settings
     this.cameras.main.setViewport(0.5, 0.3, this.game.config.width, this.game.config.height);
-    // this.cameras.main.setBounds(0.5, 0.3, 10000, 10000);
+    // this.cameras.main.setBounds(0.5, 0.3, this.game.config.width * 2, this.game.config.height * 2);
+    // this.backgroundGame = this.add.tileSprite(-this.game.config.width * 2.5, -this.game.config.height * 2.5, this.game.config.width * 5, this.game.config.height * 5, 'gameBg').setOrigin(0)
+    // this.backgroundGame.setScrollFactor(0);
+    // this.backgroundGame.fixedToCamera = true;
     this.cameras.main.setZoom(1);
     this.cursors = this.input.keyboard.createCursorKeys();
-    this.keys = this.input.keyboard.addKeys('W, A , S , D, PLUS, MINUS');
+    this.keys = this.input.keyboard.addKeys('W, A , S , D, PLUS, MINUS, UP, DOWN, LEFT, RIGHT');
 
     this.input.on('wheel', function (pointer) {
       if (pointer.deltaY > 0 && this.cameras.main.zoom > 0.4) {
@@ -53,57 +56,32 @@ class MainScene extends Phaser.Scene {
       }
       // console.log(this.cameras.main.zoom);
     });
+    console.log(this.cameras.main);
   }
 
   update() {
-    const cards = this.board.board;
+    const gameBG = this.backgroundGame;
     const cam = this.cameras.main;
-    const xPositiveCards = [];
-    // const xNegativeCards = [];
-    const yPositiveCards = [];
-    // const yNegativeCards = [];
 
-    cards.map((item) => {
-      if (item.x > 0) {
-        xPositiveCards.push(item.x);
-      }
-      // else if (item.x < 0) {
-      //   xNegativeCards.push(item.x);
-      // }
-      if (item.y > 0) {
-        yPositiveCards.push(item.y);
-      }
-      // else if (item.y < 0) {
-      //   yNegativeCards.push(item.y);
-      // }
-    });
+    // this.backgroundGame.tilePositionX = cam.scrollX;
+    // this.backgroundGame.tilePositionY = cam.scrollY;
 
-    if (this.keys.A.isDown) {
+    if (this.keys.A.isDown || this.keys.LEFT.isDown) {
       cam.scrollX -= CONSTANTS.SCROLL_SIZE;
-
-      if (cam.scrollX < (- Math.max(...xPositiveCards) - 100)) {
-        cam.setScroll(0, cam.scrollY);
-      }
-    } else if (this.keys.D.isDown) {
+      // this.backgroundGame.tilePositionX += 1;
+    } else if (this.keys.D.isDown || this.keys.RIGHT.isDown) {
       cam.scrollX += CONSTANTS.SCROLL_SIZE;
-
-      if (cam.scrollX >= (Math.max(...xPositiveCards) + 100)) {
-        cam.setScroll(0, cam.scrollY);
-      }
+      // this.backgroundGame.tilePositionX -= 0.05;
     }
 
-    if (this.keys.W.isDown) {
+    if (this.keys.W.isDown || this.keys.UP.isDown) {
       cam.scrollY -= CONSTANTS.SCROLL_SIZE;
-
-      if (cam.scrollY < (- Math.max(...yPositiveCards) - 100)) {
-        cam.setScroll(cam.scrollX, 0);
-      }
-    } else if (this.keys.S.isDown) {
+      // this.backgroundGame.tilePositionY += 0.05;
+      // gameBG.tilePositionY -= CONSTANTS.SCROLL_SIZE;
+    } else if (this.keys.S.isDown || this.keys.DOWN.isDown) {
       cam.scrollY += CONSTANTS.SCROLL_SIZE;
-
-      if (cam.scrollY >= (Math.max(...yPositiveCards) + 100)) {
-        cam.setScroll(cam.scrollX, 0);
-      }
+      // this.backgroundGame.tilePositionY += 0.05;
+      // gameBG.tilePositionY += CONSTANTS.SCROLL_SIZE;
     }
 
     if (this.keys.MINUS.isDown && cam.zoom > 0.4) {
@@ -120,15 +98,19 @@ class MainScene extends Phaser.Scene {
   }
 }
 
-const fullScreenHeight = document.documentElement.getBoundingClientRect().height;
-const fullScreenWidth = document.documentElement.getBoundingClientRect().width;
+let fullScreenHeight = document.documentElement.getBoundingClientRect().height;
+let fullScreenWidth = document.documentElement.getBoundingClientRect().width;
 
 const config = {
   type: Phaser.AUTO,
+  // mode: Phaser.Scale.FIT,
   parent: 'phaser_container',
   width: fullScreenWidth,
   height: fullScreenHeight,
   pixelArt: true,
+  dom: {
+    createContainer: true
+  },        
   scene: [StartScreen, Boot, MainScene, HUD],
   // scene: [MainScene, HUD],
   // physics: {
@@ -143,12 +125,6 @@ const config = {
   },
 };
 
-// const config = {
-//   type: Phaser.AUTO,
-//   width: 1300,
-//   height: 900,
-//   pixelArt: true,
-//   scene: [MainScene, HUD],
-// };
-
 const game = new Phaser.Game(config);
+
+export default config;
