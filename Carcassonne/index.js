@@ -113,16 +113,16 @@ let fullScreenWidth = document.documentElement.getBoundingClientRect().width;
 
 const config = {
   type: Phaser.AUTO,
-  scale: {
-    mode: Phaser.Scale.FIT,
-    autoCenter: Phaser.Scale.CENTER_BOTH,
-    parent: 'phaser_container',
-    width: fullScreenWidth,
-    height: fullScreenHeight,
-  },
-  // parent: 'phaser_container',
-  // width: fullScreenWidth,
-  // height: fullScreenHeight,
+  // scale: {
+  //   mode: Phaser.Scale.FIT,
+  //   autoCenter: Phaser.Scale.CENTER_BOTH,
+  //   parent: 'phaser_container',
+  //   width: fullScreenWidth,
+  //   height: fullScreenHeight,
+  // },
+  parent: 'phaser_container',
+  width: fullScreenWidth,
+  height: fullScreenHeight,
   pixelArt: true,
   dom: {
     createContainer: true
