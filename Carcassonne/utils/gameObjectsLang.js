@@ -45,6 +45,14 @@ const en = {
     name: 'Next Step',
     btn: 'next_step_btn',
   },
+  otherCard_btn: {
+    name: 'Other Card',
+    btn: 'other_card_btn',
+  },
+  openScoreField: {
+    name: 'Score Board',
+    btn: 'open_score_btn',
+  },
   tooltip_start: {
     text: 'Click text to start editing, press ENTER key to save name!',
   },
@@ -65,6 +73,9 @@ const en = {
   },
   playerName: {
     text: 'Player Name',
+  },
+  currentCard: {
+    text: 'Current card',
   }
 }
 
@@ -113,6 +124,14 @@ const ru = {
     name: 'Следующий ход',
     btn: 'next_step_btn',
   },
+  otherCard_btn: {
+    name: 'Поменять карточку',
+    btn: 'other_card_btn',
+  },
+  openScoreField: {
+    name: 'Таблица очков',
+    btn: 'open_score_btn',
+  },
   tooltip_start: {
     text: 'Нажмите на текст, чтобы начать редактирование, затем нажмите ENTER, чтобы сохранить имя!',
   },
@@ -130,6 +149,9 @@ const ru = {
   },
   playerName: {
     text: 'Имя Игрока',
+  },
+  currentCard: {
+    text: 'Текущая карточка',
   }
 }
 
@@ -178,6 +200,14 @@ const de = {
     name: 'Nächster zug',
     btn: 'next_step_btn',
   },
+  otherCard_btn: {
+    name: 'Karte wechseln',
+    btn: 'other_card_btn',
+  },
+  openScoreField: {
+    name: 'Punktetabelle',
+    btn: 'open_score_btn',
+  },
   tooltip_start: {
     text: 'Klicken Sie auf den Text, um die Bearbeitung zu starten, und drücken Sie dann die EINGABETASTE, um den Namen zu speichern!',
   },
@@ -195,6 +225,9 @@ const de = {
   },
   playerName: {
     text: 'Spielername',
+  },
+  currentCard: {
+    text: 'Aktuelle karte',
   }
 }
 

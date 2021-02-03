@@ -46,7 +46,7 @@ export default class Board {
       player3: 10,
       player4: 10,
     };
-    // this.nextStep = null;
+    this.add = 0;
   }
 
   initBoard() {
@@ -96,6 +96,9 @@ export default class Board {
     window.HUD.disableChipButton();
 
     // console.log(this.board.currentCard);
+    window.HUD.otherCardBtn.on('pointerup', function () {
+      this.board.nextCardWrong();
+    }, this);
 
     window.HUD.turnBtn.on('pointerup', function () {
       // this.board.currentCardDir += 1;
@@ -208,7 +211,7 @@ export default class Board {
   }
 
   nextCard() {
-    window.HUD.updateCardNumber(this.step);
+    window.HUD.updateCardNumber(this.step - this.add);
 
     if (this.step === CONSTANTS.CARDS_COUNT + 1) {
       this.isWin = true;
@@ -233,5 +236,12 @@ export default class Board {
     CARDS.push(CARDS[this.step - 2]);
     nextCard.call(this, this.step - 1);
     window.HUD.updateCard(this.currentCard.name);
+    this.step += 1;
+    this.add += 1;
+  }
+
+  saveGame() {
+    localStorage.setItem('carcassone_board', JSON.stringify(this));
+    localStorage.setItem('carcassonne_score', JSON.stringify(window.HUD.playerPoints));
   }
 }
