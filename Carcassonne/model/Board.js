@@ -6,6 +6,7 @@ import Card from './Card.js';
 import CONSTANTS from '../utils/CONSTANTS.js';
 // import moveCamera from '../utils/camera.js';
 // import CARDS from '../data/gameCards.js';
+import CARDS from '../data/gameCards.js';
 import nextCard from '../controller/nextCard.js';
 import addPointerSides from '../controller/pointer.js';
 
@@ -226,5 +227,11 @@ export default class Board {
     this.currnetPlayerNumber += 1;
     if (this.currnetPlayerNumber > this.playersCount) this.currnetPlayerNumber = 1;
     window.HUD.updatePlayerName(this.currnetPlayerNumber - 1);
+  }
+
+  nextCardWrong() {
+    CARDS.push(CARDS[this.step - 2]);
+    nextCard.call(this, this.step - 1);
+    window.HUD.updateCard(this.currentCard.name);
   }
 }

@@ -124,23 +124,26 @@ const rulesContentRu = `
 
 
 const rulesContentDe = `
-Spielregeln
+                                                SPIELREGELN
 
-Das Spiel spielen
-Die Spieler wechseln sich mit dem Startspieler ab. Wenn ein Spieler an der Reihe ist, führt er aus
+                                        1. DAS SPIEL SPIELEN
+
+    Die Spieler wechseln sich mit dem Startspieler ab. Wenn ein Spieler an der Reihe ist, führt er aus
 die folgenden Aktionen:
-1 Der Spieler muss ein neues Plättchen ziehen und platzieren
-2 Der Spieler kann einen seiner Anhänger aus seinem Vorrat auf dem soeben platzierten Plättchen einsetzen
-3 Wenn durch das Platzieren des Plättchens Straßen, Städte oder Kreuzgänge fertiggestellt sind, werden sie jetzt gewertet.
+1) Der Spieler muss ein neues Plättchen ziehen und platzieren
+2) Der Spieler kann einen seiner Anhänger aus seinem Vorrat auf dem soeben platzierten Plättchen einsetzen
+3) Wenn durch das Platzieren des Plättchens Straßen, Städte oder Kreuzgänge fertiggestellt sind, werden sie jetzt gewertet.
 
-Fliesen platzieren
-Ein Spieler legt ein Plättchen nach den folgenden Regeln auf den Tisch:
+                                    2. Fliesen platzieren
+
+    Ein Spieler legt ein Plättchen nach den folgenden Regeln auf den Tisch:
 - Die neue Fliese muss so platziert werden, dass mindestens eine Kante an einer zuvor platzierten Fliese anliegt.
 - Das neue Plättchen muss so platziert werden, dass alle Straßen-, Stadt- und Feldsegmente auf dem neuen Plättchen mit der Straße übereinstimmen.
 Stadt- oder Feldsegmente auf allen angrenzenden Kacheln.
 
-Follower bereitstellen
-Nachdem der Spieler ein Plättchen gelegt hat, kann er einen seiner Anhänger nach den folgenden Regeln einsetzen:
+                                    3. Follower bereitstellen
+
+    Nachdem der Spieler ein Plättchen gelegt hat, kann er einen seiner Anhänger nach den folgenden Regeln einsetzen:
 - Der Spieler darf in einem Zug nur einen Follower spielen
 - Der Spieler muss es aus seinem Vorrat nehmen
 - Der Spieler darf es nur auf dem Plättchen einsetzen, das er gerade gelegt hat
@@ -149,16 +152,14 @@ Nachdem der Spieler ein Plättchen gelegt hat, kann er einen seiner Anhänger na
 Der Spieler darf keinen Anhänger auf einem Straßen-, Stadt- oder Feldsegment einsetzen, wenn dieses Segment eine Verbindung herstellt
 zu einem Segment auf einem anderen Plättchen, auf dem sich bereits ein Follower (von einem beliebigen Spieler) befindet.
 
-Bewertung abgeschlossener Straßen, Städte und Kreuzgänge
+    4. Bewertung abgeschlossener Straßen, Städte und Kreuzgänge
 
-Straße fertiggestellt
+    Straße fertiggestellt
+- Eine Straße ist fertig, wenn die Straßensegmente an beiden Enden mit einer Kreuzung verbunden sind, einer Stadt im Kreuzgang.
+- Eine Straße ist auch dann vollständig, wenn sie in einer Schleife mit sich selbst verbunden ist.
 
-Eine Straße ist fertig, wenn die Straßensegmente an beiden Enden mit einer Kreuzung verbunden sind, einer Stadt im Kreuzgang.
-Eine Straße ist auch dann vollständig, wenn sie in einer Schleife mit sich selbst verbunden ist.
-
-Der Spieler, der einen Anhänger auf einer fertiggestellten Straße hat, erhält 1 Punkt für jedes Plättchen auf der Straße.
-
-Stadt fertiggestellt
+    Der Spieler, der einen Anhänger auf einer fertiggestellten Straße hat, erhält 1 Punkt für jedes Plättchen auf der Straße.
+- Stadt fertiggestellt
 
 Eine Stadt ist vollständig, wenn sie vollständig von einer Stadtmauer umgeben ist und keine Lücken in der Mauer bestehen.
 
@@ -167,24 +168,22 @@ Jeder Schild in einem Stadtsegment bringt dem Spieler 2 Bonuspunkte ein.
 
 *! * Was passiert, wenn eine fertiggestellte Straße oder Stadt mehr als einen Anhänger hat?
 
-Durch geschickte Platzierung von Kacheln kann es sein, dass sich mehr als ein Dieb auf einer Straße befindet oder
-mehr als ein Ritter in einer Stadt. Wenn dies in einer fertiggestellten Straße oder Stadt geschieht, der Spieler mit den meisten
-Diebe (auf einer Straße) oder die meisten Ritter (in einer Stadt) erhalten alle Punkte.
-Wenn zwei oder mehr Spieler mit den meisten Dieben oder Rittern zusammenarbeiten, erhalten sie jeweils die Gesamtpunktzahl
-für die Straße oder Stadt. ***.
+Durch geschickte Platzierung von Kacheln kann es sein, dass sich mehr als ein Dieb auf 
+einer Straße befindet oder mehr als ein Ritter in einer Stadt. Wenn dies in einer fertiggestellten
+Straße oder Stadt geschieht, der Spieler mit den meisten Diebe (auf einer Straße) oder die meisten Ritter
+(in einer Stadt) erhalten alle Punkte. Wenn zwei oder mehr Spieler mit den meisten Dieben oder Rittern zusammenarbeiten,
+erhalten sie jeweils die Gesamtpunktzahl für die Straße oder Stadt. ***.
 
-Kreuzgang abgeschlossen
+    Kreuzgang abgeschlossen
+- Ein Kreuzgang ist fertig, wenn die Kachel, auf der er liegt, vollständig von Kacheln umgeben ist.
+- Ein Spieler mit Anhänger im Kreuzgang erhält neun Punkte.
 
-Ein Kreuzgang ist fertig, wenn die Kachel, auf der er liegt, vollständig von Kacheln umgeben ist.
-Ein Spieler mit Anhänger im Kreuzgang erhält neun Punkte.
-
-SPIELENDE
-
-Am Ende des Zuges des Spielers, in dem das letzte Plättchen platziert ist, endet das Spiel. Die endgültige Wertung dann
+    Am Ende des Zuges des Spielers, in dem das letzte Plättchen platziert ist, endet das Spiel. Die endgültige Wertung dann
 stattfinden.
 
-Alle unvollständigen Straßen, Städte und Kreuzgänge werden gewertet.
-Für jede unvollständige Straße und Stadt:
+                                    5. ENDGÜLTIGE BEWERTUNG
+    Alle unvollständigen Straßen, Städte und Kreuzgänge werden gewertet.
+    Für jede unvollständige Straße und Stadt:
 - Der Spieler erhält 1 Punkt für jedes Straßen- oder Stadtsegment in der unvollständigen Straße oder Stadt, wenn
 Er hat einen Anhänger auf den Kacheln. Schilde bringen dem Stadtspieler jeweils 1 Punkt ein.
 - Verwenden Sie für unvollständige Straßen und Städte mit mehr als einem Anhänger die Regeln für fertiggestellte Straßen
