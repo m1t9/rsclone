@@ -317,12 +317,17 @@ export default class HUD extends Phaser.Scene {
     if (number !== CONSTANTS.CARDS_COUNT + 1) {
       this.underCardText.setText(`Current card (${number} / ${CONSTANTS.CARDS_COUNT}):`);
     } else {
+      this.otherCardBtn.disableInteractive();
+      this.turnBtn.disableInteractive();
       this.underCardText.setText('Finish');
       let winnerVal = 0;
       let winnerPos = 0;
       let iter = 0;
       for (const [key, value] of Object.entries(this.playerPoints)) {
-        if (value > winnerVal) winnerPos = iter;
+        if (value > winnerVal) {
+          winnerPos = iter;
+          winnerVal = value;
+        }
         iter += 1;
       }
       this.add.text(this.game.config.width / 2 - 250, this.game.config.height / 2,
