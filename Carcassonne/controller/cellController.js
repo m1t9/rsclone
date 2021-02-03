@@ -1,9 +1,6 @@
 /* eslint-disable import/extensions */
-// import Card from '../model/Card.js';
 import CONSTANTS from '../utils/CONSTANTS.js';
 import Card from '../model/Card.js';
-// import addPointerSides from './pointer.js';
-// import HUD from '../model/Hud.js';
 
 export default function addCell(board, xx, yy, type) {
   const shape = new Phaser.Geom.Polygon([
@@ -17,14 +14,6 @@ export default function addCell(board, xx, yy, type) {
   const back = this.add.isoSprite(xx, yy, -5, 'back', this.isoGroup);
 
   let checker = false;
-  // cell.scaleX = 0.5;
-  // cell.scaleY = 1;
-  // cell.angle = 45;
-  // cell.setScale(2);
-  // cell.setAngle(45);
-  // cell.setScale(0.25, 0.5);
-  // cell.setX(2);
-  // cell.setInteractive();
   cell.setInteractive(shape, Phaser.Geom.Polygon.Contains);
   cell.number = board.cellsCount;
 
@@ -45,19 +34,12 @@ export default function addCell(board, xx, yy, type) {
       back.isoZ -= 7;
     });
 
-    // window.HUD.controlBtns.buttons[0].on('pointerdown', () => {
-    //   console.log('wow');
-    // });
-    // console.log(window.HUD.getNextStepButton().buttons[0]);
-
     cell.on('pointerdown', (pointer) => {
-      // console.log(window.HUD.controlBtns.buttons[0]);
       if (pointer.leftButtonDown()) {
         if (board.checkOne(xx, yy) && board.isWin === false) {
           cell.removeAllListeners();
           cell.isoPosition.z = 0;
           back.isoPosition.z = -5;
-          // addNeib.call(this, board, xx, yy);
           board.setCurrentCoords(xx, yy);
           board.addCardToBoard(cell.number);
 
@@ -67,10 +49,6 @@ export default function addCell(board, xx, yy, type) {
           window.HUD.destroyCard();
 
           board.playersCards[`player${board.currnetPlayerNumber}`].push(board.currentCard);
-          // checker = board.nextCard();
-          // while (checker === false) {
-          // }
-          // addPointerSides.call(this, xx, yy);
           board.emptyCells.forEach((item) => {
             item.disableInteractive();
           });
@@ -100,32 +78,29 @@ function addEmpty(board, x, y) {
 }
 
 function addNeib(board, x, y) {
-  console.log(`${x} ${y}`);
   const localBoard = board.board.map((item) => {
     const localItem = item;
+
     if (localItem.cardNumber === board.cellsCount) {
       localItem.type = 'tile';
     }
+
     return localItem;
   });
 
   if (localBoard.filter((cell) => (cell.x === x + CONSTANTS.SIZE && cell.y === y)).length === 0) {
-    // console.log('4');
     addEmpty.call(this, board, x + CONSTANTS.SIZE, y);
   }
 
   if (localBoard.filter((cell) => (cell.x === x - CONSTANTS.SIZE && cell.y === y)).length === 0) {
-    // console.log('1');
     addEmpty.call(this, board, x - CONSTANTS.SIZE, y);
   }
 
   if (localBoard.filter((cell) => (cell.x === x && cell.y === y + CONSTANTS.SIZE)).length === 0) {
-    // console.log('3');
     addEmpty.call(this, board, x, y + CONSTANTS.SIZE);
   }
 
   if (localBoard.filter((cell) => (cell.x === x && cell.y === y - CONSTANTS.SIZE)).length === 0) {
-    // console.log('2');
     addEmpty.call(this, board, x, y - CONSTANTS.SIZE);
   }
 }

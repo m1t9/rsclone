@@ -1,16 +1,10 @@
 /* eslint-disable import/extensions */
 import { addCell, addNeib, turnCard } from '../controller/cellController.js';
-// import addNeib from '../controller/cellController.js';
 import Card from './Card.js';
-// import PlayerCard from './PlayerCard.js';
 import CONSTANTS from '../utils/CONSTANTS.js';
-// import moveCamera from '../utils/camera.js';
-// import CARDS from '../data/gameCards.js';
 import CARDS from '../data/gameCards.js';
 import nextCard from '../controller/nextCard.js';
 import addPointerSides from '../controller/pointer.js';
-
-// import CARDS from '../data/gameCards.js';
 
 export default class Board {
   constructor() {
@@ -25,7 +19,6 @@ export default class Board {
     this.emptyCells = [];
     this.currentX = 0;
     this.currenty = 0;
-
     this.currnetPlayerNumber = 1;
     this.currentCardOnBoard = null;
     this.sides = [];
@@ -35,11 +28,7 @@ export default class Board {
       player3: [],
       player4: [],
     };
-
     this.playersCount = 2;
-
-    // this.currnetPlayer = 1;
-
     this.playersChips = {
       player1: 10,
       player2: 10,
@@ -61,54 +50,27 @@ export default class Board {
     this.board.playersCount = window.HUD.players.length;
     const card = new Card(this.board.cellsCount, CONSTANTS.SIZE, CONSTANTS.SIZE);
 
-    // moveCamera.call(this);
     this.board.cellsCount += 1;
     addCell.call(this, this.board, CONSTANTS.SIZE, CONSTANTS.SIZE, 'empty', this.cellsCount);
     card.name = 'empty';
     this.board.addItem(card);
-    // this.board.currentCard = new PlayerCard('grass', 'road', 'road', 'grass', 'road_straight');
 
     nextCard.call(this.board, 0);
     window.HUD.initHudCard(this.board.currentCard.name);
 
-    // console.log(this.scene.manager.getScene('MainScene') === true)
-    // console.log(this.scene.get('UIScene'))
-    // if(this.textures.exists('imageFromSceneA')) this.scene.start('sceneC')
-    // console.log(window.HUD.nextBtn);
-    // window.HUD.nextBtn.on('pointerup', function () {
-    //   console.log('wow')
-    // })
-
-    // console.log(window.StartScreen.numOfPlayers)
-    // let cc = false;
-    // while (cc === false) {
-    //   cc = window.HUD.complete;
-    //   console.log(window.HUD.complete);
-    // }
-
-    // console.log(this.nextStep);
-    // this.nextStep.on('click', function() {
-    //   console.log('wow');
-    // });
-    // console.log(window.HUD.nextBtn);
-    // const sc = this;
     window.HUD.disableNextButton();
     window.HUD.disableChipButton();
 
-    // console.log(this.board.currentCard);
     window.HUD.otherCardBtn.on('pointerup', function () {
       this.board.nextCardWrong();
     }, this);
 
     window.HUD.turnBtn.on('pointerup', function () {
-      // this.board.currentCardDir += 1;
       turnCard(this.board);
       window.HUD.turnHudCard(this.board.currentCard.name, this.board.currentCardDir);
     }, this);
 
     window.HUD.nextBtn.on('pointerup', function () {
-      // console.log(this.board.playersChips[`player${this.board.currnetPlayerNumber}`]);
-      // console.log(this.board.currnetPlayerNumber);
       addNeib.call(this, this.board, this.board.currentX, this.board.currentY);
       this.board.nextCard();
 
@@ -124,12 +86,10 @@ export default class Board {
 
       this.board.sides = [];
 
-      // console.log(this.board.playersCards);
       this.board.nextPlayer();
-      console.log(this.board.currnetPlayerNumber);
     }, this);
 
-    window.HUD.setChipBtn.on('pointerup', function() {
+    window.HUD.setChipBtn.on('pointerup', function () {
       this.board.sides = this.board.sides.concat(
         addPointerSides.call(this, this.board.currentX, this.board.currentY),
       );
@@ -138,7 +98,6 @@ export default class Board {
   }
 
   destroyPointers() {
-    // console.log('destroy');
     this.sides.forEach((item) => {
       item.destroy(true);
     });
@@ -163,33 +122,33 @@ export default class Board {
 
   checkOne(x, y) {
     let checkedCell = this.board.filter((cell) => (cell.x === x + CONSTANTS.SIZE && cell.y === y));
+
     if (checkedCell.length !== 0) {
       if (checkedCell[0].name !== 'empty') {
-        // console.log('4');
         if (checkedCell[0].side1 !== this.currentCard.side4) return false;
       }
     }
 
     checkedCell = this.board.filter((cell) => (cell.x === x - CONSTANTS.SIZE && cell.y === y));
+
     if (checkedCell.length !== 0) {
       if (checkedCell[0].name !== 'empty') {
-        // console.log('1');
         if (checkedCell[0].side4 !== this.currentCard.side1) return false;
       }
     }
 
     checkedCell = this.board.filter((cell) => (cell.x === x && cell.y === y + CONSTANTS.SIZE));
+
     if (checkedCell.length !== 0) {
       if (checkedCell[0].name !== 'empty') {
-        // console.log('3');
         if (checkedCell[0].side2 !== this.currentCard.side3) return false;
       }
     }
 
     checkedCell = this.board.filter((cell) => (cell.x === x && cell.y === y - CONSTANTS.SIZE));
+
     if (checkedCell.length !== 0) {
       if (checkedCell[0].name !== 'empty') {
-        // console.log('2');
         if (checkedCell[0].side3 !== this.currentCard.side2) return false;
       }
     }
