@@ -20,6 +20,8 @@ export default class HUD extends Phaser.Scene {
     // this.settingsBtn;
     this.lang = undefined;
     this.player = undefined;
+    // this.scoreField = undefined;
+    // this.scoreTable = undefined;
 
     this.playerPoints = {
       player1: 14,
@@ -185,6 +187,7 @@ export default class HUD extends Phaser.Scene {
 
         } else if (!this.scoreTable.isInTouching(pointer)) {
           // console.log('collapse!');
+          this.removeChips();
           this.scoreField.destroy();
 
           // this.chipsOnDesk = [];
@@ -249,7 +252,7 @@ export default class HUD extends Phaser.Scene {
     // for (let i = 1; i < parseInt(window.StartScreen.numOfPlayers, 10) + 1; i += 1) {
     //   this["player_" + i] = this.add.text(700 + i*100, 20, `Player ${i}`, { fontFamily: 'Thintel', fontSize: '40px', fill: '#ffffff' });
     // }
-    
+
     if (window.StartScreen.playerNames.length === 0) {
       this.players = new Array(Number(window.StartScreen.numOfPlayers)).fill().map((v, i) => v = `Player ${i + 1}`);
     } else {
@@ -275,13 +278,21 @@ export default class HUD extends Phaser.Scene {
     for (let i = 0; i < this.players.length; i += 1) {
       // console.log(this.playerPoints[`player${i + 1}`]);
       this.chipsOnDesk.push(this.add.sprite(
-        this.game.config.width / 2 + COORDS[this.playerPoints[`player${i + 1}`]].x,
-        this.game.config.height / 2 + COORDS[this.playerPoints[`player${i + 1}`]].y,
+        this.game.config.width / 2 + COORDS[this.playerPoints[`player${i + 1}`] % 50].x - i * 5,
+        this.game.config.height / 2 + COORDS[this.playerPoints[`player${i + 1}`] % 50].y + i * 5,
         `chipBoard_${i + 1}`,
       ));
     }
 
     // console.log(this.chipsOnDesk);
+  }
+
+  removeChips() {
+    this.chipsOnDesk.forEach((chip) => {
+      chip.destroy();
+    });
+
+    this.chipsOnDesk = [];
   }
 
   initHudCard(name) {
@@ -586,6 +597,9 @@ const addDialog = function(width, x, y, scene, numberOfPlayers) {
       // // console.log(index, dialog.getChoice(index));
       scene.playerPoints.player1 = parseInt(dialog.getChoice(0).text, 10);
       scene.playerPoints.player2 = parseInt(dialog.getChoice(1).text, 10);
+
+      scene.removeChips();
+      scene.showChips();
 
       if (dialog.getChoice(2) !== undefined && !isNaN(parseInt(dialog.getChoice(2).text, 10))) {
         scene.playerPoints.player3 = parseInt(dialog.getChoice(2).text, 10);
