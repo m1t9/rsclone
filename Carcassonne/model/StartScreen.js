@@ -1,5 +1,5 @@
 import CONSTANTS from '../utils/CONSTANTS.js';
-import { changeText } from '../utils/activeButtonColor.js';
+// import { changeText } from '../utils/activeButtonColor.js';
 import addRules from '../utils/addGameRules.js';
 import { en, ru, de } from '../utils/gameObjectsLang.js';
 
@@ -140,23 +140,25 @@ export default class StartScreen extends Phaser.Scene {
       newGameBtn.disableInteractive();
 
       this.selectPlayersNum = this.rexUI.add.dialog({
+        width: 300,
         anchor: {
-          left: 'center-435',
-          centerY: 'center-230',
+          left: 'center-450',
+          centerY: 'center-240',
         },
         background: this.rexUI.add.roundRectangle(0, 0, 100, 100, 20, 0xe3b483),
         title: this.rexUI.add.label({
-          background: this.rexUI.add.roundRectangle(0, 0, 100, 50, 20, 0xaf6a39),
+          background: this.rexUI.add.roundRectangle(0, 0, 100, 100, 20, 0xaf6a39),
           text: this.add.text(0, 0, this.lang.selectNumberOfPlayers.text, {
             fontFamily: 'Thintel',
-            fontSize: '30px'
+            fontSize: '30px',
+            align: 'right',
           }),
           space: {
-            left: 20,
-            right: 20,
+            left: 11,
+            right: 31,
             top: 5,
             bottom: 10
-          }
+          },
         }),
         choices: [
           createLabel(this, '2'),
@@ -164,6 +166,8 @@ export default class StartScreen extends Phaser.Scene {
           createLabel(this, '4'),
         ],
         space: {
+          // titleLeft: 'left+10',
+          // titleRight: 0,
           title: 10,
           choice: 5,
           left: 15,
@@ -171,8 +175,19 @@ export default class StartScreen extends Phaser.Scene {
           top: 15,
           bottom: 15,
         },
-        align: 'center',
+        align: {
+          title: 'center',
+          content: 'center',
+          description: 'center',
+          choices: 'center',
+          actions: 'center',
+      },
         expand: {
+          // title: true,
+          // content: true,
+          // description: true,
+          // choices: true,
+          // actions: false,
           content: false // Content is a pure text object
         }
       })
@@ -197,8 +212,8 @@ export default class StartScreen extends Phaser.Scene {
           // this.selectPlayersNum = null;
           // this.selectPlayersNum.setChoiceEnable(2, false);
           
-          this.tooltipStart = this.add.text(newGameBtn.x - 400, 150, this.lang.tooltip_start.text, { fontFamily: 'Thintel', fontSize: '35px', wordWrap: {width: 250}, align: 'justify'});
-          this.dialog = addDialog(this, Number(this.numOfPlayers), newGameBtn);
+          this.tooltipStart = this.add.text(newGameBtn.x - 450, 150, this.lang.tooltip_start.text, { fontFamily: 'Thintel', fontSize: '35px', wordWrap: {width: 250}, align: 'justify'});
+          this.dialog = addDialog(300, this, Number(this.numOfPlayers), newGameBtn);
 
           // console.log(this.dialog.children[1].children[1])
         }
@@ -269,7 +284,7 @@ export default class StartScreen extends Phaser.Scene {
           if (this.dialog !== undefined && this.selectPlayersNum.active === false) {
             // console.log(this.selectPlayersNum);
 
-            // this.dialog.children[1].children[1].setText(this.lang.enterName.text);
+            this.dialog.children[1].children[1].setText(this.lang.enterName.text);
             // console.log(this.dialog.children[2].buttons);
 
             if (this.dialog.children[2].buttons.length === 3) {
@@ -346,25 +361,27 @@ const createInput = function(scene, content) {
 
 const createInetactiveLabel = function (scene, content, backgroundColor) {
   return scene.rexUI.add.label({
-    background: scene.rexUI.add.roundRectangle(0, 0, 80, 40, 20, 0xaf6a39),
+    background: scene.rexUI.add.roundRectangle(0, 0, 100, 40, 20, 0xaf6a39),
     text: createInput(scene, content),
     space: {
-      left: 10,
+      left: 20,
       right: 10,
       top: 5,
       bottom: 10
     },
     align: 'center',
+    halign: 'center',
   })
 }
 
 const createLabel = function (scene, text, backgroundColor) {
   return scene.rexUI.add.label({
-    background: scene.rexUI.add.roundRectangle(0, 0, 80, 40, 20, 0xaf6a39),
-    name: 'Ready to Play!',
+    background: scene.rexUI.add.roundRectangle(0, 0, 100, 40, 20, 0xaf6a39),
+    name: 'READY TO PLAY!',
     text: scene.add.text(0, 0, text, {
       fontFamily: 'Thintel',
-      fontSize: '30px'
+      fontSize: '30px',
+      align: 'center',
     }),
     space: {
       // left: 0,
@@ -401,12 +418,11 @@ const createBtn = function (scene, text, background, left=0, right=0, top=0, bot
 }
 
 
-const addDialog = function(scene, numberOfPlayers) {
+const addDialog = function(width, scene, numberOfPlayers) {
   let dialog = scene.rexUI.add.dialog({
-      // x: 412,
-      // y: 250,
+      width: width,
       anchor: {
-        left: 'center-445',
+        left: 'center-450',
         centerY: 'center-240',
       },
       background: scene.rexUI.add.roundRectangle(0, 0, 100, 100, 20, 0xe3b483),
@@ -414,7 +430,8 @@ const addDialog = function(scene, numberOfPlayers) {
         background: scene.rexUI.add.roundRectangle(0, 0, 100, 50, 20, 0xaf6a39),
         text: scene.add.text(0, 0, scene.lang.enterName.text, {
           fontFamily: 'Thintel',
-          fontSize: '30px'
+          fontSize: '30px',
+          align: 'center',
         }),
         space: {
           left: 20,
@@ -442,7 +459,8 @@ const addDialog = function(scene, numberOfPlayers) {
     .fadeIn(500)
 
   dialog.on('button.click', function (button, groupName, index) {
-    if (button.name === 'Ready to Play!') {
+    console.log(button.name);
+    if (button.name === 'READY TO PLAY!') {
       scene.scene.launch('Boot');
       scene.scene.stop('StartScreen');
     };

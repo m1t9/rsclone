@@ -16,6 +16,7 @@ export default class HUD extends Phaser.Scene {
     // this.currentCardNumber = 0;
     this.music = undefined;
     this.musicON = true;
+    this.scoreFieldOpen = false;
     // this.settingsBtn;
     this.lang = undefined;
   }
@@ -69,8 +70,32 @@ export default class HUD extends Phaser.Scene {
     this.turnBtn.disableInteractive();
   }
 
+  addScoreText(number, x, y) {
+    let textPlayers = [];
+    for (let i = 0; i < number.length; i += 1) {
+      textPlayers.push(this.add.text(x + i *10, y  + i *10, 'Hello World', { 
+        color: 'red', 
+        fontFamily: 'Thintel',
+        fontSize: '30px',
+        fixedWidth: 150,
+        fixedHeight: 40,
+        align: 'center',
+        halign: 'center',
+      }).setDepth(1));
+
+      return textPlayers;
+    } 
+  }
+  
   create() {
     this.lang = window.StartScreen.lang;
+    if (window.StartScreen.playerNames.length === 0) {
+      this.players = new Array(Number(window.StartScreen.numOfPlayers)).fill().map((v, i) => v = `Player ${i + 1}`);
+    } else {
+      this.players = [...new Set(window.StartScreen.playerNames)];
+    }
+
+    console.log(this.players);
     // this.add.image(650, 410, 'chip1');
     const mainScene = this.scene.get('MainScene').board.currentCard;
     // this.add.text(10, 10, 'Current card:', { font: '20px', fill: '#ffffff' });
@@ -118,14 +143,55 @@ export default class HUD extends Phaser.Scene {
     }, this)
 
     this.openScoreFieldBtn = this.add.image(this.game.config.width - 150, this.game.config.height - 400, 'open_score').setInteractive();
+    this.openScoreFieldBtn.on('pointerover', function () {
+      this.setScale(CONSTANTS.BTNS_ACTIVE_SCALE);
+    });
+    this.openScoreFieldBtn.on('pointerout', function () {
+      this.setScale(CONSTANTS.BTNS_DEFAULT_SCALE);
+    });
+
     this.openScoreFieldBtn.on('pointerup', function(pointer) {
-      this.scoreField = this.add.sprite(this.game.config.width / 2 , this.game.config.height /2, 'score_field').setScale(0.8).setInteractive();
+      this.scoreFieldOpen != this.scoreFieldOpen;
+
+      if (!this.scoreFieldOpen) {
+        this.scoreFieldOpen = true;
+
+        this.openScoreFieldBtn.setTint(CONSTANTS.BTNS_HOVER_COLOR);
+        this.openScoreFieldBtn.setScale(CONSTANTS.BTNS_DEFAULT_SCALE);
+
+        this.scoreField = this.add.sprite(this.game.config.width / 2 , this.game.config.height /2, 'score_field').setAlpha(0).setInteractive();
+        this.tweens.add({
+          targets: this.scoreField,
+          alpha: 1,
+          ease: 'Sine.easeInOut',
+          // yoyo: true,
+          // repeat: -1,
+          duration: 2000
+        }, this);
+
+        this.addDialog = addDialog(150, this.openScoreFieldBtn.x - 100, this.openScoreFieldBtn.y - 250, this, this.players.length);
+        // const text = this.add.text(400, 300, 'Hello World', { fixedWidth: 150, fixedHeight: 36 })
+        // text.setOrigin(0.5, 0.5)
+      
+        // text.setInteractive().on('pointerdown', () => {
+        //   this.rexUI.edit(text)
+        // })
+      } else {
+        this.openScoreFieldBtn.clearTint();
+        this.scoreFieldOpen = false;
+        this.tweens.add({
+          targets: this.scoregGroup,
+          alpha: 0,
+          duration: 2000,
+          ease: 'Sine.easeInOut'
+        }, this);
+      }
+
+      // console.log(this.scoreFieldOpen);
     }, this);
 
     let menu = undefined;
     const settingsBtn = this.add.image(this.game.config.width - 50, 40, 'settings_2').setInteractive();
-    // this.settingsBtn = this.add.image(this.game.config.width - 50, 30, 'settings_2');
-
     const items = [
       { name: this.lang.newGame_btn.name },
       { name: this.lang.saveGame_btn.name },
@@ -165,16 +231,7 @@ export default class HUD extends Phaser.Scene {
 
     // for (let i = 1; i < parseInt(window.StartScreen.numOfPlayers, 10) + 1; i += 1) {
     //   this["player_" + i] = this.add.text(700 + i*100, 20, `Player ${i}`, { fontFamily: 'Thintel', fontSize: '40px', fill: '#ffffff' });
-    // }
-    
-    if (window.StartScreen.playerNames.length === 0) {
-      this.players = new Array(Number(window.StartScreen.numOfPlayers)).fill().map((v, i) => v = `Player ${i + 1}`);
-    } else {
-      this.players = [...new Set(window.StartScreen.playerNames)];
-    }
-
-    console.log(this.players);
-  
+    // }  
   }
 
   initHudCard(name) {
@@ -369,4 +426,135 @@ const createBtn = function (scene, text, background, left=0, right=0, top=0, bot
     },
     align: 'center',
   });
+}
+
+
+const createInput = function(scene, content) {
+  let keyObj = scene.input.keyboard.addKey('ENTER'); 
+  // const text = scene.add.text(400, 300, 'Hello World', { fixedWidth: 150, fixedHeight: 36 })
+  let text = scene.add.text(0, 0, content, {
+    color: 'white',
+    fontFamily: 'Thintel',
+    fontSize: '30px',
+    fixedWidth: 100,
+    fixedHeight: 30,
+    align: 'center',
+    halign: 'center',
+  })
+
+	text.setInteractive().on('pointerdown', () => {
+    // scene.rexUI.edit(text);
+    let config = {
+      onTextChanged: function(textObject, text) {
+        textObject.text = text;
+      },
+      selectAll: true
+    }
+          
+    scene.plugins.get('rextexteditplugin').edit(text, config);
+    text.setColor('black');
+    // scene.playerNames.push(text);
+  });
+
+  keyObj.on('up', function(event) { 
+    if (text.text !== 'Player Name') {
+      scene.playerNames.push(text.text);
+    }
+  });
+
+  return text;
+}
+
+const createInetactiveLabel = function (scene, content, backgroundColor) {
+  return scene.rexUI.add.label({
+    background: scene.rexUI.add.roundRectangle(0, 0, 100, 40, 20, 0xaf6a39),
+    icon: scene.add.image(0, 0, 'blue_chip'),
+    text: createInput(scene, content),
+    space: {
+      left: 10,
+      right: 10,
+      top: 5,
+      bottom: 5
+    },
+    align: 'center',
+    halign: 'center',
+  })
+  
+}
+
+const addDialog = function(width, x, y, scene, numberOfPlayers) {
+  let dialog = scene.rexUI.add.dialog({
+      x: x,
+      y: y,
+      width: width,
+      // anchor: {
+      //   left: 'center-450',
+      //   centerY: 'center-240',
+      // },
+      background: scene.rexUI.add.roundRectangle(0, 0, 100, 100, 20, 0xe3b483),
+      // (new Array(scene.players.length).fill().map((v, i) => v = createLabel(scene, scene.players[i]))),
+      title: scene.rexUI.add.label({
+        background: scene.rexUI.add.roundRectangle(0, 0, 100, 50, 20, 0xaf6a39),
+        text: scene.add.text(0, 0, 'Количество очков каждого игрока', {
+          fontFamily: 'Thintel',
+          fontSize: '30px',
+          align: 'center',
+        }),
+        space: { left: 10, right: 10, top: 5, bottom: 5 }
+      }),
+      choices: (new Array(scene.players.length).fill().map((v, i) => v = createInetactiveLabel(scene, scene.players[i]))).concat([createLabel(scene, 'Сохранить')]),
+      space: {
+        title: 5,
+        content: 5,
+        choice: 5,
+        left: 5,
+        right: 5,
+        top: 5,
+        bottom: 5,
+      },
+      align: 'center',
+      expand: {
+        content: false // Content is a pure text object
+      }
+    })
+    .layout()
+    .fadeIn(500)
+
+  dialog.on('button.click', function (button, groupName, index) {
+    console.log(button.name);
+  },scene)
+    // .on('button.over', function (button, groupName, index) {
+    //   button.getElement('background').setStrokeStyle(4, 0x7b4626)
+    // },scene)
+    // .on('button.out', function (button, groupName, index) {
+    //   // button.backgroundChildren[0].clearTint();
+    //   button.getElement('background').setStrokeStyle()
+    //   // button.backgroundChildren[0].setFillStyle()
+    // },scene);
+
+  return dialog;
+}
+
+
+const createLabel = function (scene, text, backgroundColor) {
+  return scene.rexUI.add.label({
+    background: scene.rexUI.add.roundRectangle(0, 0, 100, 40, 20, 0xaf6a39),
+    // name: 'READY TO PLAY!',
+    text: scene.add.text(0, 0, text, {
+      fontFamily: 'Thintel',
+      fontSize: '30px',
+      align: 'center',
+    }),
+    space: {
+      // left: 0,
+      // right: 0,
+      // top: 0,
+      // bottom: 5,
+      left: 10,
+      right: 10,
+      top: 5,
+      bottom: 10
+    },
+    align: 'center',
+  })
 }
