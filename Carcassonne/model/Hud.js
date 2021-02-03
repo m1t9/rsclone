@@ -170,7 +170,8 @@ export default class HUD extends Phaser.Scene {
         }, this);
 
         this.showChips();
-        this.addDialog = addDialog(150, this.openScoreFieldBtn.x - 20, this.openScoreFieldBtn.y - 150, this, this.players.length);
+        // КООРДИНАТЫ!
+        this.scoreTable = addDialog(150, this.openScoreFieldBtn.x - 20, this.openScoreFieldBtn.y - 200, this, this.players.length);
       
       } else {
 
@@ -466,7 +467,7 @@ const createInput = function(scene, content) {
     color: 'white',
     fontFamily: 'Thintel',
     fontSize: '30px',
-    fixedWidth: 100,
+    fixedWidth: 50,
     fixedHeight: 30,
     align: 'center',
     halign: 'center',
@@ -478,18 +479,24 @@ const createInput = function(scene, content) {
       onTextChanged: function(textObject, text) {
         textObject.text = text;
       },
-      selectAll: true
-    }
-          
+      selectAll: false
+    } 
     scene.plugins.get('rextexteditplugin').edit(text, config);
     text.setColor('black');
     // scene.playerNames.push(text);
+    // let saveScore = scene.scoreTable.children[scene.scoreTable.children.length - 1].children[scene.scoreTable.children[scene.scoreTable.children.length - 1].children.length - 1];
+    // saveScore.on('pointerdown', function() {
+    //   scene.playerPoints.player1 = Number(text);
+
+    //   console.log(scene.playerPoints);
+    // })
+    
   });
 
   keyObj.on('up', function(event) { 
-    if (text.text !== 'Player Name') {
-      scene.playerNames.push(text.text);
-    }
+    // if (text.text !== 'Player Name') {
+    //   scene.playerNames.push(text.text);
+    // }
   });
 
   return text;
@@ -498,6 +505,7 @@ const createInput = function(scene, content) {
 const createInetactiveLabel = function (scene, content, icon, backgroundColor) {
   return scene.rexUI.add.label({
     background: scene.rexUI.add.roundRectangle(0, 0, 100, 50, 20, 0xaf6a39),
+    name: content,
     icon: scene.add.image(0, 0, icon.texture.key),
     text: createInput(scene, content),
     space: {
@@ -532,7 +540,7 @@ const addDialog = function(width, x, y, scene, numberOfPlayers) {
         }),
         space: { left: 10, right: 10, top: 5, bottom: 10}
       }),
-      choices: (new Array(scene.players.length).fill().map((v, i) => v = createInetactiveLabel(scene, scene.players[i], scene.chipsOnDesk[i]))).concat([createLabel(scene, 'Сохранить')]),
+      choices: (new Array(scene.players.length).fill().map((v, i) => v = createInetactiveLabel(scene, scene.playerPoints[`player${i + 1}`], scene.chipsOnDesk[i]))).concat([createLabel(scene, 'Сохранить')]),
       space: {
         title: 5,
         content: 5,
@@ -549,10 +557,33 @@ const addDialog = function(width, x, y, scene, numberOfPlayers) {
     })
     .layout()
     .fadeIn(500)
-
+  
   dialog.on('button.click', function (button, groupName, index) {
-    console.log(button.name);
+    if (button.name === 'save') {
+
+      console.log(dialog.getChoice(0).text);
+      // this["player_" + i]
+      // scene.playerPoints["player" + index]
+      // // console.log(index, dialog.getChoice(index));
+      scene.playerPoints.player1 = parseInt(dialog.getChoice(0).text, 10);
+      scene.playerPoints.player2 = parseInt(dialog.getChoice(1).text, 10);
+
+      if (dialog.getChoice(2) !== undefined && !isNaN(parseInt(dialog.getChoice(2).text, 10))) {
+        scene.playerPoints.player3 = parseInt(dialog.getChoice(2).text, 10);
+      } 
+
+      if (dialog.getChoice(3) !== undefined && !isNaN(parseInt(dialog.getChoice(3).text, 10))) {
+        scene.playerPoints.player4 = parseInt(dialog.getChoice(3).text, 10);
+      }
+
+      // console.log(dialog.getChoice(2).text)
+      // scene.playerPoints["player" + i] = parseInt(dialog.getChoice(index).text, 10);
+      
+      console.log(scene.playerPoints);
+
+    }
   },scene)
+
     // .on('button.over', function (button, groupName, index) {
     //   button.getElement('background').setStrokeStyle(4, 0x7b4626)
     // },scene)
@@ -569,7 +600,7 @@ const addDialog = function(width, x, y, scene, numberOfPlayers) {
 const createLabel = function (scene, text, backgroundColor) {
   return scene.rexUI.add.label({
     background: scene.rexUI.add.roundRectangle(0, 0, 100, 40, 20, 0xaf6a39),
-    // name: 'READY TO PLAY!',
+    name: 'save',
     text: scene.add.text(0, 0, text, {
       fontFamily: 'Thintel',
       fontSize: '30px',
