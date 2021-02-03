@@ -83,6 +83,12 @@ const en = {
   },
   scoreSave_btn: {
     name: 'Save'
+  },
+  finishText: {
+    text: 'Finish'
+  },
+  winText: {
+    text: 'END OF THE GAME! THE WINNER IS',
   }
 }
 
@@ -169,6 +175,12 @@ const ru = {
   },
   scoreSave_btn: {
     name: 'Сохранить'
+  },
+  finishText: {
+    text: 'Конец'
+  },
+  winText: {
+    text: 'КОНЕЦ ИГРЫ! ПОБЕДИТЕЛЬ',
   }
 }
 
@@ -255,6 +267,12 @@ const de = {
   },
   scoreSave_btn: {
     name: 'Sparen'
+  },
+  finishText: {
+    text: 'das Ende'
+  },
+  winText: {
+    text: 'ENDE DES SPIELS! GEWINNER',
   }
 }
 

@@ -315,11 +315,11 @@ export default class HUD extends Phaser.Scene {
 
   updateCardNumber(number) {
     if (number !== CONSTANTS.CARDS_COUNT + 1) {
-      this.underCardText.setText(`Current card (${number} / ${CONSTANTS.CARDS_COUNT}):`);
+      this.underCardText.setText(`${this.lang.currentCard.text} (${number} / ${CONSTANTS.CARDS_COUNT}):`);
     } else {
       this.otherCardBtn.disableInteractive();
       this.turnBtn.disableInteractive();
-      this.underCardText.setText('Finish');
+      this.underCardText.setText(this.lang.finishText.text);
       let winnerVal = 0;
       let winnerPos = 0;
       let iter = 0;
@@ -331,7 +331,7 @@ export default class HUD extends Phaser.Scene {
         iter += 1;
       }
       this.add.text(this.game.config.width / 2 - 250, this.game.config.height / 2,
-        `END! WINNER ${winnerVal === 0 ? 'nobody' : this.players[winnerPos]}`,
+        `${this.lang.winText.text} ${winnerVal === 0 ? 'nobody' : this.players[winnerPos]}`,
         { color: 'white', fontFamily: 'Thintel', fontSize: '100px' });
       this.currentCardHUD.destroy();
     }
