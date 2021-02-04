@@ -44,12 +44,6 @@ class MainScene extends Phaser.Scene {
         this.cameras.main.zoom += 0.25;
       }
     });
-
-    // this.scale.on('resize', (gameSize, baseSize, displaySize, resolution) => {
-    //   console.log('resize "this.scale.on"')
-    //   this.cameras.resize(gameSize.width, gameSize.height)
-    //   resize()
-    // })
   }
 
   update() {
@@ -78,21 +72,13 @@ class MainScene extends Phaser.Scene {
     this.input.mouse.disableContextMenu();
     this.board.initialization.call(this);
   }
-
-
 }
 
 const fullScreenHeight = document.documentElement.getBoundingClientRect().height;
 const fullScreenWidth = document.documentElement.getBoundingClientRect().width;
-// const fullScreenHeight = document.documentElement.clientHeight;
-// const fullScreenWidth = document.documentElement.clientWidth;
 
 const config = {
   type: Phaser.AUTO,
-  scale: {
-    mode: Phaser.Scale.FIT,
-    // autoCenter: Phaser.Scale.CENTER_BOTH,
-  },
   parent: 'phaser_container',
   width: fullScreenWidth,
   height: fullScreenHeight,
@@ -101,13 +87,6 @@ const config = {
     createContainer: true,
   },
   scene: [StartScreen, Boot, MainScene, HUD],
-  // scene: [MainScene, HUD],
-  // physics: {
-  //   default: 'matter',
-  //   matter: {
-  //     debug: true,
-  //   },
-  // },
   arcade: {
     debug: true,
     // gravity: { y: 200 }
@@ -115,6 +94,5 @@ const config = {
 };
 
 const game = new Phaser.Game(config);
-
 
 export default config;
