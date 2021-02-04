@@ -1,6 +1,7 @@
 function setChip(side, x, y, z) {
   if (this.board.currentCard[`point${side}`] !== 0
     && this.board.playersChips[`player${this.board.currnetPlayerNumber}`] > 0) {
+    window.HUD.insertSound.play();
     this.board.playersChips[`player${this.board.currnetPlayerNumber}`] -= 1;
     this.board.currentCard.chipPos = side;
     this.board.destroyPointers();

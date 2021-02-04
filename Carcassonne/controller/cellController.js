@@ -37,6 +37,7 @@ export default function addCell(board, xx, yy, type) {
     cell.on('pointerdown', (pointer) => {
       if (pointer.leftButtonDown()) {
         if (board.checkOne(xx, yy) && board.isWin === false) {
+          window.HUD.insertSound.play();
           cell.removeAllListeners();
           cell.isoPosition.z = 0;
           back.isoPosition.z = -5;
@@ -106,6 +107,7 @@ function addNeib(board, x, y) {
 }
 
 function turnCard(board, cell) {
+  window.HUD.turnCardSound.play();
   board.currentCardDir += 1;
 
   if (board.currentCardDir === 5) {

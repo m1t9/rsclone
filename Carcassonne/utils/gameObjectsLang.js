@@ -87,6 +87,13 @@ const en = {
   winText: {
     text: 'END OF THE GAME! THE WINNER IS',
   },
+  controlToolTip: {
+    text: `                   Game Controls:
+     >  WASD or keyboard arrows - move the camera around the map
+     >  +/-  or mouse wheel - scale
+     >  Left mouse button to place a card / chip
+     >  Right mouse button - rotate a card / remove a chip`,
+  },
 };
 
 const ru = {
@@ -179,6 +186,13 @@ const ru = {
   winText: {
     text: 'КОНЕЦ ИГРЫ! ПОБЕДИТЕЛЬ',
   },
+  controlToolTip: {
+    text: `                   Управление:
+     >  WASD или стрелки клавиатуры - перемещение камеры по карте
+     >  +/- или колесо мыши - масштаб
+     >  Левая кнопка мыши положить карточку/фишку
+     >  Правая кнопка мыши - повернуть карточку/удалить фишку`,
+  },
 };
 
 const de = {
@@ -270,6 +284,13 @@ const de = {
   },
   winText: {
     text: 'ENDE DES SPIELS! GEWINNER',
+  },
+  controlToolTip: {
+    text: `                    Spielsteuerung:
+     >   WASD oder Tastaturpfeile - Bewegen Sie die Kamera auf der Karte
+     >   +/-  oder Mausradskala
+     >  Linke Maustaste zum Platzieren einer Karte / eines Chips
+     >  Rechte Maustaste - Karte drehen / Chip entfernen`,
   },
 };
 

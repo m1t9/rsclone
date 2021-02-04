@@ -4,9 +4,12 @@ const rulesContentEn = `
                                     1. PLAYING THE GAME
 
     Players take turns with the starting player. On a player's turn, he executes the following actions:
-1) The player must draw and place a new tile/
-2) The player may deploy one of his followers from his supply on the tile he just placed/
+1) The player must draw and place a new tile. To rotate the card, use the "Turn card" button or right mouse button. 
+   If an open card cannot be placed on the playing field, click the "Other card" button.
+2) The player may deploy one of his followers from his supply on the tile he just placed using the "Set Chip" button. 
+   You can remove a chip by right-clicking on it.
 3) If, through the placement of the tile, roads, cities or cloisters are completed, they are now scored.
+4) To end the turn, click the "Next Step" button.
     All the points received after the calculation players enter in a special window. The result will be reflected on the scoreboard.
 
                                         2. PLACING TILES
@@ -24,7 +27,6 @@ const rulesContentEn = `
 - The player must choose where to deploy the follower on the tile.
     The player may not deploy a follower on a road, city or field segment if that segment connects to a segment on another tile that already 
     has a follower (from any player) on it.
-
 
       4. SCORING COMPLETED ROADS, CITIES AND CLOISTERS
 
@@ -64,17 +66,18 @@ const rulesContentRu = `
 
                                         1. ХОД ИГРЫ:
 
-    Игроки ходят по очереди по схеме:
-1) Игрок открывает карточку и присоединяет её к уже выложенным на стол.
-2) Игрок может поместить свою фишку на только что сыгранную карточку.
-3) Исли только что сыгранная карточка привела к завершению дороги, города или монастыря - происходит подсчёт очков.
+    Игроки хоят по очереди по схеме:
+1) Игрок открывает карточку и присоединяет её к уже выложенным на стол. Для поворота карточки используется кнопка "Повернуть карточку" или правая кнопка мыши. Если открытую карточку невозможно поместить на игровое поле, нажмите кнопку "Поменять карточку"
+2) Игрок может поместить свою фишку на только что сыгранную карточку при помощи кнопки "Поставить фишку". Убрать фишку можно кликнув по ней правой кнопкой мыши.
+3) Если только что сыгранная карточка привела к завершению дороги, города или монастыря - происходит подсчёт очков.
+4) Для завершения хода нажмите кнопку "Следующий ход".
     Все полученные после подсчёта очки игроки заносят в специальное окно. Результат будет отражен на доске счёта.
 
                         2. КАК СЫГРАТЬ КАРТОЧКУ:
 
 - Новый квадрат должен соприкасаться с уже выложенным ранее хотя бы одной стороной;
-- В месте соприкocновения сторон все дороги должны переходить в дороги, поля - в поля, а стены 
-  городов - в стены городов (карта должна оставаться цельной).
+- В месте соприкocновения сторон все дороги должны переходить в дороги, поля - в поля, 
+  а стены городов - в стены городов (карта должна оставаться цельной).
 
                         3. КАК ВЫСТАВИТЬ ФИШКУ:
 
@@ -92,7 +95,7 @@ const rulesContentRu = `
 - Если дорога закольцевалась, то она также считается завершенной.
 - Игрок, чья фишка стоит на завершенной дороге получает За каждый участок дороги по 1 очку.
     
-
+    
     Завершение замка:
 - Замок считается завершенным если он полностью окружен городскими стенами, без пробелов.
 - Игрок, чья фишка стоит на территории завершенного замка, получает 2 очка за каждую карточку.
@@ -128,19 +131,21 @@ const rulesContentDe = `
                                         1. DAS SPIEL SPIELEN
 
     Die Spieler wechseln sich mit dem Startspieler ab. Wenn ein Spieler an der Reihe ist, führt er aus die folgenden Aktionen:
-1) Der Spieler muss ein neues Plättchen ziehen und platzieren.
-2) Der Spieler kann einen seiner Gefolgsleute aus seinem Vorrat auf dem soeben platzierten Plättchen einsetzen.
+1) Der Spieler muss ein neues Plättchen ziehen und platzieren. Verwenden Sie zum Drehen der Karte die Schaltfläche "Karte drehen" oder rechte Maustaste. 
+   Wenn eine offene Karte nicht auf das Spielfeld gelegt werden kann, klicken Sie auf die Schaltfläche "Karte wechseln".
+2) Der Spieler kann einen seiner Gefolgsleute aus seinem Vorrat auf dem Plättchen einsetzen, das er gerade mit der Schaltfläche "Platziere einen Chip" platziert hat. 
+   Sie können einen Chip entfernen, indem Sie mit der rechten Maustaste darauf klicken.
 3) Wenn durch das Platzieren des Plättchens Straßen, Städte oder Kreuzgänge fertiggestellt sind, werden sie jetzt gewertet.
+4) Um die Runde zu beenden, klicken Sie auf die Schaltfläche "Nächste Runde".
     Alle nach der Berechnung erhaltenen Punkte werden in einem speziellen Fenster angezeigt. Das Ergebnis wird auf der Anzeigetafel angezeigt.
-                                        
 
                                 2. FLIESEN PLATZIEREN
 
-    Ein Spieler legt ein Plättchen nach den folgenden Regeln auf den Tisch:
+    in Spieler legt ein Plättchen nach den folgenden Regeln auf den Tisch:
 - Die neue Fliese muss so platziert werden, dass mindestens eine Kante an einer zuvor platzierten Fliese anliegt;
-- Das neue Plättchen muss so platziert werden, dass alle Straßen-, Stadt- und Feldsegmente auf dem neuen Plättchen mit der Straße 
-    übereinstimmen Stadt- oder Feldsegmente auf allen angrenzenden Kacheln.
-                                    
+- Das neue Plättchen muss so platziert werden, dass alle Straßen-, Stadt- und Feldsegmente auf dem neuen Plättchen mit der 
+  Straße übereinstimmen Stadt- oder Feldsegmente auf allen angrenzenden Kacheln.
+
                                 3. FOLLOWER BEREITSTELLEN
 
     Nachdem der Spieler ein Plättchen gelegt hat, kann er einen seiner Gefolgsleute nach den folgenden Regeln einsetzen:
@@ -176,7 +181,6 @@ Segment auf einem anderen Plättchen verbunden ist, auf dem sich bereits ein Gef
 - Am Ende des Zuges des Spielers, in dem das letzte Plättchen platziert ist, endet das Spiel. 
 - Die endgültige Wertung dann stattfinden.
 
-                                   
                                 6. ENDGÜLTIGE WERTUNG
 
 - Alle unvollständigen Straßen, Städte und Kreuzgänge werden gewertet.

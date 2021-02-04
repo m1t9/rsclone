@@ -9,7 +9,7 @@ import COORDS from '../utils/deskCoordinates.js';
 
 export default class HUD extends Phaser.Scene {
   constructor() {
-    super({ key: 'UIScene'});
+    super({ key: 'UIScene' });
 
     this.score = 0;
     this.underCardText = '';
@@ -97,6 +97,9 @@ export default class HUD extends Phaser.Scene {
     });
     this.music.play();
 
+    this.turnCardSound = this.sound.add('turn_sound');
+    this.insertSound = this.sound.add('insert_sound');
+
     this.nextBtn = this.add.image(this.game.config.width - 300, this.game.config.height - 100, 'next_step_btn').setInteractive();
     this.turnBtn = this.add.image(this.game.config.width - 220, this.game.config.height - 100, 'turn_btn').setInteractive();
     this.setChipBtn = this.add.image(this.game.config.width - 140, this.game.config.height - 100, 'set_chip_btn').setInteractive();
@@ -125,12 +128,12 @@ export default class HUD extends Phaser.Scene {
     this.setChipBtn.on('pointerover', function () {
       this.setChipBtnText = this.add.text(this.setChipBtn.x - 45, this.setChipBtn.y - 70, this.lang.setChip_btn.name, { color: 'black', fontFamily: 'Thintel', fontSize: '30px' });
       this.setChipBtn.setScale(CONSTANTS.BTNS_ACTIVE_SCALE);
-    }, this)
+    }, this);
 
     this.setChipBtn.on('pointerout', function () {
       this.setChipBtnText.destroy();
       this.setChipBtn.setScale(CONSTANTS.BTNS_DEFAULT_SCALE);
-    }, this)
+    }, this);
 
     this.otherCardBtn.on('pointerover', function () {
       this.otherCardBtnText = this.add.text(this.otherCardBtn.x - 45, this.otherCardBtn.y - 70, this.lang.otherCard_btn.name, { color: 'black', fontFamily: 'Thintel', fontSize: '30px' });
@@ -159,6 +162,7 @@ export default class HUD extends Phaser.Scene {
 
     this.openScoreFieldBtn.on('pointerdown', function (pointer) {
       if (this.scoreField === undefined && this.scoreTable === undefined) {
+        this.insertSound.play();
         this.openScoreFieldBtn.setTint(CONSTANTS.BTNS_HOVER_COLOR);
         this.openScoreFieldBtn.setScale(CONSTANTS.BTNS_DEFAULT_SCALE);
 
@@ -172,10 +176,11 @@ export default class HUD extends Phaser.Scene {
         }, this);
 
         this.showChips();
-        this.scoreTable = addDialog(150, this.openScoreFieldBtn.x + 120,
-          this.openScoreFieldBtn.y - 200, this, this.players.length);
+        this.scoreTable = addDialog(150, this.game.config.width / 2 - 550,
+          this.openScoreFieldBtn.y - 250, this, this.players.length);
       } else if (!this.scoreTable.isInTouching(pointer)) {
         this.removeChips();
+        this.insertSound.play();
 
         this.tweens.add({
           targets: this.scoreField,
@@ -196,7 +201,7 @@ export default class HUD extends Phaser.Scene {
     }, this);
 
     let menu;
-    const settingsBtn = this.add.image(this.game.config.width - 50, 40, 'settings_2').setInteractive();
+    const settingsBtn = this.add.image(this.game.config.width - 50, 40, 'settings').setInteractive();
     const items = [
       { name: this.lang.newGame_btn.name },
       { name: this.lang.sound_btn.name },
@@ -217,7 +222,7 @@ export default class HUD extends Phaser.Scene {
         settingsBtn.setTint(CONSTANTS.BTNS_HOVER_COLOR);
         settingsBtn.setScale(CONSTANTS.BTNS_DEFAULT_SCALE);
 
-        menu = createMenu(this, this.game.config.width - 200, 50, items);
+        menu = createMenu(this, this.game.config.width - 200, 70, items);
       } else if (!menu.isInTouching(pointer)) {
         menu.collapse();
         menu = undefined;
@@ -322,20 +327,22 @@ export default class HUD extends Phaser.Scene {
 }
 
 const createMenu = function (scene, x, y, items, onClick) {
-  let menu = scene.rexUI.add
+  const menu = scene.rexUI.add
     .menu({
-      x: x,
-      y: y,
+      x,
+      y,
       width: 220,
       height: 55,
       orientation: 'y',
-      items: items,
-      space: { left: 20, right: 20, top: 10, bottom: 10, item: 10 },
+      items,
+      space: {
+        left: 20, right: 20, top: 10, bottom: 10, item: 10,
+      },
 
-      createButtonCallback: function (item, i) {
-        let btnsBackgrounds = {};
+      createButtonCallback(item, i) {
+        const btnsBackgrounds = {};
         Object.values(scene.lang).forEach((obj) => {
-          btnsBackgrounds[obj['name']] = obj.btn;
+          btnsBackgrounds[obj.name] = obj.btn;
         });
         return createMenuBtn(scene, item, scene.add.image(x, y, btnsBackgrounds[item.name]), 15, scene.lang === en ? 40 : 65, 0, 10);
       },
@@ -350,42 +357,45 @@ const createMenu = function (scene, x, y, items, onClick) {
       },
     });
 
-  menu.on('button.over', function (button, index, pointer, event) {
+  menu.on('button.over', (button, index, pointer, event) => {
     button.setScale(CONSTANTS.BTNS_ACTIVE_SCALE);
   });
 
-  menu.on('button.out', function (button, index, pointer, event) {
+  menu.on('button.out', (button, index, pointer, event) => {
     button.setScale(CONSTANTS.BTNS_DEFAULT_SCALE);
   });
 
-  let newGameBtn = menu.getButton(0);
+  const newGameBtn = menu.getButton(0);
   newGameBtn.on('pointerup', function (pointer) {
     newGameBtn.backgroundChildren[0].setTint(CONSTANTS.BTNS_HOVER_COLOR);
     this.sys.game.destroy(true);
     new Phaser.Game(config);
   }, scene);
 
-  let soundBtn = menu.getButton(1);
-  soundBtn.on('pointerup', function (pointer) {
+  const soundBtn = menu.getButton(1);
+  soundBtn.on('pointerup', (pointer) => {
     scene.musicON = !scene.musicON;
     if (scene.musicON) {
       scene.musicON = true;
       scene.music.resume();
+      scene.insertSound.setVolume(1);
+      scene.turnCardSound.setVolume(1);
       soundBtn.backgroundChildren[0].setTexture('sound_btn', 0);
       soundBtn.backgroundChildren[0].clearTint();
     } else {
       scene.musicON = false;
       scene.music.pause();
+      scene.insertSound.setVolume(0);
+      scene.turnCardSound.setVolume(0);
       soundBtn.backgroundChildren[0].setTexture('no_sound_btn', 0);
       soundBtn.backgroundChildren[0].setTint(CONSTANTS.BTNS_HOVER_COLOR);
       soundBtn.setScale(CONSTANTS.BTNS_DEFAULT_SCALE);
     }
   }, scene);
 
-  let rulesBtn = menu.getButton(2);
+  const rulesBtn = menu.getButton(2);
   scene.rulesOpen = undefined;
-  rulesBtn.on('pointerup', function (pointer) {
-
+  rulesBtn.on('pointerup', (pointer) => {
     if (scene.rulesOpen === undefined) {
       rulesBtn.backgroundChildren[0].setTint(CONSTANTS.BTNS_HOVER_COLOR);
       rulesBtn.setScale(CONSTANTS.BTNS_DEFAULT_SCALE);
@@ -399,54 +409,61 @@ const createMenu = function (scene, x, y, items, onClick) {
     }
   }, scene);
 
+  const aboutUsBtn = menu.getButton(3);
+  aboutUsBtn.on('pointerup', (pointer) => {
+    const url = 'https://petr-the-lll.medium.com/carcassonne-the-game-on-phaser-3-aec43e5e66ea';
+    const s = window.open(url, '_blank');
+    if (s && s.focus) {
+      s.focus();
+    } else if (!s) {
+      window.location.href = url;
+    }
+  }, scene);
+
   return menu;
 };
 
 const createMenuBtn = function (scene, text, background, left = 0, right = 0, top = 0, bottom = 0) {
   return scene.rexUI.add.label({
-    // width: 50,
-    // height: 55,
     name: text.name,
     text: scene.add.text(0, 0, text.name, {
       fontFamily: 'Thintel',
       fontSize: '38px',
       color: 'black',
     }),
-    background: background,
+    background,
     space: {
-      left: left,
-      right: right,
-      top: top,
-      bottom: bottom,
+      left,
+      right,
+      top,
+      bottom,
     },
     align: 'center',
-  })
-}
+  });
+};
 
 const createBtn = function (scene, text, background, left = 0, right = 0, top = 0, bottom = 0) {
   return scene.rexUI.add.label({
-    // width: 50,
-    // height: 55,
     name: text,
     text: scene.add.text(0, 0, text, {
       fontFamily: 'Thintel',
       fontSize: '38px',
       color: 'black',
     }),
-    background: background,
+    background,
     space: {
-      left: left,
-      right: right,
-      top: top,
-      bottom: bottom,
+      left,
+      right,
+      top,
+      bottom,
     },
     align: 'center',
   });
 };
 
 const createInput = function (scene, content) {
-  let keyObj = scene.input.keyboard.addKey('ENTER');
-  let text = scene.add.text(0, 0, content, {
+  const keyObj = scene.input.keyboard.addKey('ENTER');
+  const text = scene.add.text(0, 0, content, {
     color: 'white',
     fontFamily: 'Thintel',
     fontSize: '30px',
@@ -454,12 +471,11 @@ const createInput = function (scene, content) {
     fixedHeight: 30,
     align: 'center',
     halign: 'center',
-  })
+  });
 
   text.setInteractive().on('pointerdown', () => {
-    // scene.rexUI.edit(text);
-    let config = {
-      onTextChanged: function (textObject, text) {
+    const config = {
+      onTextChanged(textObject, text) {
         textObject.text = text;
       },
       selectAll: false,
@@ -468,12 +484,6 @@ const createInput = function (scene, content) {
     text.setColor('black');
   });
   // let saveScore = scene.scoreTable.children[scene.scoreTable.children.length - 1].children[scene.scoreTable.children[scene.scoreTable.children.length - 1].children.length - 1];
-  // keyObj.on('up', function(event) { 
-  //   // if (text.text !== 'Player Name') {
-  //   //   scene.playerNames.push(text.text);
-  //   // }
-  // });
-
   return text;
 };
 
@@ -487,7 +497,7 @@ const createInetactiveLabel = function (scene, content, icon, backgroundColor) {
       left: 10,
       right: 10,
       top: 5,
-      bottom: 10
+      bottom: 10,
     },
     align: 'center',
     halign: 'center',
@@ -495,10 +505,10 @@ const createInetactiveLabel = function (scene, content, icon, backgroundColor) {
 };
 
 const addDialog = function (width, x, y, scene, numberOfPlayers) {
-  let dialog = scene.rexUI.add.dialog({
-    x: x,
-    y: y,
-    width: width,
+  const dialog = scene.rexUI.add.dialog({
+    x,
+    y,
+    width,
     background: scene.rexUI.add.roundRectangle(0, 0, 100, 100, 20, 0xe3b483),
     title: scene.rexUI.add.label({
       background: scene.rexUI.add.roundRectangle(0, 0, 100, 50, 20, 0xaf6a39),
@@ -507,7 +517,9 @@ const addDialog = function (width, x, y, scene, numberOfPlayers) {
         fontSize: '30px',
         align: 'center',
       }),
-      space: { left: 10, right: 10, top: 5, bottom: 10 }
+      space: {
+        left: 10, right: 10, top: 5, bottom: 10,
+      },
     }),
     choices: (new Array(scene.players.length).fill().map((v, i) => v = createInetactiveLabel(scene, scene.playerPoints[`player${i + 1}`], scene.chipsOnDesk[i]))).concat([createLabel(scene, scene.lang.scoreSave_btn.name)]),
     space: {
@@ -521,13 +533,13 @@ const addDialog = function (width, x, y, scene, numberOfPlayers) {
     },
     align: 'center',
     expand: {
-      content: false // Content is a pure text object
+      content: false,
     },
   })
     .layout()
     .fadeIn(500);
 
-  dialog.on('button.click', function (button, groupName, index) {
+  dialog.on('button.click', (button, groupName, index) => {
     if (button.name === 'save') {
       scene.playerPoints.player1 = parseInt(dialog.getChoice(0).text, 10);
       scene.playerPoints.player2 = parseInt(dialog.getChoice(1).text, 10);
@@ -544,7 +556,6 @@ const addDialog = function (width, x, y, scene, numberOfPlayers) {
       scene.showChips();
 
       console.log(scene.playerPoints);
-
     }
   }, scene);
 
