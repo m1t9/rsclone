@@ -301,8 +301,8 @@ export default class HUD extends Phaser.Scene {
         iter += 1;
       }
       this.add.text(this.game.config.width / 2 - 500, this.game.config.height / 2,
-        `${this.lang.winText.text} ${winnerVal === 0 ? 'NOBODY' : this.players[winnerPos]} !`,
-        { color: 'white', fontFamily: 'Thintel', fontSize: '100px' });
+        `${this.lang.winText.text} ${winnerVal === 0 ? this.lang.winNobody.text : this.players[winnerPos]} !`,
+        { color: '#e3b483', fontFamily: 'Thintel', fontSize: '100px' });
       this.currentCardHUD.destroy();
 
       this.add.sprite(this.game.config.width / 2, 280, 'win_crown').setScale(1);

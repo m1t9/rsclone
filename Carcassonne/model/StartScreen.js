@@ -12,7 +12,7 @@ export default class StartScreen extends Phaser.Scene {
       'en': en,
       'ru': ru,
       'de': de,
-    }
+    };
   }
 
   preload() {
@@ -43,10 +43,9 @@ export default class StartScreen extends Phaser.Scene {
     );
     this.load.plugin('rextexteditplugin', 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rextexteditplugin.min.js', true);
   }
-  
-  create() {    
+
+  create() {
     this.cameras.main.setBackgroundColor(CONSTANTS.START_SCENE_BACKGROUND);
-    
     this.input.setDefaultCursor('url(./assets/other/cursor.png), pointer');
     this.logo = this.add.sprite(this.game.config.width / 2 + 220, 100, 'game_logo').setScale(0.5).setDepth(2);
 
@@ -65,7 +64,7 @@ export default class StartScreen extends Phaser.Scene {
     });
 
     this.castle = this.add.sprite(this.game.config.width / 2 + 150, 500, 'castle1').setScale(1.2).play('castleAnim');
-   
+
     const startBtnBackground = this.add.image(0, 0, 'new_game');
     const aboutBtnBackground = this.add.image(0, 0, 'about');
     const langBtnBackground = this.add.image(0, 0, 'lang_btn');
@@ -108,7 +107,8 @@ export default class StartScreen extends Phaser.Scene {
         rulesBtn.setScale(CONSTANTS.BTNS_DEFAULT_SCALE);
 
         const rulesBackground = this.add.image(0, 0, 'game_rules');
-        this.rulesOpen = addRules(this, this.game.config.width / 2 + 160, 460, rulesBackground, this.lang.gameRulesContent.text);
+        this.rulesOpen = addRules(this, this.game.config.width / 2 + 160, 460,
+          rulesBackground, this.lang.gameRulesContent.text);
       } else if (!this.rulesOpen.isInTouching(pointer)) {
         // rulesOpen.destroy();
         this.rulesOpen.fadeOut(300);
@@ -116,7 +116,6 @@ export default class StartScreen extends Phaser.Scene {
         rulesBtn.backgroundChildren[0].clearTint();
       }
     }, this);
-
 
     let newGameBtn = startScreenBtns.getButton(0);
     this.dialog = undefined;
@@ -219,7 +218,6 @@ export default class StartScreen extends Phaser.Scene {
     this.selectLangBtns = undefined;
 
     changeLangBtn.on('pointerup', function (pointer) {
-
       if (this.selectLangBtns === undefined) {
         changeLangBtn.backgroundChildren[0].setTint(CONSTANTS.BTNS_HOVER_COLOR);
         changeLangBtn.setScale(CONSTANTS.BTNS_DEFAULT_SCALE);
@@ -247,7 +245,6 @@ export default class StartScreen extends Phaser.Scene {
           .fadeIn(500)
 
         this.selectLangBtns.on('button.click', function (button, groupName, index) {
-
           this.lang = this.selectLang[button.text];
           changeLangBtn.text = this.lang.lang_btn.name;
           changeLangBtn.setText(this.lang.lang_btn.name);
@@ -263,7 +260,6 @@ export default class StartScreen extends Phaser.Scene {
           }
 
           if (this.dialog !== undefined && this.selectPlayersNum.active === false) {
-
             this.dialog.children[1].children[1].setText(this.lang.enterName.text);
 
             if (this.dialog.children[2].buttons.length === 3) {
@@ -283,17 +279,13 @@ export default class StartScreen extends Phaser.Scene {
               this.dialog.children[2].children[4].setText(this.lang.readyPlay.text);
             }
           }
-
         }, this);
-
       } else if (!this.selectLangBtns.isInTouching(pointer)) {
         this.selectLangBtns.fadeOut(300);
         this.selectLangBtns = undefined;
         changeLangBtn.backgroundChildren[0].clearTint();
       }
-
     }, this);
-
   }
 }
 
@@ -315,8 +307,8 @@ const createInput = function (scene, content) {
       onTextChanged: function (textObject, text) {
         textObject.text = text;
       },
-      selectAll: true
-    }
+      selectAll: true,
+    };
 
     scene.plugins.get('rextexteditplugin').edit(text, config);
     text.setColor('black');
@@ -330,7 +322,7 @@ const createInput = function (scene, content) {
   });
 
   return text;
-}
+};
 
 const createInetactiveLabel = function (scene, content, backgroundColor) {
   return scene.rexUI.add.label({
@@ -340,12 +332,12 @@ const createInetactiveLabel = function (scene, content, backgroundColor) {
       left: 20,
       right: 10,
       top: 5,
-      bottom: 5
+      bottom: 5,
     },
     align: 'center',
     halign: 'center',
-  })
-}
+  });
+};
 
 const createLabel = function (scene, text, backgroundColor) {
   return scene.rexUI.add.label({
@@ -360,11 +352,12 @@ const createLabel = function (scene, text, backgroundColor) {
       left: 10,
       right: 10,
       top: 5,
-      bottom: 10
+      bottom: 10,
     },
     align: 'center',
-  })
-}
+  });
+};
+
 const createBtn = function (scene, text, background, left = 0, right = 0, top = 0, bottom = 0) {
   return scene.rexUI.add.label({
 
@@ -383,8 +376,7 @@ const createBtn = function (scene, text, background, left = 0, right = 0, top = 
     },
     align: 'center',
   });
-}
-
+};
 
 const addDialog = function (width, scene, numberOfPlayers) {
   let dialog = scene.rexUI.add.dialog({
@@ -405,8 +397,8 @@ const addDialog = function (width, scene, numberOfPlayers) {
         left: 20,
         right: 20,
         top: 5,
-        bottom: 10
-      }
+        bottom: 10,
+      },
     }),
     choices: (new Array(numberOfPlayers).fill().map((v) => v = createInetactiveLabel(scene, scene.lang.playerName.text))).concat([createLabel(scene, scene.lang.readyPlay.text)]),
     space: {
@@ -420,11 +412,11 @@ const addDialog = function (width, scene, numberOfPlayers) {
     },
     align: 'center',
     expand: {
-      content: false
-    }
+      content: false,
+    },
   })
     .layout()
-    .fadeIn(500)
+    .fadeIn(500);
 
   dialog.on('button.click', function (button, groupName, index) {
     if (button.name === 'READY TO PLAY!') {
