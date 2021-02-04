@@ -62,6 +62,7 @@ export default class Board {
     window.HUD.disableChipButton();
 
     window.HUD.otherCardBtn.on('pointerup', function () {
+      window.HUD.insertSound.play();
       this.board.nextCardWrong();
     }, this);
 
@@ -71,6 +72,7 @@ export default class Board {
     }, this);
 
     window.HUD.nextBtn.on('pointerup', function () {
+      window.HUD.insertSound.play();
       addNeib.call(this, this.board, this.board.currentX, this.board.currentY);
       this.board.nextCard();
 
@@ -89,7 +91,8 @@ export default class Board {
       this.board.nextPlayer();
     }, this);
 
-    window.HUD.setChipBtn.on('pointerup', function () {
+    window.HUD.setChipBtn.on('pointerup', function() {
+      window.HUD.insertSound.play();
       this.board.sides = this.board.sides.concat(
         addPointerSides.call(this, this.board.currentX, this.board.currentY),
       );
