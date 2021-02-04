@@ -164,12 +164,11 @@ export default class HUD extends Phaser.Scene {
         }, this);
 
         this.showChips();
-        this.scoreTable = addDialog(150, this.game.config.width / 2 - 550,
-          this.openScoreFieldBtn.y - 250, this, this.players.length);
+        this.scoreTable = addDialog(150, this.game.config.width / 2 - 600,
+          this.openScoreFieldBtn.y - 260, this, this.players.length);
 
         if (window.innerWidth <= 1280) {
           this.scoreField.setScale(0.8);
-          // console.log(this.scoreField.width, this.scoreField.height);
           // eslint-disable-next-line max-len
           this.scoreTable.setPosition(this.game.config.width / 2 - 420, this.openScoreFieldBtn.y - 150);
         } else if (window.innerWidth > 1280) {
@@ -239,14 +238,21 @@ export default class HUD extends Phaser.Scene {
       }
     }, this);
 
-    if (window.StartScreen.playerNames.length === 0) {
-      this.players = new Array(Number(window.StartScreen.numOfPlayers)).fill().map((v, i) => v = `Player ${i + 1}`);
-    } else {
-      this.players = [...new Set(window.StartScreen.playerNames)];
+    this.players = [];
+    for (let i = 0; i < window.StartScreen.playerNames.length; i += 1) {
+      if (window.StartScreen.playerNames[i] === this.lang.playerName.text) {
+        this.players.push(`Player ${i + 1}`)
+      } else {
+        this.players.push(window.StartScreen.playerNames[i]);
+      }
     }
 
     this.player = this.add.text(this.game.config.width - this.game.config.width / 2, 70, this.players[0], { color: 'white', fontFamily: 'Thintel', fontSize: '30px' });
     this.playerChip = this.add.sprite(this.game.config.width - this.game.config.width / 2 - 50, 85, 'chipHUD_1');
+  }
+
+  equalText(element, scene, index, array) {
+    return element === scene.lang.playerName.text;
   }
 
   updatePlayerName(playerNumber) {
@@ -553,7 +559,6 @@ const addDialog = function (width, x, y, scene, numberOfPlayers) {
       scene.removeChips();
       scene.showChips();
 
-      console.log(scene.playerPoints);
     }
   }, scene);
 

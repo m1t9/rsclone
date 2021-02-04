@@ -55,7 +55,7 @@ const en = {
     btn: 'open_score_btn',
   },
   tooltip_start: {
-    text: 'Click text to start editing, press ENTER key to save name!',
+    text: 'Click on the text to enter your name!',
   },
   gameRulesContent: {
     text: rulesContentEn,
@@ -157,7 +157,7 @@ const ru = {
     btn: 'open_score_btn',
   },
   tooltip_start: {
-    text: 'Нажмите на текст, чтобы начать редактирование, затем нажмите ENTER, чтобы сохранить имя!',
+    text: 'Нажмите на текст, чтобы ввести свое имя!',
   },
   gameRulesContent: {
     text: rulesContentRu,
@@ -259,7 +259,7 @@ const de = {
     btn: 'open_score_btn',
   },
   tooltip_start: {
-    text: 'Klicken Sie auf den Text, um die Bearbeitung zu starten, und drücken Sie dann die EINGABETASTE, um den Namen zu speichern!',
+    text: 'Klicken Sie auf den Text, um Ihren Namen einzugeben!ы',
   },
   gameRulesContent: {
     text: rulesContentDe,
