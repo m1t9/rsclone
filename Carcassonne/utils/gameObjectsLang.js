@@ -87,6 +87,9 @@ const en = {
   winText: {
     text: 'END OF THE GAME! THE WINNER IS',
   },
+  winNobody: {
+    text: 'NOBODY',
+  },
   controlToolTip: {
     text: `                   Game Controls:
      >  WASD or keyboard arrows - move the camera around the map
@@ -186,6 +189,9 @@ const ru = {
   winText: {
     text: 'КОНЕЦ ИГРЫ! ПОБЕДИТЕЛЬ',
   },
+  winNobody: {
+    text: 'НИКТО',
+  },
   controlToolTip: {
     text: `                   Управление:
      >  WASD или стрелки клавиатуры - перемещение камеры по карте
@@ -284,6 +290,9 @@ const de = {
   },
   winText: {
     text: 'ENDE DES SPIELS! GEWINNER',
+  },
+  winNobody: {
+    text: 'NIEMAND',
   },
   controlToolTip: {
     text: `                    Spielsteuerung:

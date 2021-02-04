@@ -2,12 +2,12 @@ const addRules = function (scene, x, y, background, gameRules) {
   return scene.rexUI.add.textArea({
     x,
     y,
-    width: 553,
-    height: 680,
+    width: (window.innerWidth > 1280) ? 553 : 450,
+    height: (window.innerWidth > 1280) ? 680 : 570,
     text: scene.add.text(0, 0, '', {
       color: 'black',
       fontFamily: 'Thintel',
-      fontSize: '30px',
+      fontSize: (window.innerWidth > 1280) ? '30px' : '22px',
     }),
     background,
     content: gameRules,

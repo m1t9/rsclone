@@ -5,7 +5,7 @@ import config from '../index.js';
 // import MainScene from '../index.js';
 import addRules from '../utils/addGameRules.js';
 import { en, ru, de } from '../utils/gameObjectsLang.js';
-import COORDS from '../utils/deskCoordinates.js';
+import { COORDS_SMALL, COORDS_LARGE } from '../utils/deskCoordinates.js';
 
 export default class HUD extends Phaser.Scene {
   constructor() {
@@ -66,28 +66,9 @@ export default class HUD extends Phaser.Scene {
     this.turnBtn.disableInteractive();
   }
 
-  addScoreText(number, x, y) {
-    const textPlayers = [];
-    for (let i = 0; i < number.length; i += 1) {
-      textPlayers.push(this.add.text(x + i * 10, y + i * 10, 'Hello World', {
-        color: 'red',
-        fontFamily: 'Thintel',
-        fontSize: '30px',
-        fixedWidth: 150,
-        fixedHeight: 40,
-        align: 'center',
-        halign: 'center',
-      }).setDepth(1));
-
-      return textPlayers;
-    }
-
-    return null;
-  }
-
   create() {
     this.lang = window.StartScreen.lang;
-    this.underCardText = this.add.text(10, 5, `${this.lang.currentCard.text} (1 / ${CONSTANTS.CARDS_COUNT}):`, { fontFamily: 'Thintel', fontSize: '40px', fill: '#ffffff' });
+    this.underCardText = this.add.text(10, 5, `${this.lang.currentCard.text} (1 / ${CONSTANTS.CARDS_COUNT}):`, { fontFamily: 'Thintel', fontSize: (window.innerWidth > 1280) ? '40px' : '32px', fill: '#ffffff' });
 
     this.music = this.sound.add('kingdom_sound', {
       volume: 0.5,
@@ -157,6 +138,14 @@ export default class HUD extends Phaser.Scene {
       this.openScoreFieldBtn.setScale(CONSTANTS.BTNS_DEFAULT_SCALE);
     }, this);
 
+    if (window.innerWidth <= 1280) {
+      this.nextBtn.setPosition(this.game.config.width - 250, this.game.config.height - 50);
+      this.turnBtn.setPosition(this.game.config.width - 190, this.game.config.height - 50);
+      this.setChipBtn.setPosition(this.game.config.width - 130, this.game.config.height - 50);
+      this.otherCardBtn.setPosition(this.game.config.width - 70, this.game.config.height - 50);
+      this.openScoreFieldBtn.setPosition(70, this.game.config.height - 50);
+    }
+
     this.scoreField = undefined;
     this.scoreTable = undefined;
 
@@ -166,8 +155,7 @@ export default class HUD extends Phaser.Scene {
         this.openScoreFieldBtn.setTint(CONSTANTS.BTNS_HOVER_COLOR);
         this.openScoreFieldBtn.setScale(CONSTANTS.BTNS_DEFAULT_SCALE);
 
-        this.scoreField = this.add.sprite(this.game.config.width / 2, this.game.config.height / 2, 'score_field').setScale(1).setAlpha(0).setInteractive();
-
+        this.scoreField = this.add.sprite(this.game.config.width / 2, this.game.config.height / 2, 'score_field').setAlpha(0).setInteractive();
         this.tweens.add({
           targets: this.scoreField,
           alpha: 1,
@@ -178,6 +166,15 @@ export default class HUD extends Phaser.Scene {
         this.showChips();
         this.scoreTable = addDialog(150, this.game.config.width / 2 - 550,
           this.openScoreFieldBtn.y - 250, this, this.players.length);
+
+        if (window.innerWidth <= 1280) {
+          this.scoreField.setScale(0.8);
+          // console.log(this.scoreField.width, this.scoreField.height);
+          // eslint-disable-next-line max-len
+          this.scoreTable.setPosition(this.game.config.width / 2 - 420, this.openScoreFieldBtn.y - 150);
+        } else if (window.innerWidth > 1280) {
+          this.scoreField.setScale(1);
+        }
       } else if (!this.scoreTable.isInTouching(pointer)) {
         this.removeChips();
         this.insertSound.play();
@@ -202,6 +199,9 @@ export default class HUD extends Phaser.Scene {
 
     let menu;
     const settingsBtn = this.add.image(this.game.config.width - 50, 40, 'settings').setInteractive();
+    if (window.innerWidth <= 1280) {
+      settingsBtn.setPosition(this.game.config.width - 40, 30);
+    }
     const items = [
       { name: this.lang.newGame_btn.name },
       { name: this.lang.sound_btn.name },
@@ -223,6 +223,9 @@ export default class HUD extends Phaser.Scene {
         settingsBtn.setScale(CONSTANTS.BTNS_DEFAULT_SCALE);
 
         menu = createMenu(this, this.game.config.width - 200, 70, items);
+        if (window.innerWidth <= 1280) {
+          menu.setPosition(this.game.config.width - 170, 60);
+        }
       } else if (!menu.isInTouching(pointer)) {
         menu.collapse();
         menu = undefined;
@@ -255,11 +258,19 @@ export default class HUD extends Phaser.Scene {
   showChips() {
     this.chipsOnDesk = [];
     for (let i = 0; i < this.players.length; i += 1) {
-      this.chipsOnDesk.push(this.add.sprite(
-        this.game.config.width / 2 + COORDS[this.playerPoints[`player${i + 1}`] % 50].x - i * 5,
-        this.game.config.height / 2 + COORDS[this.playerPoints[`player${i + 1}`] % 50].y + i * 5,
-        `chipBoard_${i + 1}`,
-      ));
+      if (window.innerWidth > 1280) {
+        this.chipsOnDesk.push(this.add.sprite(
+          this.game.config.width / 2 + COORDS_LARGE[this.playerPoints[`player${i + 1}`] % 50].x - i * 5,
+          this.game.config.height / 2 + COORDS_LARGE[this.playerPoints[`player${i + 1}`] % 50].y + i * 5,
+          `chipBoard_${i + 1}`,
+        ));
+      } else if (window.innerWidth <= 1280) {
+        this.chipsOnDesk.push(this.add.sprite(
+          this.game.config.width / 2 + COORDS_SMALL[this.playerPoints[`player${i + 1}`] % 50].x - i * 5,
+          this.game.config.height / 2 + COORDS_SMALL[this.playerPoints[`player${i + 1}`] % 50].y + i * 5,
+          `chipBoard_${i + 1}`,
+        ));
+      }
     }
   }
 
@@ -273,7 +284,7 @@ export default class HUD extends Phaser.Scene {
 
   initHudCard(name) {
     setTimeout(() => {
-      this.currentCardHUD = this.add.image(100, 140, name);
+      this.currentCardHUD = this.add.image((window.innerWidth > 1280) ? 100 : 90, 140, name);
       this.currentCardHUD.setScale(0.3);
     }, 100);
   }
@@ -300,18 +311,24 @@ export default class HUD extends Phaser.Scene {
         }
         iter += 1;
       }
-      this.add.text(this.game.config.width / 2 - 500, this.game.config.height / 2,
-        `${this.lang.winText.text} ${winnerVal === 0 ? 'NOBODY' : this.players[winnerPos]} !`,
-        { color: 'white', fontFamily: 'Thintel', fontSize: '100px' });
+      this.crown = this.add.sprite(this.game.config.width / 2, 280, 'win_crown').setScale(1);
+      this.winText = this.add.text(this.game.config.width / 2 - 500, this.game.config.height / 2,
+        `${this.lang.winText.text} ${winnerVal === 0 ? this.lang.winNobody.text : this.players[winnerPos]} !`,
+        { color: '#e3b483', fontFamily: 'Thintel', fontSize: (window.innerWidth > 1280) ? '100px': '75px' });
+      
       this.currentCardHUD.destroy();
 
-      this.add.sprite(this.game.config.width / 2, 280, 'win_crown').setScale(1);
+      if(window.innerWidth <= 1280) {
+        this.crown.setScale(0.5);
+        this.crown.setPosition(this.game.config.width / 2, 200);
+        this.winText.setPosition(this.game.config.width / 2- 380, this.game.config.height / 2);
+      }
     }
   }
 
   updateCard(name, angle) {
     this.currentCardHUD.destroy();
-    this.currentCardHUD = this.add.image(100, 140, name);
+    this.currentCardHUD = this.add.image((window.innerWidth > 1280) ? 100 : 90, 140, name);
     this.currentCardHUD.setScale(0.3);
     if (angle) this.currentCardHUD.setAngle(angle);
   }
@@ -331,13 +348,11 @@ const createMenu = function (scene, x, y, items, onClick) {
     .menu({
       x,
       y,
-      width: 220,
-      height: 55,
+      width: (window.innerWidth > 1280) ? 220 : 180,
+      height: (window.innerWidth > 1280) ? 55 : 45,
       orientation: 'y',
       items,
-      space: {
-        left: 20, right: 20, top: 10, bottom: 10, item: 10,
-      },
+      space: (window.innerWidth > 1280) ? { left: 20, right: 20, top: 15, bottom: 10, item: 10, } : { left: 20, right: 20, top: 5, bottom: 5, item: 5 },
 
       createButtonCallback(item, i) {
         const btnsBackgrounds = {};
@@ -402,6 +417,9 @@ const createMenu = function (scene, x, y, items, onClick) {
 
       const rulesBackground = scene.add.image(0, 0, 'game_rules');
       scene.rulesOpen = addRules(scene, scene.game.config.width / 2 + 400, 400, rulesBackground, scene.lang.gameRulesContent.text);
+      if (window.innerWidth <= 1280) {
+        scene.rulesOpen.setPosition(scene.game.config.width / 2 + 230, 300);
+      }
     } else if (!scene.rulesOpen.isInTouching(pointer)) {
       scene.rulesOpen.fadeOut(300);
       scene.rulesOpen = undefined;
@@ -428,26 +446,7 @@ const createMenuBtn = function (scene, text, background, left = 0, right = 0, to
     name: text.name,
     text: scene.add.text(0, 0, text.name, {
       fontFamily: 'Thintel',
-      fontSize: '38px',
-      color: 'black',
-    }),
-    background,
-    space: {
-      left,
-      right,
-      top,
-      bottom,
-    },
-    align: 'center',
-  });
-};
-
-const createBtn = function (scene, text, background, left = 0, right = 0, top = 0, bottom = 0) {
-  return scene.rexUI.add.label({
-    name: text,
-    text: scene.add.text(0, 0, text, {
-      fontFamily: 'Thintel',
-      fontSize: '38px',
+      fontSize: (window.innerWidth > 1280) ? '38px' : '30px',
       color: 'black',
     }),
     background,
@@ -466,7 +465,7 @@ const createInput = function (scene, content) {
   const text = scene.add.text(0, 0, content, {
     color: 'white',
     fontFamily: 'Thintel',
-    fontSize: '30px',
+    fontSize: (window.innerWidth > 1280) ? '30px' : '23px',
     fixedWidth: 50,
     fixedHeight: 30,
     align: 'center',
@@ -483,7 +482,6 @@ const createInput = function (scene, content) {
     scene.plugins.get('rextexteditplugin').edit(text, config);
     text.setColor('black');
   });
-  // let saveScore = scene.scoreTable.children[scene.scoreTable.children.length - 1].children[scene.scoreTable.children[scene.scoreTable.children.length - 1].children.length - 1];
   return text;
 };
 
@@ -496,7 +494,7 @@ const createInetactiveLabel = function (scene, content, icon, backgroundColor) {
     space: {
       left: 10,
       right: 10,
-      top: 5,
+      top: 10,
       bottom: 10,
     },
     align: 'center',
@@ -514,7 +512,7 @@ const addDialog = function (width, x, y, scene, numberOfPlayers) {
       background: scene.rexUI.add.roundRectangle(0, 0, 100, 50, 20, 0xaf6a39),
       text: scene.add.text(0, 0, scene.lang.scoreTitle.text, {
         fontFamily: 'Thintel',
-        fontSize: '30px',
+        fontSize: (window.innerWidth > 1280) ? '30px' : '23px',
         align: 'center',
       }),
       space: {
@@ -568,7 +566,7 @@ const createLabel = function (scene, text, backgroundColor) {
     name: 'save',
     text: scene.add.text(0, 0, text, {
       fontFamily: 'Thintel',
-      fontSize: '30px',
+      fontSize: (window.innerWidth > 1280) ? '30px' : '23px',
       align: 'center',
     }),
     space: {
