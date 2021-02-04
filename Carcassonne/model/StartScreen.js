@@ -9,9 +9,9 @@ export default class StartScreen extends Phaser.Scene {
     this.playerNames = [];
     this.lang = en;
     this.selectLang = {
-      'en': en,
-      'ru': ru,
-      'de': de,
+      en,
+      ru,
+      de,
     };
   }
 
@@ -22,7 +22,7 @@ export default class StartScreen extends Phaser.Scene {
     this.load.image('about', './assets/btns/about_btn.png');
     this.load.image('game_logo', './assets/other/logo.png');
     this.load.image('game_rules', './assets/other/rules_scroll.png');
-    this.load.image('castle1', './assets/startScreen/castle_01.png')
+    this.load.image('castle1', './assets/startScreen/castle_01.png');
     this.load.image('castle2', './assets/startScreen/castle_02.png');
     this.load.image('castle3', './assets/startScreen/castle_03.png');
     this.load.image('castle4', './assets/startScreen/castle_04.png');
@@ -47,7 +47,7 @@ export default class StartScreen extends Phaser.Scene {
   create() {
     this.cameras.main.setBackgroundColor(CONSTANTS.START_SCENE_BACKGROUND);
     this.input.setDefaultCursor('url(./assets/other/cursor.png), pointer');
-    this.logo = this.add.sprite(this.game.config.width / 2 + 220, 100, 'game_logo').setScale(0.5).setDepth(2);
+    this.logo = this.add.sprite(this.game.config.width / 2 + 220, 100, 'game_logo');
 
     this.anims.create({
       key: 'castleAnim',
@@ -63,42 +63,48 @@ export default class StartScreen extends Phaser.Scene {
       repeat: -1,
     });
 
-    this.castle = this.add.sprite(this.game.config.width / 2 + 150, 500, 'castle1').setScale(1.2).play('castleAnim');
+    this.castle = this.add.sprite(this.game.config.width / 2 + 150, this.game.config.height / 2 + 50, 'castle1').play('castleAnim');
+
+    if (window.innerWidth <= 1280) {
+      this.castle.setScale(0.8);
+      this.logo.setScale(0.3);
+      this.logo.setPosition(this.game.config.width / 2 + 150, 100);
+    } else if (window.innerWidth > 1280) {
+      this.castle.setScale(1.2);
+      this.logo.setScale(0.5);
+    }
 
     const startBtnBackground = this.add.image(0, 0, 'new_game');
     const aboutBtnBackground = this.add.image(0, 0, 'about');
     const langBtnBackground = this.add.image(0, 0, 'lang_btn');
-    let startScreenBtns = this.rexUI.add
+    const startScreenBtns = this.rexUI.add
       .buttons({
         x: 0,
         y: 0,
-        width: 200,
+        width: (window.innerWidth > 1280) ? 200 : 150,
         orientation: 'y',
         space: {
-          item: 10,
+          item: (window.innerWidth > 1280) ? 10 : 8,
         },
-        anchor: {
-          left: 'center-400',
-          centerY: 'center+50',
-        },
+        anchor: (window.innerWidth > 1280) ? { left: 'center-400', centerY: 'center+50' } : { left: 'center-220', centerY: 'center+40' },
         buttons: [
           createBtn(this, this.lang.newGame_btn.name, startBtnBackground, 10, 50, 0, 10),
           createBtn(this, this.lang.gameRules_btn.name, aboutBtnBackground, 10, 40, 0, 10),
           createBtn(this, this.lang.lang_btn.name, langBtnBackground, 10, 50, 0, 10),
         ],
-        expand: true
+        expand: true,
       })
-      .layout()
+      .layout();
 
-    startScreenBtns.on('button.over', function (button, index, ponter, event) {
+    startScreenBtns.on('button.over', (button, index, ponter, event) => {
       button.setScale(CONSTANTS.BTNS_ACTIVE_SCALE);
     });
 
-    startScreenBtns.on('button.out', function (button, index, ponter, event) {
+    startScreenBtns.on('button.out', (button, index, ponter, event) => {
       button.setScale(CONSTANTS.BTNS_DEFAULT_SCALE);
     });
 
-    let rulesBtn = startScreenBtns.getButton(1);
+    const rulesBtn = startScreenBtns.getButton(1);
     this.rulesOpen = undefined;
 
     rulesBtn.on('pointerup', function (pointer) {
@@ -109,6 +115,10 @@ export default class StartScreen extends Phaser.Scene {
         const rulesBackground = this.add.image(0, 0, 'game_rules');
         this.rulesOpen = addRules(this, this.game.config.width / 2 + 160, 460,
           rulesBackground, this.lang.gameRulesContent.text);
+
+        if (window.innerWidth <= 1280) {
+          this.rulesOpen.setPosition(this.game.config.width / 2 + 160, 300);
+        }
       } else if (!this.rulesOpen.isInTouching(pointer)) {
         // rulesOpen.destroy();
         this.rulesOpen.fadeOut(300);
@@ -117,9 +127,8 @@ export default class StartScreen extends Phaser.Scene {
       }
     }, this);
 
-    let newGameBtn = startScreenBtns.getButton(0);
+    const newGameBtn = startScreenBtns.getButton(0);
     this.dialog = undefined;
-    // this.selectPlayersNum = undefined;
 
     newGameBtn.on('pointerup', function (pointer) {
       newGameBtn.backgroundChildren[0].setTint(CONSTANTS.BTNS_HOVER_COLOR);
@@ -127,24 +136,21 @@ export default class StartScreen extends Phaser.Scene {
       newGameBtn.disableInteractive();
 
       this.selectPlayersNum = this.rexUI.add.dialog({
-        width: 300,
-        anchor: {
-          left: 'center-450',
-          centerY: 'center-210',
-        },
+        width: (window.innerWidth > 1280) ? 300 : 200,
+        anchor: (window.innerWidth > 1280) ? { left: 'center-450', centerY: 'center-210' } : { left: 'center-480', centerY: 'center+40' },
         background: this.rexUI.add.roundRectangle(0, 0, 100, 100, 20, 0xe3b483),
         title: this.rexUI.add.label({
           background: this.rexUI.add.roundRectangle(0, 0, 100, 100, 20, 0xaf6a39),
           text: this.add.text(0, 0, this.lang.selectNumberOfPlayers.text, {
             fontFamily: 'Thintel',
-            fontSize: '30px',
+            fontSize: (window.innerWidth > 1280) ? '30px' : '23px',
             align: 'right',
           }),
           space: {
             left: 11,
             right: 31,
             top: 5,
-            bottom: 10
+            bottom: 10,
           },
         }),
         choices: [
@@ -168,53 +174,45 @@ export default class StartScreen extends Phaser.Scene {
           actions: 'center',
         },
         expand: {
-          content: false
-        }
+          content: false,
+        },
       })
         .layout()
-        .fadeIn(500)
+        .fadeIn(500);
 
       this.selectPlayersNum.on('button.click', function (button, groupName, index) {
         this.numOfPlayers = button.text;
-        // console.log(this.numOfPlayers, newGameBtn)
-        // this.selectPlayersNum.removeChoice(0, false);
-        // this.selectPlayersNum.removeChoice(1, false);
-        // this.selectPlayersNum.removeChoice(2, false);
-        // this.selectPlayersNum = undefined;
-        // this.selectPlayersNum = undefined;
-        // this.selectPlayersNum = undefined;
         this.selectPlayersNum.destroy();
 
         if (this.dialog === undefined) {
           // this.selectPlayersNum = null;
-          // this.selectPlayersNum.setChoiceEnable(2, false);
 
-          this.controlTooltip = this.add.text(newGameBtn.x + 700 , 180, this.lang.controlToolTip.text, 
-            {fontFamily: 'Thintel', fontSize: '25px', wordWrap: { width: 380 }, align: 'left' })
+          this.controlTooltip = this.add.text(newGameBtn.x + 700, 180, this.lang.controlToolTip.text, { fontFamily: 'Thintel', fontSize: '25px', wordWrap: { width: 380 }, align: 'left' });
 
-          this.tooltipStart = this.add.text(newGameBtn.x - 450, 150, this.lang.tooltip_start.text, { fontFamily: 'Thintel', fontSize: '30px', wordWrap: { width: 250 }, align: 'justify' });
-          this.dialog = addDialog(300, this, Number(this.numOfPlayers), newGameBtn);
+          this.tooltipStart = this.add.text(newGameBtn.x - 450, 150, this.lang.tooltip_start.text, {
+            fontFamily: 'Thintel', fontSize: '30px', wordWrap: { width: 250 }, align: 'center',
+          });
 
-          // console.log(this.dialog.children[1].children[1])
+          this.dialog = addDialog(this, Number(this.numOfPlayers), newGameBtn);
+
+          if (window.innerWidth <= 1280) {
+            this.tooltipStart.setPosition(this.game.config.width / 2 - 470, 45);
+            this.controlTooltip.setPosition(this.game.config.width / 2 + 320, 115);
+            this.controlTooltip.setWordWrapWidth(300);
+            this.controlTooltip.setAlign('justify');
+            this.controlTooltip.setFontSize('23px');
+          }
         }
-        // } else if (!this.dialog.isInTouching(pointer)) {
-
-        //   // console.log('out of dialog')
-        //   this.dialog.fadeOut(300);
-        //   this.dialog = undefined;
-        //   this.tooltipStart.destroy();
-        //   newGameBtn.backgroundChildren[0].clearTint();
-        // }
       }, this)
-        .on('button.over', function (button, groupName, index) {
-          button.getElement('background').setStrokeStyle(4, 0x7b4626)
+        .on('button.over', (button, groupName, index) => {
+          button.getElement('background').setStrokeStyle(4, 0x7b4626);
         }, this)
-        .on('button.out', function (button, groupName, index) {
-          button.getElement('background').setStrokeStyle()
+        .on('button.out', (button, groupName, index) => {
+          button.getElement('background').setStrokeStyle();
         }, this);
     }, this);
 
-    let changeLangBtn = startScreenBtns.getButton(2);
+    const changeLangBtn = startScreenBtns.getButton(2);
     this.selectLangBtns = undefined;
 
     changeLangBtn.on('pointerup', function (pointer) {
@@ -222,14 +220,13 @@ export default class StartScreen extends Phaser.Scene {
         changeLangBtn.backgroundChildren[0].setTint(CONSTANTS.BTNS_HOVER_COLOR);
         changeLangBtn.setScale(CONSTANTS.BTNS_DEFAULT_SCALE);
 
-        let enBtnBackground = this.add.image(0, 0, 'en_btn');
-        let ruBtnBackground = this.add.image(0, 0, 'ru_btn');
-        let deBtnBackground = this.add.image(0, 0, 'de_btn');
+        const enBtnBackground = this.add.image(0, 0, 'en_btn');
+        const ruBtnBackground = this.add.image(0, 0, 'ru_btn');
+        const deBtnBackground = this.add.image(0, 0, 'de_btn');
 
         this.selectLangBtns = this.rexUI.add.buttons({
           x: changeLangBtn.x,
           y: changeLangBtn.y + 70,
-          // width: 0,
           orientation: 'x',
           space: {
             item: 8,
@@ -239,10 +236,9 @@ export default class StartScreen extends Phaser.Scene {
             createBtn(this, 'ru', ruBtnBackground, 15, 15, 0, 10),
             createBtn(this, 'de', deBtnBackground, 15, 15, 0, 10),
           ],
-          // expand: true
         })
           .layout()
-          .fadeIn(500)
+          .fadeIn(500);
 
         this.selectLangBtns.on('button.click', function (button, groupName, index) {
           this.lang = this.selectLang[button.text];
@@ -256,7 +252,7 @@ export default class StartScreen extends Phaser.Scene {
           if (this.rulesOpen !== undefined) this.rulesOpen.setText(this.lang.gameRulesContent.text);
 
           if (this.selectPlayersNum !== undefined && this.selectPlayersNum.active === true) {
-            this.selectPlayersNum.children[1].children[1].setText(this.lang.selectNumberOfPlayers.text)
+            this.selectPlayersNum.children[1].children[1].setText(this.lang.selectNumberOfPlayers.text);
           }
 
           if (this.dialog !== undefined && this.selectPlayersNum.active === false) {
@@ -290,21 +286,20 @@ export default class StartScreen extends Phaser.Scene {
 }
 
 const createInput = function (scene, content) {
-  let keyObj = scene.input.keyboard.addKey('ENTER');
-  let text = scene.add.text(0, 0, content, {
+  const keyObj = scene.input.keyboard.addKey('ENTER');
+  const text = scene.add.text(0, 0, content, {
     color: 'white',
     fontFamily: 'Thintel',
-    fontSize: '30px',
+    fontSize: (window.innerWidth > 1280) ? '30px' : '23px',
     fixedWidth: 150,
     fixedHeight: 40,
     align: 'center',
     halign: 'center',
-  })
+  });
 
   text.setInteractive().on('pointerdown', () => {
-    // scene.rexUI.edit(text);
-    let config = {
-      onTextChanged: function (textObject, text) {
+    const config = {
+      onTextChanged(textObject, text) {
         textObject.text = text;
       },
       selectAll: true,
@@ -312,10 +307,9 @@ const createInput = function (scene, content) {
 
     scene.plugins.get('rextexteditplugin').edit(text, config);
     text.setColor('black');
-    // scene.playerNames.push(text);
   });
 
-  keyObj.on('up', function (event) {
+  keyObj.on('up', (event) => {
     if (text.text !== 'Player Name') {
       scene.playerNames.push(text.text);
     }
@@ -328,12 +322,7 @@ const createInetactiveLabel = function (scene, content, backgroundColor) {
   return scene.rexUI.add.label({
     background: scene.rexUI.add.roundRectangle(0, 0, 100, 40, 20, 0xaf6a39),
     text: createInput(scene, content),
-    space: {
-      left: 20,
-      right: 10,
-      top: 5,
-      bottom: 5,
-    },
+    space: (window.innerWidth > 1280) ? { left: 20, right: 10, top: 5, bottom: 5, } : { left: 10, right: 10, top: 5, bottom: 5 },
     align: 'center',
     halign: 'center',
   });
@@ -345,7 +334,7 @@ const createLabel = function (scene, text, backgroundColor) {
     name: 'READY TO PLAY!',
     text: scene.add.text(0, 0, text, {
       fontFamily: 'Thintel',
-      fontSize: '30px',
+      fontSize: (window.innerWidth > 1280) ? '30px' : '23px',
       align: 'center',
     }),
     space: {
@@ -364,41 +353,33 @@ const createBtn = function (scene, text, background, left = 0, right = 0, top = 
     name: text,
     text: scene.add.text(0, 0, text, {
       fontFamily: 'Thintel',
-      fontSize: '38px',
+      fontSize: (window.innerWidth > 1280) ? '38px' : '30px',
       color: 'black',
     }),
-    background: background,
+    background,
     space: {
-      left: left,
-      right: right,
-      top: top,
-      bottom: bottom,
+      left,
+      right,
+      top,
+      bottom,
     },
     align: 'center',
   });
 };
 
-const addDialog = function (width, scene, numberOfPlayers) {
-  let dialog = scene.rexUI.add.dialog({
-    width: width,
-    anchor: {
-      left: 'center-455',
-      centerY: 'center-210',
-    },
+const addDialog = function (scene, numberOfPlayers) {
+  const dialog = scene.rexUI.add.dialog({
+    width: (window.innerWidth > 1280) ? 300 : 200,
+    anchor: (window.innerWidth > 1280) ? { left: 'center-455', centerY: 'center-210' } : { left: 'center-460', centerY: 'center+20' },
     background: scene.rexUI.add.roundRectangle(0, 0, 100, 100, 20, 0xe3b483),
     title: scene.rexUI.add.label({
       background: scene.rexUI.add.roundRectangle(0, 0, 100, 50, 20, 0xaf6a39),
       text: scene.add.text(0, 0, scene.lang.enterName.text, {
         fontFamily: 'Thintel',
-        fontSize: '30px',
+        fontSize: (window.innerWidth > 1280) ? '30px' : '23px',
         align: 'center',
       }),
-      space: {
-        left: 20,
-        right: 20,
-        top: 5,
-        bottom: 10,
-      },
+      space: (window.innerWidth > 1280) ? { left: 20, right: 20, top: 5, bottom: 10, } : { left: 10, right: 10, top: 5, bottom: 5 },
     }),
     choices: (new Array(numberOfPlayers).fill().map((v) => v = createInetactiveLabel(scene, scene.lang.playerName.text))).concat([createLabel(scene, scene.lang.readyPlay.text)]),
     space: {
@@ -418,18 +399,18 @@ const addDialog = function (width, scene, numberOfPlayers) {
     .layout()
     .fadeIn(500);
 
-  dialog.on('button.click', function (button, groupName, index) {
+  dialog.on('button.click', (button, groupName, index) => {
     if (button.name === 'READY TO PLAY!') {
       scene.scene.launch('Boot');
       scene.scene.stop('StartScreen');
-    };
+    }
   }, scene)
-    .on('button.over', function (button, groupName, index) {
-      button.getElement('background').setStrokeStyle(4, 0x7b4626)
+    .on('button.over', (button, groupName, index) => {
+      button.getElement('background').setStrokeStyle(4, 0x7b4626);
     }, scene)
-    .on('button.out', function (button, groupName, index) {
-      button.getElement('background').setStrokeStyle()
+    .on('button.out', (button, groupName, index) => {
+      button.getElement('background').setStrokeStyle();
     }, scene);
 
   return dialog;
-}
+};
