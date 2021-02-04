@@ -189,8 +189,8 @@ export default class StartScreen extends Phaser.Scene {
 
           this.controlTooltip = this.add.text(newGameBtn.x + 700, 180, this.lang.controlToolTip.text, { fontFamily: 'Thintel', fontSize: '25px', wordWrap: { width: 380 }, align: 'left' });
 
-          this.tooltipStart = this.add.text(newGameBtn.x - 450, 150, this.lang.tooltip_start.text, {
-            fontFamily: 'Thintel', fontSize: '30px', wordWrap: { width: 250 }, align: 'center',
+          this.tooltipStart = this.add.text(newGameBtn.x - 430, 150, this.lang.tooltip_start.text, {
+            fontFamily: 'Thintel', fontSize: '30px', wordWrap: { width: 200 }, align: 'center',
           });
 
           this.dialog = addDialog(this, Number(this.numOfPlayers), newGameBtn);
@@ -309,12 +309,6 @@ const createInput = function (scene, content) {
     text.setColor('black');
   });
 
-  keyObj.on('up', (event) => {
-    if (text.text !== 'Player Name') {
-      scene.playerNames.push(text.text);
-    }
-  });
-
   return text;
 };
 
@@ -400,9 +394,26 @@ const addDialog = function (scene, numberOfPlayers) {
     .fadeIn(500);
 
   dialog.on('button.click', (button, groupName, index) => {
+
     if (button.name === 'READY TO PLAY!') {
+
+      if (Number(scene.numOfPlayers) === 2) {
+
+        scene.playerNames.push(dialog.getChoice(0).text, dialog.getChoice(1).text);
+
+      } else if (Number(scene.numOfPlayers) === 3) {
+
+        scene.playerNames.push(dialog.getChoice(0).text, dialog.getChoice(1).text, dialog.getChoice(2).text);
+
+      } else if (Number(scene.numOfPlayers) === 4) {
+
+        scene.playerNames.push(dialog.getChoice(0).text, dialog.getChoice(1).text, dialog.getChoice(2).text, dialog.getChoice(3).text);
+
+      }
+  
       scene.scene.launch('Boot');
       scene.scene.stop('StartScreen');
+
     }
   }, scene)
     .on('button.over', (button, groupName, index) => {
